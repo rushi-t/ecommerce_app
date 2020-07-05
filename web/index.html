@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta content="IE=Edge" http-equiv="X-UA-Compatible">
+    <meta name="description" content="A new Flutter application.">
+    <!-- iOS meta tags & icons -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="ecommerce_app">
+    <link rel="apple-touch-icon" href="icons/Icon-192.png">
+    <!-- Favicon -->
+    <link rel="shortcut icon" type="image/png" href="favicon.png"/>
+    <title>ecommerce_app</title>
+    <link rel="manifest" href="manifest.json">
+
+    <script src="https://www.gstatic.com/firebasejs/7.15.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.15.0/firebase-analytics.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.15.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.15.0/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.15.0/firebase-storage.js"></script>
+    <script>
+    // Your web app's Firebase configuration
+    var firebaseConfig = {
+      apiKey: "AIzaSyAbYIFfqw5Q9HipVbJFqg6wxixUhNn8lAw",
+      authDomain: "ecommerce-app-bb2d6.firebaseapp.com",
+      databaseURL: "https://ecommerce-app-bb2d6.firebaseio.com",
+      projectId: "ecommerce-app-bb2d6",
+      storageBucket: "ecommerce-app-bb2d6.appspot.com",
+      messagingSenderId: "1006196991746",
+      appId: "1:1006196991746:web:0daf39ee8c0e0577b0441b",
+      measurementId: "G-X10TN7JL41"
+    };
+    // Initialize Firebas
+    firebase.initializeApp(firebaseConfig);
+    firebase.analytics();
+    </script>
+</head>
+<body>
+<!-- This script installs service_worker.js to provide PWA functionality to
+     application. For more information, see:
+     https://developers.google.com/web/fundamentals/primers/service-workers -->
+<script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', function () {
+        navigator.serviceWorker.register('flutter_service_worker.js');
+      });
+    }
+
+</script>
+<script src="main.dart.js" type="application/javascript"></script>
+</body>
+</html>
