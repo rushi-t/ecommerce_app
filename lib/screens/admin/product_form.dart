@@ -2,10 +2,13 @@ import 'package:ecommerce_app/models/product.dart';
 import 'package:ecommerce_app/models/category.dart';
 import 'package:ecommerce_app/services/category.dart';
 import 'package:ecommerce_app/services/product.dart';
+import 'package:ecommerce_app/services/storage.dart';
 import 'package:ecommerce_app/shared/constants.dart';
 import 'package:ecommerce_app/shared/loading.dart';
+import 'package:ecommerce_app/widget/ImagePickerWidget.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase/firebase.dart' as fb;
+import 'package:image_picker_web/src/Models/Types.dart';
 
 class ProductForm extends StatefulWidget {
   Product product = Product();
@@ -18,12 +21,11 @@ class ProductForm extends StatefulWidget {
 
 class _ProductFormState extends State<ProductForm> {
   final _formKey = GlobalKey<FormState>();
-  var _file;
+  MediaInfo _imageData;
 
   Future<Uri> uploadImageFile(var image, {String imageName}) async {
     fb.StorageReference storageRef = fb.storage().ref();
-    fb.UploadTaskSnapshot uploadTaskSnapshot =
-        await storageRef.put(image).future;
+    fb.UploadTaskSnapshot uploadTaskSnapshot = await storageRef.put(image).future;
 
     Uri imageUri = await uploadTaskSnapshot.ref.getDownloadURL();
     return imageUri;
@@ -46,29 +48,31 @@ class _ProductFormState extends State<ProductForm> {
                     style: TextStyle(fontSize: 18.0),
                   ),
                   SizedBox(height: 20.0),
+                  ImagePickerWidget(
+                      passedImgUrl: widget.product.imgUrl,
+                      onImageChanged: (imageData) {
+                        setState(() {
+                          _imageData = imageData;
+                        });
+                      }),
+                  SizedBox(height: 20.0),
                   TextFormField(
                     initialValue: widget.product.name,
                     decoration: textInputDecoration(labelText: "Product Name"),
-                    validator: (val) =>
-                        val.isEmpty ? 'Please enter Product Name' : null,
-                    onChanged: (val) =>
-                        setState(() => widget.product.name = val),
+                    validator: (val) => val.isEmpty ? 'Please enter Product Name' : null,
+                    onChanged: (val) => setState(() => widget.product.name = val),
                   ),
                   SizedBox(height: 20.0),
                   TextFormField(
                     initialValue: widget.product.description,
-                    decoration:
-                        textInputDecoration(labelText: "Product Description"),
-                    validator: (val) =>
-                        val.isEmpty ? 'Please enter Product Description' : null,
-                    onChanged: (val) =>
-                        setState(() => widget.product.description = val),
+                    decoration: textInputDecoration(labelText: "Product Description"),
+                    validator: (val) => val.isEmpty ? 'Please enter Product Description' : null,
+                    onChanged: (val) => setState(() => widget.product.description = val),
                   ),
                   SizedBox(height: 10.0),
                   DropdownButtonFormField(
                     value: widget.product.categoryUid,
-                    decoration:
-                        textInputDecoration(labelText: "Product Category"),
+                    decoration: textInputDecoration(labelText: "Product Category"),
                     items: categoryList.map((category) {
                       return DropdownMenuItem(
                         value: category.uid,
@@ -77,7 +81,7 @@ class _ProductFormState extends State<ProductForm> {
                     }).toList(),
                     onChanged: (String categoryUid) {
                       setState(() {
-                          widget.product.categoryUid = categoryUid;
+                        widget.product.categoryUid = categoryUid;
                       });
                     },
                   ),
@@ -90,14 +94,34 @@ class _ProductFormState extends State<ProductForm> {
                       ),
                       onPressed: () async {
                         if (_formKey.currentState.validate()) {
-//                      uploadImageFile(_file, imageName: "test");
-                          if (widget.product.uid == '')
-                            await ProductService()
-                                .createProduct(widget.product);
-                          else
-                            await ProductService()
-                                .updateProduct(widget.product);
-                          Navigator.pop(context);
+                          try {
+                            if (widget.product.imgUrl != null && widget.product.imgUrl != "") {
+                              try {
+                                await StorageService().deleteImage(_imageData, "product", widget.product.uid);
+                                widget.product.imgUrl = null;
+                                print("Old image deleted");
+                              } on Exception catch (e) {
+                                print("Error while deleting old image" + e.toString());
+                              }
+                            }
+
+                            if (_imageData != null) {
+                              try {
+                                Uri uri = await StorageService().createImage(_imageData, "product", widget.product.uid);
+                                if (uri != null) {
+                                  widget.product.imgUrl = uri.toString();
+                                  print("new image added");
+                                }
+                              } on Exception catch (e) {
+                                print("Error while creating new image" + e.toString());
+                              }
+                            }
+
+                            await ProductService().updateProduct(widget.product);
+                            Navigator.pop(context);
+                          } on Exception catch (e) {
+                            print("Error while uploading image" + e.toString());
+                          }
                         }
                       }),
                 ],

@@ -18,7 +18,7 @@ class Product {
   Product.fromFireBaseSnapshot(Map snapshot)
       : uid = snapshot['uid'],
         name = snapshot['name'],
-        imgUrl = '',
+        imgUrl = snapshot['imgUrl'],
         enabled = true,
         description = snapshot['description'],
         categoryUid = snapshot['categoryUid'];

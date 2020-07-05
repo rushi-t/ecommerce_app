@@ -25,10 +25,16 @@ class ProductTile extends StatelessWidget {
       child: Card(
         margin: EdgeInsets.fromLTRB(20.0, 6.0, 20.0, 0.0),
         child: ListTile(
-            leading: CircleAvatar(
+            leading: product.imgUrl == null || product.imgUrl == ""
+                ? CircleAvatar(
               radius: 25.0,
               backgroundColor: Colors.brown[200],
               backgroundImage: AssetImage('assets/coffee_icon.png'),
+            )
+                : CircleAvatar(
+              radius: 25.0,
+              backgroundColor: Colors.brown[200],
+              backgroundImage: NetworkImage(product.imgUrl),
             ),
             title: Text(product.name),
             subtitle: Text(product.description),

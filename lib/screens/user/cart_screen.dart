@@ -25,10 +25,16 @@ class _CartTileState extends State<CartTile> {
       child: Card(
         margin: EdgeInsets.fromLTRB(20.0, 6.0, 20.0, 0.0),
         child: ListTile(
-            leading: CircleAvatar(
+            leading: widget.cartItem.product.imgUrl == null || widget.cartItem.product.imgUrl == ""
+                ? CircleAvatar(
               radius: 25.0,
               backgroundColor: Colors.brown[200],
               backgroundImage: AssetImage('assets/coffee_icon.png'),
+            )
+                : CircleAvatar(
+              radius: 25.0,
+              backgroundColor: Colors.brown[200],
+              backgroundImage: NetworkImage(widget.cartItem.product.imgUrl),
             ),
             title: Text(widget.cartItem.product == null ? '' : widget.cartItem.product.name),
             subtitle: Row(
