@@ -30,6 +30,7 @@ class MyApp extends StatelessWidget {
             '/user/product': (context) => UserScreen.ProductScreen(),
             '/user/cart': (context) => CartScreen(),
             '/scratch': (context) => FileUploadDemo(),
+
           }
       ),
     );
