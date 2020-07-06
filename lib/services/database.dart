@@ -24,8 +24,8 @@ class DatabaseService {
       //print(doc.data);
       return Brew(
         name: doc.data['name'] ?? '',
-        strength: doc.data['strength'] ?? 0,
-        sugars: doc.data['sugars'] ?? '0'
+        strength: doc.data['email'] ?? 0,
+        sugars: doc.data['address'] ?? '0'
       );
     }).toList();
   }
@@ -35,8 +35,8 @@ class DatabaseService {
     return UserData(
       uid: uid,
       name: snapshot.data['name'],
-      sugars: snapshot.data['sugars'],
-      strength: snapshot.data['strength']
+      email: snapshot.data['email'],
+      address: snapshot.data['address']
     );
   }
 

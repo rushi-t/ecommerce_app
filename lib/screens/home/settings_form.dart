@@ -48,7 +48,7 @@ class _SettingsFormState extends State<SettingsForm> {
                 ),
                 SizedBox(height: 10.0),
                 DropdownButtonFormField(
-                  value: _currentSugars ?? userData.sugars,
+                  value: _currentSugars ?? userData.email,
                   decoration: textInputDecoration(),
                   items: sugars.map((sugar) {
                     return DropdownMenuItem(
@@ -60,9 +60,9 @@ class _SettingsFormState extends State<SettingsForm> {
                 ),
                 SizedBox(height: 10.0),
                 Slider(
-                  value: (_currentStrength ?? userData.strength).toDouble(),
-                  activeColor: Colors.brown[_currentStrength ?? userData.strength],
-                  inactiveColor: Colors.brown[_currentStrength ?? userData.strength],
+                  value: (_currentStrength ?? userData.address.length).toDouble(),
+                  activeColor: Colors.brown[_currentStrength ?? userData.address.length],
+                  inactiveColor: Colors.brown[_currentStrength ?? userData.name],
                   min: 100.0,
                   max: 900.0,
                   divisions: 8,
@@ -77,9 +77,9 @@ class _SettingsFormState extends State<SettingsForm> {
                   onPressed: () async {
                     if(_formKey.currentState.validate()){
                       await DatabaseService(uid: user.uid).updateUserData(
-                        _currentSugars ?? snapshot.data.sugars, 
+                        _currentSugars ?? snapshot.data.email,
                         _currentName ?? snapshot.data.name, 
-                        _currentStrength ?? snapshot.data.strength
+                        _currentStrength ?? snapshot.data.address
                       );
                       Navigator.pop(context);
                     }
