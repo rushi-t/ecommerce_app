@@ -1,10 +1,10 @@
 import 'package:ecommerce_app/models/user.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class UserProfile {
+class UserProfileService {
 
   final String uid;
-  UserProfile({ this.uid });
+  UserProfileService({ this.uid });
 
   // collection reference
   final CollectionReference userCollection = Firestore.instance.collection('users');

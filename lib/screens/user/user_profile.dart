@@ -1,152 +1,113 @@
+import 'package:ecommerce_app/screens/admin/product_screen.dart';
+import 'package:ecommerce_app/screens/authenticate/sign_in.dart';
+import 'package:ecommerce_app/screens/user/home.dart';
 import 'package:ecommerce_app/services/auth.dart';
-import 'package:ecommerce_app/services/feedback.dart';
-import 'package:ecommerce_app/services/user_profile.dart' as pro;
-import 'package:ecommerce_app/shared/constants.dart';
-import 'package:ecommerce_app/shared/loading.dart';
-import 'package:ecommerce_app/models/feedback.dart';
-import 'package:ecommerce_app/models/user.dart';
+import 'package:ecommerce_app/shared/colors.dart';
+import 'package:ecommerce_app/shared/inputFields.dart';
+import 'package:ecommerce_app/shared/styles.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:flutter/material.dart';
+import 'package:page_transition/page_transition.dart';
 import 'package:uuid/uuid.dart';
+import 'package:ecommerce_app/services/user_profile.dart';
 
 class UserProfile extends StatefulWidget {
+  final String pageTitle;
 
-  final Function toggleView;
-  UserProfile({ this.toggleView });
+  UserProfile({Key key, this.pageTitle}) : super(key: key);
 
   @override
-  _UserProfile createState() => _UserProfile();
+  _UserProfileState createState() => _UserProfileState();
 }
 
-class _UserProfile extends State<UserProfile> {
-
+class _UserProfileState extends State<UserProfile> {
   final AuthService _auth = AuthService();
-  final FeedbackService _feedbackService = FeedbackService(uid: Uuid().v1().toString());
+  final UserProfileService _userProfileService = UserProfileService(uid: Uuid().v1().toString());
 
   final _formKey = GlobalKey<FormState>();
   String error = '';
   bool loading = false;
 
   // text field state
-  String email = '';
-  String phone = '';
   String name = '';
-  String message = '';
-
+  String phone = '';
+  String email = '';
+  String address = '';
 
   @override
   Widget build(BuildContext context) {
-    return loading ? Loading() :
-
-    Scaffold(
-      backgroundColor: Colors.brown[100],
-      appBar: AppBar(
-        backgroundColor: Colors.brown[400],
-        elevation: 0.0,
-        title: Text('Contact Us'),
-        actions: <Widget>[
-          FlatButton.icon(
-            icon: Icon(Icons.person),
-            label: Text('Sign In'),
-            onPressed: () => widget.toggleView(),
-          ),
-        ],
-      ),
-      body: Container(
-        padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 50.0),
-        child: Form(
-          key: _formKey,
-          child: Column(
-            children: <Widget>[
-              SizedBox(height: 20.0),
-              TextFormField(
-                decoration: textInputDecoration().copyWith(hintText: 'Name'),
-                validator: (val) => val.isEmpty ? 'Enter a Name' : null,
-                onChanged: (val) {
-                  setState(() => name = val);
-                },
-              ),
-              SizedBox(height: 20.0),
-              TextFormField(
-                decoration: textInputDecoration().copyWith(hintText: 'Phone'),
-                validator: (val) => validateMobile(val),
-                onChanged: (val) {
-                  setState(() => phone = val);
-                },
-              ),
-              SizedBox(height: 20.0),
-              TextFormField(
-                decoration: textInputDecoration().copyWith(hintText: 'Email'),
-                validator: (val) => validateEmail(val),
-                onChanged: (val) {
-                  setState(() => email = val);
-                },
-              ),
-              SizedBox(height: 20.0),
-              TextFormField(
-                decoration: textInputDecoration().copyWith(hintText: 'Feedback'),
-                keyboardType: TextInputType.multiline,
-                maxLines: null,
-                validator: (val) =>  val.isEmpty ? 'Enter a Feedback' : null,
-                onChanged: (val) {
-                  setState(() => message = val);
-                },
-              ),
-
-              SizedBox(height: 20.0),
-              RaisedButton(
-                  color: Colors.pink[400],
-                  child: Text(
-                    'Register',
-                    style: TextStyle(color: Colors.white),
-
-                  ),
-                  onPressed: () async {
-                    if(_formKey.currentState.validate()){
-                      setState(() => loading = true);
-                      User user = Provider.of<User>(context);
-                      //await _feedbackService.addFeedbackData(name, phone, email, message);
-                      await pro.UserProfile(uid: user.uid).updateUserProfileData(name,phone,email,message);
-                      Navigator.pop(context);
-                    }
-                  }
-              ),
-              SizedBox(height: 12.0),
-              Text(
-                error,
-                style: TextStyle(color: Colors.red, fontSize: 14.0),
-              )
-            ],
-          ),
+    return Scaffold(
+        appBar: AppBar(
+          elevation: 0,
+          backgroundColor: white,
+          //title: Text('User Profile', style: TextStyle(color: Colors.grey, fontFamily: 'Poppins', fontSize: 15)),
+          title: Text('User Profile',  style: contrastText),
+          actions: <Widget>[
+            FlatButton(
+              onPressed: () {
+//                Navigator.of(context).pushReplacementNamed('/signin');
+                Navigator.pushReplacement(context, PageTransition(type: PageTransitionType.leftToRight, child: SignIn()));
+              },
+              child: Text('Sign In', style: contrastText),
+            )
+          ],
         ),
-      ),
-    );
-  }
-
-  String validateMobile(String value) {
-      String patttern = r'(^(?:[+0]9)?[0-9]{10,12}$)';
-      RegExp regExp = new RegExp(patttern);
-      if (value.length == 0) {
-        return 'Please enter mobile number';
-      }
-      else if (value.length != 10) {
-        return 'Please enter 10 digit mobile number';
-      }
-      else if (!regExp.hasMatch(value)) {
-        return 'Please enter valid mobile number';
-      }
-      else
-      return null;
-    }
-
-  String validateEmail(String value) {
-    Pattern pattern =
-        r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
-    RegExp regex = new RegExp(pattern);
-    if (!regex.hasMatch(value))
-      return 'Enter Valid Email';
-    else
-      return null;
+        body: Center(
+          child: Form(
+            key: _formKey,
+            child: ListView(
+              shrinkWrap: true,
+              children: <Widget>[
+                Container(
+                  padding: EdgeInsets.only(left: 18, right: 18),
+                  child: Stack(
+                    children: <Widget>[
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                         // Text('Welcome to eCommerce!', style: h3),
+                          //Text('Let\'s get started', style: taglineText),
+//                        TextInput('Username'),
+//                        TextInput('Full Name'),
+                          TextInput('Name',onTap:(()=>100) , onChanged: (val) {
+                            setState(() => name = val);
+                          }),
+                          TextInput('Phone', onChanged: (val) {
+                            setState(() => phone = val);
+                          }),
+                          EmailInput('Email', onChanged: (val) {
+                            setState(() => email = val);
+                          }),
+                          TextInput('Address', onChanged: (val) {
+                            setState(() => address = val);
+                          }),
+                        ],
+                      ),
+                      Positioned(
+                        bottom: 15,
+                        right: -15,
+                        child: FlatButton(
+                          onPressed: () async {
+                            if (_formKey.currentState.validate()) {
+                              setState(() => loading = true);
+                              await _userProfileService.updateUserProfileData(name, phone, email, address);
+                            }
+                          },
+                          color: primaryColor,
+                          padding: EdgeInsets.all(13),
+                          shape: CircleBorder(),
+                          child: Icon(Icons.arrow_forward, color: white),
+                        ),
+                      )
+                    ],
+                  ),
+                  height: 318,
+                  width: double.infinity,
+//                decoration: authPlateDecoration,
+                ),
+              ],
+            ),
+          ),
+        ));
   }
 }

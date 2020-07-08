@@ -3,7 +3,7 @@ import 'package:ecommerce_app/models/user.dart';
 import 'package:ecommerce_app/screens/home/settings_form.dart';
 import 'package:ecommerce_app/screens/user/user_profile.dart';
 import 'package:ecommerce_app/services/auth.dart';
-import 'package:ecommerce_app/services/user_profile.dart' as pro;
+import 'package:ecommerce_app/services/user_profile.dart' ;
 import 'package:ecommerce_app/services/feedback.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -12,7 +12,7 @@ import 'package:uuid/uuid.dart';
 class UserProfileAdmin extends StatelessWidget {
 
   final AuthService _auth = AuthService();
-  final pro.UserProfile _userProfile = pro.UserProfile(uid: Uuid().v1().toString());
+  final UserProfileService _userProfile = UserProfileService(uid: Uuid().v1().toString());
 
   @override
   Widget build(BuildContext context) {
