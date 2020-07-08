@@ -12,7 +12,7 @@ import 'package:provider/provider.dart';
 class ProductTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    print("Orientation= " + MediaQuery.of(context).orientation.toString());
+//    print("Orientation= " + MediaQuery.of(context).orientation.toString());
     return Scaffold(
       body: CustomScrollView(
         slivers: <Widget>[
@@ -81,7 +81,7 @@ class ProductsListItem extends StatelessWidget {
   }
 
   _buildProductItemCard(BuildContext context) {
-    print("cardWidth= " + cardWidth.toString());
+//    print("cardWidth= " + cardWidth.toString());
     return InkWell(
       onTap: () {
 //        Navigator.of(context).pushNamed(Constants.ROUTE_PRODUCT_DETAIL);

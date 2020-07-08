@@ -14,7 +14,7 @@ class Wrapper extends StatelessWidget {
   Widget build(BuildContext context) {
 
     final user = Provider.of<User>(context);
-    print("Wrapper user= " + (user != null ? user.toString(): "null"));
+//    print("Wrapper user= " + (user != null ? user.toString(): "null"));
     // return either the Home or Authenticate widget
     if (user == null){
 //      Navigator.pushReplacement(context, PageTransition(type: PageTransitionType.rightToLeft, child: Authenticate()));
