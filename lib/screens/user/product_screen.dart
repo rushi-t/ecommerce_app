@@ -4,6 +4,7 @@ import 'package:ecommerce_app/models/product.dart';
 import 'package:ecommerce_app/services/auth.dart';
 import 'package:ecommerce_app/services/cart_item.dart';
 import 'package:ecommerce_app/services/product.dart';
+import 'package:ecommerce_app/widget/side_drawer.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -101,6 +102,7 @@ class ProductScreen extends StatelessWidget {
           ),
           child: ProductList()
         ),
+        drawer: SideDrawer(),
         floatingActionButton: new FloatingActionButton(
             elevation: 0.0,
             child: new Icon(Icons.shopping_cart),

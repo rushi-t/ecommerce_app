@@ -1,4 +1,6 @@
 import 'package:ecommerce_app/models/category.dart';
+import 'package:ecommerce_app/models/user.dart';
+import 'package:ecommerce_app/screens/authenticate/sign_in.dart';
 import 'package:ecommerce_app/services/auth.dart';
 import 'package:ecommerce_app/services/category.dart';
 import 'package:flutter/material.dart';
@@ -94,9 +96,12 @@ class _CategoryListState extends State<CategoryList> {
 
 class CategoryScreen extends StatelessWidget {
   final AuthService _auth = AuthService();
-
   @override
   Widget build(BuildContext context) {
+//    print( AuthService().userInstance);
+//    if( AuthService().userInstance == null)
+//      Navigator.pushReplacementNamed(context, '/signin');
+//    print("sssss");
     void _showCategoryAddUpdatePanel() {
       showModalBottomSheet(
           context: context,

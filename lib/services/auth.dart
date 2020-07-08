@@ -3,12 +3,29 @@ import 'package:ecommerce_app/services/database.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class AuthService {
+  static final AuthService _instance = AuthService._privateConstructor();
   final FirebaseAuth _auth = FirebaseAuth.instance;
   User userInstance;
 
+  AuthService._();
+  AuthService._privateConstructor();
+
+  factory AuthService() {
+    return _instance;
+  }
+
+  Future<FirebaseUser> getFireBaseUser() async{
+   return _auth.currentUser();
+  }
+
   // create user obj based on firebase user
   User _userFromFirebaseUser(FirebaseUser user) {
-    return user != null ? User(uid: user.uid) : null;
+    this.userInstance = null;
+    if(user != null) {
+      this.userInstance = User(uid: user.uid);
+    }
+    print("_userFromFirebaseUser= " + (this.userInstance != null ? this.userInstance.toString() : "null"));
+    return this.userInstance;
   }
 
   // auth change user stream

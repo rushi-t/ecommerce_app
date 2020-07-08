@@ -6,7 +6,7 @@ import 'package:ecommerce_app/services/database.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class Home extends StatelessWidget {
+class BrewHome extends StatelessWidget {
 
   final AuthService _auth = AuthService();
 

@@ -1,23 +1,23 @@
-import 'package:ecommerce_app/screens/authenticate/sign_up.dart';
+import 'package:ecommerce_app/screens/admin/product_screen.dart';
+import 'package:ecommerce_app/screens/authenticate/sign_in.dart';
 import 'package:ecommerce_app/screens/user/home.dart';
-import 'package:ecommerce_app/screens/user/product_screen.dart';
 import 'package:ecommerce_app/services/auth.dart';
 import 'package:ecommerce_app/shared/colors.dart';
 import 'package:ecommerce_app/shared/inputFields.dart';
 import 'package:ecommerce_app/shared/styles.dart';
-import 'package:page_transition/page_transition.dart';
 import 'package:flutter/material.dart';
+import 'package:page_transition/page_transition.dart';
 
-class SignIn extends StatefulWidget {
+class SignUp extends StatefulWidget {
   final String pageTitle;
 
-  SignIn({Key key, this.pageTitle}) : super(key: key);
+  SignUp({Key key, this.pageTitle}) : super(key: key);
 
   @override
-  _SignInState createState() => _SignInState();
+  _SignUpState createState() => _SignUpState();
 }
 
-class _SignInState extends State<SignIn> {
+class _SignUpState extends State<SignUp> {
   final AuthService _auth = AuthService();
   final _formKey = GlobalKey<FormState>();
   String error = '';
@@ -33,14 +33,14 @@ class _SignInState extends State<SignIn> {
         appBar: AppBar(
           elevation: 0,
           backgroundColor: white,
-          title: Text('Sign In', style: TextStyle(color: Colors.grey, fontFamily: 'Poppins', fontSize: 15)),
+          title: Text('Sign Up', style: TextStyle(color: Colors.grey, fontFamily: 'Poppins', fontSize: 15)),
           actions: <Widget>[
             FlatButton(
               onPressed: () {
-//                Navigator.of(context).pushReplacementNamed('/signup');
-                Navigator.pushReplacement(context, PageTransition(type: PageTransitionType.rightToLeft, child: SignUp()));
+//                Navigator.of(context).pushReplacementNamed('/signin');
+                Navigator.pushReplacement(context, PageTransition(type: PageTransitionType.leftToRight, child: SignIn()));
               },
-              child: Text('Sign Up', style: contrastText),
+              child: Text('Sign In', style: contrastText),
             )
           ],
         ),
@@ -58,34 +58,30 @@ class _SignInState extends State<SignIn> {
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
-                          Text('Welcome Back!', style: h3),
-                          Text('Hello, let\'s authenticate', style: taglineText),
+                          Text('Welcome to eCommerce!', style: h3),
+                          Text('Let\'s get started', style: taglineText),
+//                        TextInput('Username'),
+//                        TextInput('Full Name'),
                           EmailInput('Email', onChanged: (val) {
                             setState(() => email = val);
                           }),
                           PasswordInput('Password', onChanged: (val) {
                             setState(() => password = val);
                           }),
-                          FlatButton(
-                            onPressed: () {},
-                            child: Text('Forgot Password?', style: contrastTextBold),
-                          ),
                         ],
                       ),
-
                       Positioned(
                         bottom: 15,
                         right: -15,
                         child: FlatButton(
                           onPressed: () async {
                             if (_formKey.currentState.validate()) {
-                              print("logging in");
                               setState(() => loading = true);
-                              dynamic result = await _auth.signInWithEmailAndPassword(email, password);
+                              dynamic result = await _auth.registerWithEmailAndPassword(email, password);
                               if (result == null) {
                                 setState(() {
                                   loading = false;
-                                  error = 'Could not sign in with those credentials';
+                                  error = 'Please supply a valid email';
                                 });
                               } else {
                                 Navigator.pushReplacement(context, PageTransition(type: PageTransitionType.rightToLeft, child: Home()));
@@ -102,7 +98,7 @@ class _SignInState extends State<SignIn> {
                   ),
                   height: 250,
                   width: double.infinity,
-//                  decoration: authPlateDecoration,
+//                decoration: authPlateDecoration,
                 ),
               ],
             ),

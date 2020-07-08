@@ -2,7 +2,6 @@ import 'package:ecommerce_app/models/brew.dart';
 import 'package:flutter/material.dart';
 
 class BrewTile extends StatelessWidget {
-
   final Brew brew;
   BrewTile({ this.brew });
 
