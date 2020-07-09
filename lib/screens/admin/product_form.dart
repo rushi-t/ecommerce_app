@@ -8,6 +8,7 @@ import 'package:ecommerce_app/shared/loading.dart';
 import 'package:ecommerce_app/widget/ImagePickerWidget.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase/firebase.dart' as fb;
+import 'package:flutter/services.dart';
 import 'package:image_picker_web/src/Models/Types.dart';
 
 class ProductForm extends StatefulWidget {
@@ -64,6 +65,15 @@ class _ProductFormState extends State<ProductForm> {
                   ),
                   SizedBox(height: 20.0),
                   TextFormField(
+                    initialValue: widget.product.price != null ? widget.product.price.toString(): "",
+                    keyboardType: TextInputType.number,
+                    decoration: textInputDecoration(labelText: "Product Price"),
+                    validator: (val) => val.isEmpty ? 'Please enter Product Price' : null,
+                    inputFormatters: [WhitelistingTextInputFormatter.digitsOnly],
+                    onChanged: (val) => setState(() => widget.product.price = double.tryParse(val)),
+                  ),
+                  SizedBox(height: 20.0),
+                  TextFormField(
                     initialValue: widget.product.description,
                     decoration: textInputDecoration(labelText: "Product Description"),
                     validator: (val) => val.isEmpty ? 'Please enter Product Description' : null,
@@ -95,7 +105,7 @@ class _ProductFormState extends State<ProductForm> {
                       onPressed: () async {
                         if (_formKey.currentState.validate()) {
                           try {
-                            if (widget.product.imgUrl != null && widget.product.imgUrl != "") {
+                            if (_imageData != null && widget.product.imgUrl != null && widget.product.imgUrl != "") {
                               try {
                                 await StorageService().deleteImage(_imageData, "product", widget.product.uid);
                                 widget.product.imgUrl = null;

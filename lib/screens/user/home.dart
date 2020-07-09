@@ -13,6 +13,7 @@ import 'package:provider/provider.dart';
 
 //import 'Product.dart';
 import 'ProductPage.dart';
+import 'cart_tab.dart';
 
 class Home extends StatefulWidget {
   final String pageTitle;
@@ -24,13 +25,13 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  int _selectedIndex = 0;
+  int _selectedIndex = 1;
 
   @override
   Widget build(BuildContext context) {
     final _tabs = [
       ProductTab(),
-      Text('Cart'),
+      CartTab(),
       Text('Profile'),
     ];
 

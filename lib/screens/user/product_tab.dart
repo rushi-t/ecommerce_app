@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:ecommerce_app/models/category.dart';
 import 'package:ecommerce_app/models/product.dart';
@@ -82,58 +81,59 @@ class ProductsListItem extends StatelessWidget {
 
   _buildProductItemCard(BuildContext context) {
 //    print("cardWidth= " + cardWidth.toString());
-    return InkWell(
-      onTap: () {
-//        Navigator.of(context).pushNamed(Constants.ROUTE_PRODUCT_DETAIL);
-      },
-      child: Container(
-        width: cardWidth,
-        child: Card(
-          elevation: 4.0,
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Expanded(
-                flex: 6,
-                child: Image.network(
-                  product.imgUrl,
-                  width: cardWidth,
-                  fit: BoxFit.fill,
+    return Container(
+      width: cardWidth,
+      child: Card(
+        elevation: 4.0,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Expanded(
+              flex: 6,
+              child: product.imgUrl != null && product.imgUrl != ""
+                  ? Image.network(
+                      product.imgUrl,
+                      width: cardWidth,
+                      fit: BoxFit.fill,
+                    )
+                  : Image.asset(
+                      "assets/plate.jpg",
+                      width: cardWidth,
+                      fit: BoxFit.fill,
+                    ),
+            ),
+            Expanded(
+              flex: 3,
+              child: Padding(
+                padding: const EdgeInsets.only(left: 12.0, right: 8.0, top: 8.0, bottom: 8.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    Text(
+                      product.name,
+                      style: foodNameText,
+                    ),
+                    SizedBox(
+                      height: 5.0,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.min,
+                      children: <Widget>[
+                        Text(
+                          "₹ " + (product.price != null ? product.price.toString() : "0"),
+                          style: priceText,
+                        ),
+                      ],
+                    ),
+                  ],
                 ),
               ),
-              Expanded(
-                flex: 3,
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 12.0, right: 8.0, top: 8.0, bottom: 8.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    mainAxisSize: MainAxisSize.min,
-                    children: <Widget>[
-                      Text(
-                        product.name,
-                        style: foodNameText,
-                      ),
-                      SizedBox(
-                        height: 5.0,
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        mainAxisSize: MainAxisSize.min,
-                        children: <Widget>[
-                          Text(
-                            "₹ 199",
-                            style: priceText,
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
@@ -205,7 +205,6 @@ class _CategoryScrollerState extends State<CategoryScroller> {
     );
   }
 }
-
 
 Widget sectionHeader(String headerTitle, {onViewMore}) {
   return Row(

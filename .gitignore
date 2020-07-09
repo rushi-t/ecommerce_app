@@ -28,6 +28,7 @@
 .pub-cache/
 .pub/
 /build/
+.flutter-plugins-dependencies
 
 # Android related
 **/android/**/gradle-wrapper.jar
@@ -73,4 +74,4 @@
 
 # google services
 **/android/app/google-services.json
-.flutter-plugins-dependencies
+

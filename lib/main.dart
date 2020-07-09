@@ -42,7 +42,6 @@ class MyApp extends StatelessWidget {
             '/user/userProfile': (context) => UserProfileScreen.UserProfile(),
             '/user/forgetPassword': (context) => ForgetPassword(),
             '/scratch': (context) => Home(),
-
           }
       ),
     );
