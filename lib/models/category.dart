@@ -3,8 +3,8 @@ import 'package:uuid/uuid.dart';
 
 class Category {
   String uid = Uuid().v1();
-  String name = '';
-  String imgUrl = '';
+  String name;
+  String imgUrl;
   bool enabled = true;
 
   Category({this.name, this.imgUrl, this.enabled});

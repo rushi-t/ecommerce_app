@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:ecommerce_app/models/category.dart';
 import 'package:ecommerce_app/models/product.dart';
 import 'package:ecommerce_app/screens/user/product_screen.dart';
-import 'package:ecommerce_app/screens/user/partials.dart';
 import 'package:ecommerce_app/services/category.dart';
 import 'package:ecommerce_app/services/product.dart';
 import 'package:ecommerce_app/shared/colors.dart';

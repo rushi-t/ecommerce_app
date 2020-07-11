@@ -1,18 +1,13 @@
-import 'package:ecommerce_app/models/category.dart';
-import 'package:ecommerce_app/models/product.dart';
-import 'package:ecommerce_app/screens/admin/product_screen.dart';
-import 'package:ecommerce_app/screens/user/partials.dart';
+import 'package:ecommerce_app/screens/authenticate/sign_in.dart';
+import 'package:ecommerce_app/screens/user/order_tab.dart';
 import 'package:ecommerce_app/screens/user/product_tab.dart';
-import 'package:ecommerce_app/services/category.dart';
-import 'package:ecommerce_app/services/product.dart';
+import 'package:ecommerce_app/shared/buttons.dart';
 import 'package:ecommerce_app/shared/colors.dart';
 import 'package:ecommerce_app/shared/fryo_icons.dart';
 import 'package:ecommerce_app/shared/styles.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:page_transition/page_transition.dart';
 
-//import 'Product.dart';
-import 'ProductPage.dart';
 import 'cart_tab.dart';
 
 class Home extends StatefulWidget {
@@ -25,15 +20,17 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  int _selectedIndex = 0;
+  int _selectedIndex = 2;
 
   @override
   Widget build(BuildContext context) {
     final _tabs = [
       ProductTab(),
       CartTab(),
-      Text('Profile'),
-    ];
+      Center(child: FlatBtn('My Orders', () async{
+    Navigator.push(context, PageTransition(type: PageTransitionType.rightToLeft, child: OrderTab()));
+    }))];
+
 
     return Scaffold(
         backgroundColor: bgColor,

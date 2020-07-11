@@ -23,11 +23,11 @@ const h6 = TextStyle(color: Colors.black, fontSize: 16, fontWeight: FontWeight.w
 
 const primaryTextStyle = TextStyle(
   color: primaryColor,
-  fontSize: 19,
+  fontSize: 16,
   fontWeight: FontWeight.w800,
 );
 
-const primaryTextStyleDark = TextStyle(color: primaryColorDark, fontSize: 17, fontWeight: FontWeight.w600, fontFamily: 'Poppins');
+const primaryTextStyleDark = TextStyle(color: primaryColorDark, fontSize: 18, fontWeight: FontWeight.w800);
 
 const tabLinkStyle = TextStyle(fontWeight: FontWeight.w500);
 
