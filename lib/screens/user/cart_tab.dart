@@ -1,11 +1,17 @@
 import 'package:ecommerce_app/models/cart_item.dart';
 import 'package:ecommerce_app/models/user.dart';
+import 'package:ecommerce_app/screens/authenticate/sign_in.dart';
+import 'package:ecommerce_app/services/auth.dart';
 import 'package:ecommerce_app/services/cart_item.dart';
+import 'package:ecommerce_app/services/user.dart';
+import 'package:ecommerce_app/shared/buttons.dart';
 import 'package:ecommerce_app/shared/colors.dart';
 import 'package:ecommerce_app/shared/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:page_transition/page_transition.dart';
+import 'package:ecommerce_app/screens/user/home.dart';
 
 class CartTile extends StatefulWidget {
   CartItem cartItem;
@@ -51,7 +57,7 @@ class _CartTileState extends State<CartTile> {
                   children: <Widget>[
                     Text(
                       widget.cartItem.product.name,
-                      style: foodNameText,
+                      style: primaryTextStyleDark,
                     ),
                     SizedBox(
                       height: 5.0,
@@ -62,7 +68,7 @@ class _CartTileState extends State<CartTile> {
                       children: <Widget>[
                         Text(
                           "₹ " + (widget.cartItem.product.price * widget.cartItem.quantity).toString(),
-                          style: priceText,
+                          style: primaryTextStyle,
                         ),
                       ],
                     ),
@@ -80,7 +86,7 @@ class _CartTileState extends State<CartTile> {
                       margin: EdgeInsets.all(6.0),
                       decoration: BoxDecoration(borderRadius: BorderRadius.circular(100), border: Border.all(width: 2, color: primaryColorDark)),
                       child: GestureDetector(
-                          onTap: () async{
+                          onTap: () async {
                             ++widget.cartItem.quantity;
                             await CartItemService().updateCartItem(widget.cartItem);
                             print(widget.cartItem.product.name + " Modified");
@@ -90,16 +96,44 @@ class _CartTileState extends State<CartTile> {
                             color: primaryColorDark,
                           )),
                     ),
-                    Text(widget.cartItem.quantity.toString(), style: foodNameText,),
+                    Text(
+                      widget.cartItem.quantity.toString(),
+                      style: primaryTextStyleDark,
+                    ),
                     Container(
                       margin: EdgeInsets.all(6.0),
                       decoration: BoxDecoration(borderRadius: BorderRadius.circular(100), border: Border.all(width: 2, color: primaryColorDark)),
                       child: GestureDetector(
                           onTap: () async {
-                            if(widget.cartItem.quantity>1) {
+                            if (widget.cartItem.quantity > 1) {
                               --widget.cartItem.quantity;
                               await CartItemService().updateCartItem(widget.cartItem);
                               print(widget.cartItem.product.name + " Modified");
+                            }
+                            else{
+                              await showDialog(
+                                context: context,
+                                builder: (context) => AlertDialog(
+                                  title: new Text("Do you want to remove item from cart?", style: primaryTextStyleDark),
+                                  actions: <Widget>[
+                                    new FlatButton(
+                                      child: Text("Cancel", style: TextStyle(color: primaryColor)),
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
+                                      },
+                                    ),
+                                    new FlatButton(
+                                      child: new Text("Continue", style: TextStyle(color: Colors.grey),),
+                                      onPressed: () async{
+                                        await CartItemService().deleteCartItem(widget.cartItem);
+                                        Navigator.of(context).pop();
+                                      },
+                                    ),
+                                  ],
+                                )
+                              );
+
+
                             }
                           },
                           child: Icon(
@@ -127,7 +161,7 @@ class _CartItemListState extends State<CartItemList> {
     return ListView.builder(
       itemCount: cartItems.length,
       itemBuilder: (context, index) {
-        print(cartItems[index].product);
+//        print(cartItems[index].product);
         return CartTile(cartItem: cartItems[index]);
       },
     );
@@ -142,9 +176,23 @@ class CartTab extends StatefulWidget {
 class _CartTabState extends State<CartTab> {
   @override
   Widget build(BuildContext context) {
-    User user = Provider.of<User>(context);
+    User user = AuthService().userInstance;
 
-//    return StreamProvider<List<CartItem>>.value(value: CartItemService().cartItemStream(userId: "M5xzvS3OrVXROwIIsQQfSVCZQ5w2"), child: CartItemList());
-    return StreamProvider<List<CartItem>>.value(value: CartItemService().cartItemStream(userId: user.uid), child: CartItemList());
+    if (user == null) {
+      return Center(
+          child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text("You are not Signed in", style: primaryTextStyleDark),
+          FlatBtn('Sign In', () {
+            Navigator.pushReplacement(context, PageTransition(type: PageTransitionType.leftToRight, duration: Duration(seconds: 1), child: SignIn(Home())));
+          })
+        ],
+      ));
+    } else {
+//      return StreamProvider<List<CartItem>>.value(value: CartItemService().cartItemStream(userId: "M5xzvS3OrVXROwIIsQQfSVCZQ5w2"), child: CartItemList());
+//      print("UserID = "+ user.uid);
+      return StreamProvider<List<CartItem>>.value(value: CartItemService().cartItemStream(userId: user.uid), child: CartItemList());
+    }
   }
 }

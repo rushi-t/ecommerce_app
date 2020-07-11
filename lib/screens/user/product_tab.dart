@@ -1,3 +1,9 @@
+import 'package:ecommerce_app/models/cart_item.dart';
+import 'package:ecommerce_app/screens/authenticate/sign_in.dart';
+import 'package:ecommerce_app/services/auth.dart';
+import 'package:ecommerce_app/services/cart_item.dart';
+import 'package:ecommerce_app/shared/buttons.dart';
+import 'package:ecommerce_app/widget/utility.dart';
 import 'package:flutter/material.dart';
 import 'package:ecommerce_app/models/category.dart';
 import 'package:ecommerce_app/models/product.dart';
@@ -7,6 +13,7 @@ import 'package:ecommerce_app/shared/colors.dart';
 import 'package:ecommerce_app/shared/fryo_icons.dart';
 import 'package:ecommerce_app/shared/styles.dart';
 import 'package:provider/provider.dart';
+import 'package:page_transition/page_transition.dart';
 
 class ProductTab extends StatelessWidget {
   @override
@@ -37,7 +44,7 @@ class ProductTab extends StatelessWidget {
                 double cardWidth = MediaQuery.of(context).orientation == Orientation.portrait ? MediaQuery.of(context).size.width / 2 : 270;
                 int cardCount = MediaQuery.of(context).orientation == Orientation.portrait ? 2 : MediaQuery.of(context).size.width ~/ 270;
                 return SliverGrid(
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: cardCount, mainAxisSpacing: 0, crossAxisSpacing: 0),
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: cardCount, mainAxisSpacing: 0, crossAxisSpacing: 0, childAspectRatio: 1.0),
                     delegate: SliverChildBuilderDelegate(
                       (context, index) => ProductsListItem(snapshot.data[index], cardWidth),
                       childCount: snapshot.hasData ? snapshot.data.length : 0,
@@ -114,19 +121,31 @@ class ProductsListItem extends StatelessWidget {
                   children: <Widget>[
                     Text(
                       product.name,
-                      style: foodNameText,
+                      style: primaryTextStyleDark,
                     ),
                     SizedBox(
                       height: 5.0,
                     ),
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      mainAxisSize: MainAxisSize.min,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: <Widget>[
                         Text(
                           "₹ " + (product.price != null ? product.price.toString() : "0"),
-                          style: priceText,
+                          style: primaryTextStyle,
                         ),
+                        Container(
+                          width: 60,
+                          height: 30,
+                          child: FlatBtn('Add', () async{
+                            if(!AuthService().isLoggedIn()) {
+                              Navigator.push(context, PageTransition(type: PageTransitionType.leftToRight, child: SignIn(null)));
+                            }
+                            else{
+                              await CartItemService().createCartItem(CartItem(userId: AuthService().userInstance.uid, product: product, quantity: 1));
+                              showSnackBar(context, 'Item added to your cart');
+                            }
+                          })),
                       ],
                     ),
                   ],

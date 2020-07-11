@@ -21,13 +21,13 @@ const h5 = TextStyle(color: Colors.black, fontSize: 18, fontWeight: FontWeight.w
 
 const h6 = TextStyle(color: Colors.black, fontSize: 16, fontWeight: FontWeight.w500, fontFamily: 'Poppins');
 
-const priceText = TextStyle(
+const primaryTextStyle = TextStyle(
   color: primaryColor,
   fontSize: 19,
   fontWeight: FontWeight.w800,
 );
 
-const foodNameText = TextStyle(color: primaryColorDark, fontSize: 17, fontWeight: FontWeight.w600, fontFamily: 'Poppins');
+const primaryTextStyleDark = TextStyle(color: primaryColorDark, fontSize: 17, fontWeight: FontWeight.w600, fontFamily: 'Poppins');
 
 const tabLinkStyle = TextStyle(fontWeight: FontWeight.w500);
 

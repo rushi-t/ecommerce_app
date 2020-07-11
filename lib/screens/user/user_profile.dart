@@ -8,7 +8,7 @@ import 'package:ecommerce_app/shared/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:uuid/uuid.dart';
-import 'package:ecommerce_app/services/user_profile.dart';
+import 'package:ecommerce_app/services/user.dart';
 
 class UserProfile extends StatefulWidget {
   final String pageTitle;
@@ -21,7 +21,7 @@ class UserProfile extends StatefulWidget {
 
 class _UserProfileState extends State<UserProfile> {
   final AuthService _auth = AuthService();
-  final UserProfileService _userProfileService = UserProfileService(uid: Uuid().v1().toString());
+  final UserService _userProfileService = UserService();
 
   final _formKey = GlobalKey<FormState>();
   String error = '';
@@ -45,7 +45,7 @@ class _UserProfileState extends State<UserProfile> {
             FlatButton(
               onPressed: () {
 //                Navigator.of(context).pushReplacementNamed('/signin');
-                Navigator.pushReplacement(context, PageTransition(type: PageTransitionType.leftToRight, child: SignIn()));
+                Navigator.pushReplacement(context, PageTransition(type: PageTransitionType.leftToRight, child: SignIn(Home())));
               },
               child: Text('Sign In', style: contrastText),
             )
@@ -90,7 +90,7 @@ class _UserProfileState extends State<UserProfile> {
                           onPressed: () async {
                             if (_formKey.currentState.validate()) {
                               setState(() => loading = true);
-                              await _userProfileService.updateUserProfileData(name, phone, email, address);
+//                              await _userProfileService.updateUserData(User());
                             }
                           },
                           color: primaryColor,

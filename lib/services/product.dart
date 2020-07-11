@@ -5,8 +5,7 @@ class ProductService {
   ProductService();
 
   // collection reference
-  final CollectionReference productCollection =
-      Firestore.instance.collection('products');
+  final CollectionReference productCollection = Firestore.instance.collection('products');
 
   Future<void> createProduct(Product product) async {
     return await productCollection.add(product.toMap());
@@ -27,7 +26,7 @@ class ProductService {
     }).toList();
   }
 
-  // get categories stream
+  // get products stream
   Stream<List<Product>> get productsStream {
     return productCollection.snapshots().map(_productListFromSnapshot);
   }

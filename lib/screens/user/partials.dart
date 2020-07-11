@@ -50,8 +50,8 @@ Widget foodItem(Product food,
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    Text(food.name, style: foodNameText),
-                    Text(food.price, style: priceText),
+                    Text(food.name, style: primaryTextStyleDark),
+                    Text(food.price, style: primaryTextStyle),
                   ],
                 )
               : Text(' '),

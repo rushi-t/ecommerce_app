@@ -106,7 +106,7 @@ class ProductsListItem extends StatelessWidget {
                 children: <Widget>[
                   Text(
                     product.name,
-                    style: foodNameText,
+                    style: primaryTextStyleDark,
                   ),
                   SizedBox(
                     height: 8.0,
@@ -117,7 +117,7 @@ class ProductsListItem extends StatelessWidget {
                     children: <Widget>[
                       Text(
                         "₹ 199",
-                        style: priceText,
+                        style: primaryTextStyle,
                       ),
 //                      SizedBox(
 //                        width: 10.0,

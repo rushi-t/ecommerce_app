@@ -40,7 +40,7 @@ class _ForgetPasswordState extends State<ForgetPassword> {
             FlatButton(
               onPressed: () {
 //                Navigator.of(context).pushReplacementNamed('/signin');
-                Navigator.pushReplacement(context, PageTransition(type: PageTransitionType.leftToRight, child: SignIn()));
+                Navigator.pushReplacement(context, PageTransition(type: PageTransitionType.leftToRight, child: SignIn(Home())));
               },
               child: Text('Sign In', style: contrastText),
             )

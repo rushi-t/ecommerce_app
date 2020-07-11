@@ -9,9 +9,9 @@ import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
 
 class SignUp extends StatefulWidget {
-  final String pageTitle;
+  Widget redirectWidget;
 
-  SignUp({Key key, this.pageTitle}) : super(key: key);
+  SignUp(this.redirectWidget);
 
   @override
   _SignUpState createState() => _SignUpState();
@@ -38,7 +38,7 @@ class _SignUpState extends State<SignUp> {
             FlatButton(
               onPressed: () {
 //                Navigator.of(context).pushReplacementNamed('/signin');
-                Navigator.pushReplacement(context, PageTransition(type: PageTransitionType.leftToRight, child: SignIn()));
+                Navigator.pushReplacement(context, PageTransition(type: PageTransitionType.leftToRight, child: SignIn(widget.redirectWidget)));
               },
               child: Text('Sign In', style: contrastText),
             )
@@ -84,7 +84,10 @@ class _SignUpState extends State<SignUp> {
                                   error = 'Please supply a valid email';
                                 });
                               } else {
-                                Navigator.pushReplacement(context, PageTransition(type: PageTransitionType.rightToLeft, child: Home()));
+                                if (widget.redirectWidget != null)
+                                  Navigator.pushReplacement(context, PageTransition(type: PageTransitionType.rightToLeft, child: widget.redirectWidget));
+                                else
+                                  Navigator.pop(context);
                               }
                             }
                           },
