@@ -3,12 +3,12 @@ import 'package:uuid/uuid.dart';
 
 class Product {
   String uid = Uuid().v1();
-  String name = '';
-  String imgUrl = '';
-  double price = 0;
+  String name;
+  String imgUrl;
+  double price;
   bool enabled = true;
-  String description = '';
-  String categoryUid = '';
+  String description;
+  String categoryUid;
 
   Product({this.name, this.imgUrl, this.price, this.enabled, this.description, this.categoryUid});
 

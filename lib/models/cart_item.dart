@@ -5,9 +5,9 @@ import 'package:uuid/uuid.dart';
 
 class CartItem {
   String uid = Uuid().v1();
-  String userId = '';
+  String userId;
   Product product;
-  int quantity = 0;
+  int quantity;
 
   CartItem({this.userId, this.product, this.quantity});
 

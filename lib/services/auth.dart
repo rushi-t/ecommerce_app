@@ -1,5 +1,8 @@
+import 'dart:async';
+
 import 'package:ecommerce_app/models/user.dart';
 import 'package:ecommerce_app/services/database.dart';
+import 'package:ecommerce_app/services/user.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class AuthService {
@@ -8,37 +11,41 @@ class AuthService {
   User userInstance;
 
   AuthService._();
+
   AuthService._privateConstructor();
 
   factory AuthService() {
     return _instance;
   }
 
-  Future<FirebaseUser> getFireBaseUser() async{
-   return _auth.currentUser();
+  bool isLoggedIn() {
+    return userInstance != null;
   }
 
-  // create user obj based on firebase user
-  User _userFromFirebaseUser(FirebaseUser user) {
-    this.userInstance = null;
-    if(user != null) {
-      this.userInstance = User(uid: user.uid);
-    }
-    print("_userFromFirebaseUser= " + (this.userInstance != null ? this.userInstance.toString() : "null"));
-    return this.userInstance;
+  Future<FirebaseUser> getFireBaseUser() async {
+    return _auth.currentUser();
   }
 
   // auth change user stream
   Stream<User> get user {
-    return _auth.onAuthStateChanged.map(_userFromFirebaseUser);
+    return _auth.onAuthStateChanged.transform(StreamTransformer<FirebaseUser, User>.fromHandlers(handleData: (firebaseUser, user) async {
+      if(firebaseUser == null) return null;
+      this.userInstance = await UserService().getUser(firebaseUser.uid);
+      user.add(this.userInstance);
+//      print("## User= " + user.toString());
+    }));
   }
 
-  // sign in anon
-  Future signInAnon() async {
+  // sign in Anonymously
+  Future<User> signInAnonymously() async {
     try {
       AuthResult result = await _auth.signInAnonymously();
-      FirebaseUser user = result.user;
-      return _userFromFirebaseUser(user);
+      if (result.user == null) return null;
+
+      FirebaseUser firebaseUser = result.user;
+      this.userInstance = User(firebaseUser.uid);
+      await UserService().updateUser(userInstance);
+      return userInstance;
     } catch (e) {
       print(e.toString());
       return null;
@@ -46,17 +53,14 @@ class AuthService {
   }
 
   // sign in with email and password
-  Future signInWithEmailAndPassword(String email, String password) async {
+  Future<User> signInWithEmailAndPassword(String email, String password) async {
     try {
       AuthResult result = await _auth.signInWithEmailAndPassword(email: email, password: password);
+      if (result.user == null) return null;
+
       FirebaseUser user = result.user;
-//      try {
-//        await user.sendEmailVerification();
-//      } catch (e) {
-//        print("An error occured while trying to send email        verification");
-//        print(e.message);
-//      }
-      return user;
+      this.userInstance = await UserService().getUser(user.uid);
+      return userInstance;
     } catch (error) {
       print(error.toString());
       return null;
@@ -64,13 +68,15 @@ class AuthService {
   }
 
   // register with email and password
-  Future registerWithEmailAndPassword(String email, String password) async {
+  Future<User> registerWithEmailAndPassword(String email, String password) async {
     try {
       AuthResult result = await _auth.createUserWithEmailAndPassword(email: email, password: password);
-      FirebaseUser user = result.user;
-      // create a new document for the user with the uid
-      await DatabaseService(uid: user.uid).updateUserData('0', 'new crew member', 100);
-      return _userFromFirebaseUser(user);
+      if (result.user == null) return null;
+
+      FirebaseUser firebaseUser = result.user;
+      this.userInstance = User(firebaseUser.uid, email: firebaseUser.email);
+      await UserService().updateUser(userInstance);
+      return userInstance;
     } catch (error) {
       print(error.toString());
       return null;
@@ -80,6 +86,7 @@ class AuthService {
   // sign out
   Future signOut() async {
     try {
+      this.userInstance = null;
       return await _auth.signOut();
     } catch (error) {
       print(error.toString());
@@ -91,5 +98,4 @@ class AuthService {
   Future sendPasswordResetEmail(String email) async {
     return _auth.sendPasswordResetEmail(email: email);
   }
-
 }

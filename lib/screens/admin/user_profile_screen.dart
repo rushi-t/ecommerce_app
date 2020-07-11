@@ -1,33 +1,22 @@
 import 'package:ecommerce_app/models/feedback.dart' as fb;
 import 'package:ecommerce_app/models/user.dart';
-import 'package:ecommerce_app/screens/home/settings_form.dart';
 import 'package:ecommerce_app/screens/user/user_profile.dart';
 import 'package:ecommerce_app/services/auth.dart';
-import 'package:ecommerce_app/services/user_profile.dart' ;
+import 'package:ecommerce_app/services/user.dart';
+import 'package:ecommerce_app/services/user.dart';
 import 'package:ecommerce_app/services/feedback.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
 
 class UserProfileAdmin extends StatelessWidget {
-
   final AuthService _auth = AuthService();
-  final UserProfileService _userProfile = UserProfileService(uid: Uuid().v1().toString());
+  final UserService _userProfile = UserService();
 
   @override
   Widget build(BuildContext context) {
-
-    void _showSettingsPanel() {
-      showModalBottomSheet(context: context, builder: (context) {
-        return Container(
-          padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 60.0),
-          child: SettingsForm(),
-        );
-      });
-    }
-
     return StreamProvider<List<User>>.value(
-      value: _userProfile.users,
+      value: _userProfile.usersStream,
       child: Scaffold(
         backgroundColor: Colors.brown[50],
         appBar: AppBar(
@@ -45,7 +34,7 @@ class UserProfileAdmin extends StatelessWidget {
             FlatButton.icon(
               icon: Icon(Icons.settings),
               label: Text('settings'),
-              onPressed: () => _showSettingsPanel(),
+              onPressed: (){},
             )
           ],
         ),
@@ -56,8 +45,7 @@ class UserProfileAdmin extends StatelessWidget {
                 fit: BoxFit.cover,
               ),
             ),
-            child: UserProfileList()
-        ),
+            child: UserProfileList()),
       ),
     );
   }
@@ -70,10 +58,9 @@ class UserProfileList extends StatefulWidget {
   _UserProfileListState createState() => _UserProfileListState();
 }
 
-class _UserProfileListState extends State<UserProfileList > {
+class _UserProfileListState extends State<UserProfileList> {
   @override
   Widget build(BuildContext context) {
-
     final userlist = Provider.of<List<User>>(context) ?? [];
 
     return ListView.builder(
@@ -87,9 +74,9 @@ class _UserProfileListState extends State<UserProfileList > {
 
 ////////////////////////////////////
 class UserProfileTile extends StatelessWidget {
-
   final User user;
-  UserProfileTile({ this.user });
+
+  UserProfileTile({this.user});
 
   @override
   Widget build(BuildContext context) {
@@ -97,7 +84,7 @@ class UserProfileTile extends StatelessWidget {
       padding: const EdgeInsets.only(top: 8.0),
       child: Card(
         margin: EdgeInsets.fromLTRB(20.0, 6.0, 20.0, 0.0),
-        child:new Column(
+        child: new Column(
           children: <Widget>[
             ListTile(
               leading: CircleAvatar(
@@ -106,13 +93,11 @@ class UserProfileTile extends StatelessWidget {
               ),
               title: Text(user.name),
               subtitle: Text('${user.address} '),
-
             ),
             new Text('${user.phone} '),
-            new Text('${user.email } ')
+            new Text('${user.email} ')
           ],
         ),
-
       ),
     );
   }

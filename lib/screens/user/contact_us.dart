@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:uuid/uuid.dart';
 import 'package:ecommerce_app/services/feedback.dart';
+import 'package:ecommerce_app/screens/user/home.dart';
 
 class ContactUs extends StatefulWidget {
   final String pageTitle;
@@ -44,7 +45,7 @@ class _ContactUsState extends State<ContactUs> {
             FlatButton(
               onPressed: () {
 //                Navigator.of(context).pushReplacementNamed('/signin');
-                Navigator.pushReplacement(context, PageTransition(type: PageTransitionType.leftToRight, child: SignIn()));
+                Navigator.pushReplacement(context, PageTransition(type: PageTransitionType.leftToRight, child: SignIn(Home())));
               },
               child: Text('Sign In', style: contrastText),
             )

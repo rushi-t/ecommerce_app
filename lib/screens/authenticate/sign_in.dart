@@ -1,3 +1,4 @@
+import 'package:ecommerce_app/models/user.dart';
 import 'package:ecommerce_app/screens/authenticate/sign_up.dart';
 import 'package:ecommerce_app/screens/user/home.dart';
 import 'package:ecommerce_app/screens/user/product_screen.dart';
@@ -9,9 +10,9 @@ import 'package:page_transition/page_transition.dart';
 import 'package:flutter/material.dart';
 
 class SignIn extends StatefulWidget {
-  final String pageTitle;
+  Widget redirectWidget;
 
-  SignIn({Key key, this.pageTitle}) : super(key: key);
+  SignIn(this.redirectWidget);
 
   @override
   _SignInState createState() => _SignInState();
@@ -38,7 +39,7 @@ class _SignInState extends State<SignIn> {
             FlatButton(
               onPressed: () {
 //                Navigator.of(context).pushReplacementNamed('/signup');
-                Navigator.pushReplacement(context, PageTransition(type: PageTransitionType.rightToLeft, child: SignUp()));
+                Navigator.pushReplacement(context, PageTransition(type: PageTransitionType.rightToLeft, child: SignUp(widget.redirectWidget)));
               },
               child: Text('Sign Up', style: contrastText),
             )
@@ -72,7 +73,6 @@ class _SignInState extends State<SignIn> {
                           ),
                         ],
                       ),
-
                       Positioned(
                         bottom: 15,
                         right: -15,
@@ -81,14 +81,18 @@ class _SignInState extends State<SignIn> {
                             if (_formKey.currentState.validate()) {
                               print("logging in");
                               setState(() => loading = true);
-                              dynamic result = await _auth.signInWithEmailAndPassword(email, password);
-                              if (result == null) {
+                              User user = await _auth.signInWithEmailAndPassword(email, password);
+                              if (user == null) {
+                                print('Could not sign in with those credentials');
                                 setState(() {
                                   loading = false;
                                   error = 'Could not sign in with those credentials';
                                 });
                               } else {
-                                Navigator.pushReplacement(context, PageTransition(type: PageTransitionType.rightToLeft, child: Home()));
+                                if (widget.redirectWidget != null)
+                                  Navigator.pushReplacement(context, PageTransition(type: PageTransitionType.rightToLeft, child: widget.redirectWidget));
+                                else
+                                  Navigator.pop(context);
                               }
                             }
                           },

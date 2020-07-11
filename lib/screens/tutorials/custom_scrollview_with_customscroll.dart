@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:ecommerce_app/models/category.dart';
 import 'package:ecommerce_app/models/product.dart';
 import 'package:ecommerce_app/screens/user/product_screen.dart';
-import 'package:ecommerce_app/screens/user/partials.dart';
 import 'package:ecommerce_app/services/category.dart';
 import 'package:ecommerce_app/services/product.dart';
 import 'package:ecommerce_app/shared/colors.dart';
@@ -106,7 +105,7 @@ class ProductsListItem extends StatelessWidget {
                 children: <Widget>[
                   Text(
                     product.name,
-                    style: foodNameText,
+                    style: primaryTextStyleDark,
                   ),
                   SizedBox(
                     height: 8.0,
@@ -117,7 +116,7 @@ class ProductsListItem extends StatelessWidget {
                     children: <Widget>[
                       Text(
                         "₹ 199",
-                        style: priceText,
+                        style: primaryTextStyle,
                       ),
 //                      SizedBox(
 //                        width: 10.0,
