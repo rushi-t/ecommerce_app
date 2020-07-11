@@ -27,7 +27,7 @@ const primaryTextStyle = TextStyle(
   fontWeight: FontWeight.w800,
 );
 
-const primaryTextStyleDark = TextStyle(color: primaryColorDark, fontSize: 18, fontWeight: FontWeight.w800);
+const primaryTextStyleDark = TextStyle(color: primaryColorDark, fontSize: 16, fontWeight: FontWeight.w800);
 
 const tabLinkStyle = TextStyle(fontWeight: FontWeight.w500);
 

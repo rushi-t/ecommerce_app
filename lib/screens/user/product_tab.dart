@@ -41,10 +41,11 @@ class ProductTab extends StatelessWidget {
           StreamBuilder(
               stream: ProductService().productsStream,
               builder: (context, snapshot) {
-                double cardWidth = MediaQuery.of(context).orientation == Orientation.portrait ? MediaQuery.of(context).size.width / 2 : 270;
-                int cardCount = MediaQuery.of(context).orientation == Orientation.portrait ? 2 : MediaQuery.of(context).size.width ~/ 270;
+//                print(MediaQuery.of(context).size.width / 3);
+                double cardWidth = MediaQuery.of(context).orientation == Orientation.portrait ? MediaQuery.of(context).size.width / 3 : 170;
+                int cardCount = MediaQuery.of(context).orientation == Orientation.portrait ? 3 : MediaQuery.of(context).size.width ~/ 170;
                 return SliverGrid(
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: cardCount, mainAxisSpacing: 0, crossAxisSpacing: 0, childAspectRatio: 1.0),
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: cardCount, mainAxisSpacing: 0, crossAxisSpacing: 0, childAspectRatio: 0.75),
                     delegate: SliverChildBuilderDelegate(
                       (context, index) => ProductsListItem(snapshot.data[index], cardWidth),
                       childCount: snapshot.hasData ? snapshot.data.length : 0,
@@ -97,7 +98,6 @@ class ProductsListItem extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Expanded(
-              flex: 6,
               child: product.imgUrl != null && product.imgUrl != ""
                   ? Image.network(
                       product.imgUrl,
@@ -110,46 +110,62 @@ class ProductsListItem extends StatelessWidget {
                       fit: BoxFit.fill,
                     ),
             ),
-            Expanded(
-              flex: 3,
-              child: Padding(
-                padding: const EdgeInsets.only(left: 12.0, right: 8.0, top: 8.0, bottom: 8.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  mainAxisSize: MainAxisSize.min,
-                  children: <Widget>[
-                    Text(
-                      product.name,
-                      style: primaryTextStyleDark,
-                    ),
-                    SizedBox(
-                      height: 5.0,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: <Widget>[
-                        Text(
-                          "₹ " + (product.price != null ? product.price.toString() : "0"),
-                          style: primaryTextStyle,
-                        ),
-                        Container(
-                          width: 60,
-                          height: 30,
-                          child: FlatBtn('Add', () async{
+            Padding(
+              padding: const EdgeInsets.only(left: 12.0, right: 12.0, top: 8.0, bottom: 8.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.end,
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  Text(
+                    product.name,
+                    style: primaryTextStyleDark,
+                  ),
+                  SizedBox(
+                    height: 10.0,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget>[
+                      Text(
+                        "₹ " + (product.price != null ? product.price.toString() : "0"),
+                        style: primaryTextStyle,
+                      ),
+                      Container(
+                        width: 30,
+                        height: 30,
+                        child: FloatingActionButton(
+                          backgroundColor: primaryColor,
+                          elevation: 0,
+                          child:Icon(
+                            Icons.add,
+                            color: Colors.white,
+                            size: 20.0,
+                          ),
+                          onPressed: () async{
                             if(!AuthService().isLoggedIn()) {
                               Navigator.push(context, PageTransition(type: PageTransitionType.leftToRight, child: SignIn(null)));
                             }
                             else{
                               await CartItemService().createCartItem(CartItem(userId: AuthService().userInstance.uid, product: product, quantity: 1));
                               showSnackBar(context, 'Item added to your cart');
-                            }
-                          })),
-                      ],
-                    ),
-                  ],
-                ),
+                          }}
+                        ),
+
+//                          child:FlatBtn('Add', () async{
+//                            if(!AuthService().isLoggedIn()) {
+//                              Navigator.push(context, PageTransition(type: PageTransitionType.leftToRight, child: SignIn(null)));
+//                            }
+//                            else{
+//                              await CartItemService().createCartItem(CartItem(userId: AuthService().userInstance.uid, product: product, quantity: 1));
+//                              showSnackBar(context, 'Item added to your cart');
+//                            }
+//                          })
+                      ),
+                    ],
+                  ),
+                ],
               ),
             ),
           ],
