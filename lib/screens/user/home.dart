@@ -1,10 +1,12 @@
-import 'package:ecommerce_app/screens/authenticate/sign_in.dart';
+import 'package:ecommerce_app/screens/authenticate/auth.dart';
 import 'package:ecommerce_app/screens/user/order_tab.dart';
 import 'package:ecommerce_app/screens/user/product_tab.dart';
+import 'package:ecommerce_app/services/auth.dart';
 import 'package:ecommerce_app/shared/buttons.dart';
 import 'package:ecommerce_app/shared/colors.dart';
 import 'package:ecommerce_app/shared/fryo_icons.dart';
 import 'package:ecommerce_app/shared/styles.dart';
+import 'package:ecommerce_app/widget/utility.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:page_transition/page_transition.dart';
@@ -32,15 +34,13 @@ class _HomeState extends State<Home> {
     _hideButtonController = new ScrollController();
     _hideButtonController.addListener(() {
 //      print("listener");
-      if (_hideButtonController.position.userScrollDirection ==
-          ScrollDirection.reverse) {
+      if (_hideButtonController.position.userScrollDirection == ScrollDirection.reverse) {
         setState(() {
           _isVisible = false;
 //          print("**** $_isVisible up");
         });
       }
-      if (_hideButtonController.position.userScrollDirection ==
-          ScrollDirection.forward) {
+      if (_hideButtonController.position.userScrollDirection == ScrollDirection.forward) {
         setState(() {
           _isVisible = true;
 //          print("**** $_isVisible down");
@@ -48,19 +48,29 @@ class _HomeState extends State<Home> {
       }
     });
   }
+
   @override
   Widget build(BuildContext context) {
     final _tabs = [
       ProductTab(_hideButtonController),
       CartTab(_hideButtonController),
-      Center(child: FlatBtn('My Orders', () async{
-    Navigator.push(context, PageTransition(type: PageTransitionType.rightToLeft, child: OrderTab()));
-    }))];
-
+      Center(
+          child: Column(
+        children: [
+          FlatBtn('My Orders', () async {
+            Navigator.push(context, PageTransition(type: PageTransitionType.rightToLeft, child: OrderTab()));
+          }),
+          SizedBox(height: 10,),
+          FlatBtn('Logout', () async {
+            AuthService().signOut().then((value) => showSnackBar(context, "Logged out"));
+          })
+        ],
+      ))
+    ];
 
     return Scaffold(
         backgroundColor: bgColor,
-        body:_tabs[_selectedIndex],
+        body: _tabs[_selectedIndex],
         bottomNavigationBar: Container(
           height: _isVisible ? 60 : 0.0,
           child: BottomNavigationBar(
@@ -83,7 +93,6 @@ class _HomeState extends State<Home> {
                     'Profile',
                     style: tabLinkStyle,
                   )),
-
             ],
             currentIndex: _selectedIndex,
             type: BottomNavigationBarType.fixed,
@@ -99,4 +108,3 @@ class _HomeState extends State<Home> {
     });
   }
 }
-
