@@ -1,6 +1,7 @@
 import 'package:ecommerce_app/screens/authenticate/sign_in.dart';
 import 'package:ecommerce_app/screens/user/order_tab.dart';
 import 'package:ecommerce_app/screens/user/product_tab.dart';
+import 'package:ecommerce_app/screens/user/user_tab.dart';
 import 'package:ecommerce_app/shared/buttons.dart';
 import 'package:ecommerce_app/shared/colors.dart';
 import 'package:ecommerce_app/shared/fryo_icons.dart';
@@ -48,19 +49,25 @@ class _HomeState extends State<Home> {
       }
     });
   }
+
   @override
   Widget build(BuildContext context) {
     final _tabs = [
       ProductTab(_hideButtonController),
       CartTab(_hideButtonController),
-      Center(child: FlatBtn('My Orders', () async{
-    Navigator.push(context, PageTransition(type: PageTransitionType.rightToLeft, child: OrderTab()));
-    }))];
-
+      UserTab(),
+//      Center(
+//          child: FlatBtn('My Orders', () async {
+//        Navigator.push(
+//            context,
+//            PageTransition(
+//                type: PageTransitionType.rightToLeft, child: OrderTab()));
+//      }))
+    ];
 
     return Scaffold(
         backgroundColor: bgColor,
-        body:_tabs[_selectedIndex],
+        body: _tabs[_selectedIndex],
         bottomNavigationBar: Container(
           height: _isVisible ? 60 : 0.0,
           child: BottomNavigationBar(
@@ -83,7 +90,6 @@ class _HomeState extends State<Home> {
                     'Profile',
                     style: tabLinkStyle,
                   )),
-
             ],
             currentIndex: _selectedIndex,
             type: BottomNavigationBarType.fixed,
@@ -99,4 +105,3 @@ class _HomeState extends State<Home> {
     });
   }
 }
-
