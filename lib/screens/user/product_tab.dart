@@ -3,6 +3,7 @@ import 'package:ecommerce_app/screens/authenticate/sign_in.dart';
 import 'package:ecommerce_app/services/auth.dart';
 import 'package:ecommerce_app/services/cart_item.dart';
 import 'package:ecommerce_app/shared/buttons.dart';
+import 'package:ecommerce_app/shared/widgets.dart';
 import 'package:ecommerce_app/widget/utility.dart';
 import 'package:flutter/material.dart';
 import 'package:ecommerce_app/models/category.dart';
@@ -16,12 +17,17 @@ import 'package:provider/provider.dart';
 import 'package:page_transition/page_transition.dart';
 
 class ProductTab extends StatelessWidget {
+  ScrollController _hideButtonController;
+
+  ProductTab(this._hideButtonController);
+
   @override
   Widget build(BuildContext context) {
 //    print("Orientation= " + MediaQuery.of(context).orientation.toString());
-    return Scaffold(
-      body: CustomScrollView(
+    return CustomScrollView(
+        controller: _hideButtonController,
         slivers: <Widget>[
+          getHomeAppBar(),
           SliverToBoxAdapter(
               child: Container(
                   height: 200.0,
@@ -64,8 +70,7 @@ class ProductTab extends StatelessWidget {
 //                    childCount: snapshot.hasData ? snapshot.data.length : 0,
 //                  )))
         ],
-      ),
-    );
+      );
   }
 }
 

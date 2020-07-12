@@ -27,24 +27,17 @@ class _OrderTileState extends State<OrderTile> {
   Widget build(BuildContext context) {
     return Container(
         margin: EdgeInsets.all(8.0),
-        padding: EdgeInsets.all(8.0),
         decoration: cardDecoration,
         child: Row(
           children: <Widget>[
             Container(
-              height: 120,
-              width: 120,
-              child: Container(
-                padding: EdgeInsets.all(8.0),
-                child: widget.order.items.first.product.imgUrl == null
-                    ? CircleAvatar(
-                        backgroundColor: Colors.grey[200],
-                        backgroundImage: AssetImage('assets/plate.jpg'),
-                      )
-                    : CircleAvatar(
-                        backgroundColor: Colors.grey[200],
-                        backgroundImage: NetworkImage(widget.order.items.first.product.imgUrl),
-                      ),
+              width: 100,
+              height: 100,
+              child: widget.order.items.first.product.imgUrl == null
+                  ? Image.asset('assets/plate.jpg')
+                  : Image.network(
+                widget.order.items.first.product.imgUrl,
+                fit: BoxFit.cover,
               ),
             ),
             Expanded(

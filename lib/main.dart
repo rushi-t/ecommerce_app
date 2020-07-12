@@ -3,6 +3,7 @@ import 'package:ecommerce_app/screens/admin/category_screen.dart' as AdminScreen
 import 'package:ecommerce_app/screens/admin/product_screen.dart' as AdminScreen;
 import 'package:ecommerce_app/screens/authenticate/sign_up.dart';
 import 'package:ecommerce_app/screens/authenticate/sign_in.dart';
+import 'package:ecommerce_app/screens/tutorials/scratch.dart';
 import 'package:ecommerce_app/screens/user/cart_screen.dart';
 import 'package:ecommerce_app/screens/user/product_screen.dart' as UserScreen;
 import 'package:ecommerce_app/screens/user/product_tab.dart';
@@ -41,7 +42,7 @@ class MyApp extends StatelessWidget {
             '/user/contactUs': (context) => ContactUs(),
             '/user/userProfile': (context) => UserProfileScreen.UserProfile(),
             '/user/forgetPassword': (context) => ForgetPassword(),
-            '/scratch': (context) => Home(),
+            '/scratch': (context) => WorkoutDetailsPage(Workout()),
           }
       ),
     );
