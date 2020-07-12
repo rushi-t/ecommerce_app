@@ -65,7 +65,7 @@ const inputFieldDefaultBorderStyle = OutlineInputBorder(gapPadding: 0, borderRad
 
 const cardDecoration = BoxDecoration(
   color: Colors.white,
-  borderRadius: BorderRadius.only(topLeft: Radius.circular(10), topRight: Radius.circular(10), bottomLeft: Radius.circular(10), bottomRight: Radius.circular(10)),
+  borderRadius: BorderRadius.all(Radius.circular(0)),
   boxShadow: [
     BoxShadow(
       color: Color.fromRGBO(0, 0, 0, .1),

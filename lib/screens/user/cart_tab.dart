@@ -8,7 +8,9 @@ import 'package:ecommerce_app/services/order.dart';
 import 'package:ecommerce_app/shared/buttons.dart';
 import 'package:ecommerce_app/shared/colors.dart';
 import 'package:ecommerce_app/shared/styles.dart';
+import 'package:ecommerce_app/shared/widgets.dart';
 import 'package:ecommerce_app/widget/utility.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:ecommerce_app/screens/user/home.dart';
@@ -27,25 +29,18 @@ class _CartTileState extends State<CartTile> {
   Widget build(BuildContext context) {
     return Container(
         margin: EdgeInsets.all(8.0),
-        padding: EdgeInsets.all(8.0),
         decoration: cardDecoration,
         child: Row(
           children: <Widget>[
             Container(
-              height: 120,
-              width: 120,
-              child: Container(
-                padding: EdgeInsets.all(8.0),
-                child: widget.cartItem.product.imgUrl == null || widget.cartItem.product.imgUrl == ""
-                    ? CircleAvatar(
-                        backgroundColor: Colors.grey[200],
-                        backgroundImage: AssetImage('assets/plate.jpg'),
-                      )
-                    : CircleAvatar(
-                        backgroundColor: Colors.grey[200],
-                        backgroundImage: NetworkImage(widget.cartItem.product.imgUrl),
-                      ),
-              ),
+              width: 100,
+              height: 100,
+              child: widget.cartItem.product.imgUrl == null
+                  ? Image.asset('assets/plate.jpg')
+                  : Image.network(
+                      widget.cartItem.product.imgUrl,
+                      fit: BoxFit.cover,
+                    ),
             ),
             Expanded(
               flex: 2,
@@ -148,6 +143,10 @@ class _CartTileState extends State<CartTile> {
 }
 
 class CartTab extends StatefulWidget {
+  ScrollController _hideButtonController;
+
+  CartTab(this._hideButtonController);
+
   @override
   _CartTabState createState() => _CartTabState();
 }
@@ -158,80 +157,38 @@ class _CartTabState extends State<CartTab> {
 
   @override
   Widget build(BuildContext context) {
-    if (user == null) {
-      return Center(
-          child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Text("You are not Signed in", style: primaryTextStyleDark),
-          FlatBtn('Sign In', () {
-            Navigator.pushReplacement(context, PageTransition(type: PageTransitionType.leftToRight, duration: Duration(seconds: 1), child: SignIn(Home())));
-          })
-        ],
-      ));
-    } else {
-      return StreamBuilder<List<CartItem>>(
-//          stream: CartItemService().cartItemStream(userId: "M5xzvS3OrVXROwIIsQQfSVCZQ5w2"),
-          stream: CartItemService().cartItemStream(userId: user.uid),
-          builder: (context, snapshot) {
-            if (!snapshot.hasData)
-              return Center(child: CircularProgressIndicator());
-            else {
-              List<CartItem> cartItems = snapshot.data;
-              if (cartItems.length == 0) {
-                return Center(
-                    child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [Text("Your cart is empty", style: primaryTextStyleDark)],
-                ));
-              } else {
-                cartTotal = 0;
-                cartItems.forEach((cartItem) => cartTotal += (cartItem.product.price * cartItem.quantity));
-                return Column(children: [
-                  Expanded(
-                      child: ListView.builder(
-                    itemCount: cartItems.length,
-                    itemBuilder: (context, index) {
-                      //        print(cartItems[index].product);
-                      return CartTile(cartItem: cartItems[index]);
-                    },
-                  )),
-                  Container(
-                      decoration: BoxDecoration(
-                        color: Colors.grey[200],
-                        boxShadow: [
-                          BoxShadow(
-                            color: Color.fromRGBO(0, 0, 0, .2),
-                            spreadRadius: 5,
-                            blurRadius: 7,
-                            offset: Offset(0, 3), // changes position of shadow
-                          ),
-                        ],
-                      ),
-                      padding: EdgeInsets.only(left: 30, right: 30),
-                      height: 60,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Text(
-                            "Total:  ₹" + cartTotal.toString(),
-                            style: primaryTextStyleDark,
-                          ),
-                          FlatBtn("Order Now", () async {
-                            Order order = Order(userId: user.uid, items: cartItems, total: cartTotal);
-                            await OrderService().createOrder(order);
-                            cartItems.forEach((cartItem) {
-                              CartItemService().deleteCartItem(cartItem);
-                            });
-                            showSnackBar(context, "Order placed");
-                          }),
-                        ],
-                      )),
-                ]);
-              }
-            }
-          });
-    }
+    return CustomScrollView(controller: widget._hideButtonController, slivers: <Widget>[
+      getHomeAppBar(),
+      user == null
+          ? SliverFillRemaining(
+              child: Center(
+                  child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text("You are not Signed in", style: primaryTextStyleDark),
+                  FlatBtn('Sign In', () {
+                    Navigator.pushReplacement(context, PageTransition(type: PageTransitionType.leftToRight, duration: Duration(seconds: 1), child: SignIn(Home())));
+                  })
+                ],
+              )),
+            )
+          : StreamBuilder<List<CartItem>>(
+              stream: CartItemService().cartItemStream(userId: user.uid),
+              builder: (context, snapshot) {
+                return snapshot.hasData
+                    ? SliverList(
+                        delegate: SliverChildBuilderDelegate(
+                        (context, index) => CartTile(cartItem: snapshot.data[index]),
+                        childCount: snapshot.hasData ? snapshot.data.length : 0,
+                      ))
+                    : SliverFillRemaining(
+                        child: Center(
+                            child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [Text("Your cart is empty", style: primaryTextStyleDark)],
+                        )),
+                      );
+              }),
+    ]);
   }
 }

@@ -1,85 +1,161 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:flutter/rendering.dart';
 
-//class Scratch extends StatefulWidget {
-//  @override
-//  _SettingsFormState createState() => _SettingsFormState();
-//}
-//
-//class _SettingsFormState extends State<Scratch> {
-//  @override
-//  Widget build(BuildContext context) {
-//    print("Scratch width= " + MediaQuery.of(context).size.width.toString());
-////    return StaggeredGridView.countBuilder(
-////      crossAxisCount: MediaQuery.of(context).size.width > 600 ? 4 : 2,
-////      itemCount: 20,
-////      itemBuilder: (BuildContext context, int index) => new Container(
-////          color: Colors.green,
-////          child: new Center(
-////            child: new CircleAvatar(
-////              backgroundColor: Colors.white,
-////              child: new Text('$index'),
-////            ),
-////          )),
-////      staggeredTileBuilder: (int index) =>
-////      new StaggeredTile.count(1, 1),
-////      mainAxisSpacing: 4.0,
-////      crossAxisSpacing: 4.0,
-////    );
-//
-//    return GridView.count(
-//      // Create a grid with 2 columns. If you change the scrollDirection to
-//      // horizontal, this produces 2 rows.
-//      crossAxisCount: 2,
-//      // Generate 100 widgets that display their index in the List.
-//      children: List.generate(100, (index) {
-//        return Center(
-//          child: Text(
-//            'Item $index',
-//            style: Theme.of(context).textTheme.headline5,
-//          ),
-//        );
-//      }),
-//    );
-//  }
-//}
+void main() => runApp(MyApp());
 
-class Example04 extends StatelessWidget {
+class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return new Scaffold(
-        appBar: new AppBar(
-          title: new Text('customScrollView'),
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: WorkoutDetailsPage(Workout()),
+    );
+  }
+}
+
+class Exercise {
+  String name;
+  Exercise({@required name}) {
+    this.name = name;
+  }
+}
+
+class Workout {
+  String name = "my name";
+}
+
+class WorkoutDetailsPage extends StatefulWidget {
+  Workout _workout = Workout();
+
+  WorkoutDetailsPage(this._workout);
+
+  @override
+  _WorkoutDetailsPageState createState() => _WorkoutDetailsPageState();
+}
+
+class _WorkoutDetailsPageState extends State<WorkoutDetailsPage> {
+  final List<Exercise> exercises = [
+    Exercise(name: "Push Ups"),
+    Exercise(name: "Bench press"),
+    Exercise(name: "Pull ups"),
+    Exercise(name: "Press ups"),
+    Exercise(name: "Crunches"),
+    Exercise(name: "Sit ups"),
+    Exercise(name: "BIceps curl"),
+    Exercise(name: "Something else"),
+    Exercise(name: "Push Ups"),
+    Exercise(name: "Bench press"),
+    Exercise(name: "Pull ups"),
+    Exercise(name: "Press ups"),
+    Exercise(name: "Crunches"),
+    Exercise(name: "Sit ups"),
+    Exercise(name: "BIceps curl"),
+    Exercise(name: "Something else"),
+    Exercise(name: "Push Ups"),
+    Exercise(name: "Bench press"),
+    Exercise(name: "Pull ups"),
+    Exercise(name: "Press ups"),
+    Exercise(name: "Crunches"),
+    Exercise(name: "Sit ups"),
+    Exercise(name: "BIceps curl"),
+    Exercise(name: "Something else"),
+    Exercise(name: "Push Ups"),
+    Exercise(name: "Bench press"),
+    Exercise(name: "Pull ups"),
+    Exercise(name: "Press ups"),
+    Exercise(name: "Crunches"),
+    Exercise(name: "Sit ups"),
+    Exercise(name: "BIceps curl"),
+    Exercise(name: "Something else"),
+    Exercise(name: "Push Ups"),
+    Exercise(name: "Bench press"),
+    Exercise(name: "Pull ups"),
+    Exercise(name: "Press ups"),
+    Exercise(name: "Crunches"),
+    Exercise(name: "Sit ups"),
+    Exercise(name: "BIceps curl"),
+    Exercise(name: "Something else"),
+  ];
+
+  ScrollController _hideButtonController;
+
+  bool _isVisible = true;
+  @override
+  void initState() {
+    super.initState();
+    _isVisible = true;
+    _hideButtonController = new ScrollController();
+    _hideButtonController.addListener(() {
+      print("listener");
+      if (_hideButtonController.position.userScrollDirection ==
+          ScrollDirection.reverse) {
+        setState(() {
+          _isVisible = false;
+          print("**** $_isVisible up");
+        });
+      }
+      if (_hideButtonController.position.userScrollDirection ==
+          ScrollDirection.forward) {
+        setState(() {
+          _isVisible = true;
+          print("**** $_isVisible down");
+        });
+      }
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      floatingActionButtonAnimator: FloatingActionButtonAnimator.scaling,
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      floatingActionButton: _isVisible
+          ? FloatingActionButton(
+        backgroundColor: Colors.blue,
+        elevation: 12,
+        onPressed: () {},
+      )
+          : null,
+      bottomNavigationBar: AnimatedContainer(
+        duration: Duration(milliseconds: 200),
+        height: _isVisible ? 60 : 0.0,
+        child: BottomAppBar(
+          elevation: 8,
+          shape: CircularNotchedRectangle(),
+          color: Colors.blue,
+          child: Container(
+            height: 60,
+            child: Row(
+              children: <Widget>[Text("data")],
+            ),
+          ),
         ),
-        body: new CustomScrollView(
-          primary: false,
-          slivers: <Widget>[
-            new SliverStaggeredGrid.count(
-              crossAxisCount: 4,
-              mainAxisSpacing: 4.0,
-              crossAxisSpacing: 4.0,
-              children: const <Widget>[
-                const Text('1'),
-                const Text('2'),
-                const Text('3'),
-                const Text('4'),
-                const Text('5'),
-                const Text('6'),
-                const Text('7'),
-                const Text('8'),
-              ],
-              staggeredTiles: const <StaggeredTile>[
-                const StaggeredTile.count(2, 2),
-                const StaggeredTile.count(2, 1),
-                const StaggeredTile.count(2, 2),
-                const StaggeredTile.count(2, 1),
-                const StaggeredTile.count(2, 2),
-                const StaggeredTile.count(2, 1),
-                const StaggeredTile.count(2, 2),
-                const StaggeredTile.count(2, 1),
-              ],
-            )
-          ],
-        ));
+      ),
+      body: CustomScrollView(
+        controller: _hideButtonController,
+        slivers: <Widget>[
+          SliverAppBar(
+            pinned: false,
+            floating: false,
+            snap: false,
+            flexibleSpace: FlexibleSpaceBar(
+              title: Text(widget._workout.name),
+            ),
+          ),
+          SliverList(
+            delegate: SliverChildBuilderDelegate(buildSliverListItem,
+                childCount: exercises.length),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget buildSliverListItem(BuildContext context, int index) {
+    return Center(
+      child: ListTile(
+        title: Text(exercises[index].name),
+      ),
+    );
   }
 }

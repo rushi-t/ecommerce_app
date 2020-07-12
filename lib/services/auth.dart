@@ -4,6 +4,7 @@ import 'package:ecommerce_app/models/user.dart';
 import 'package:ecommerce_app/services/database.dart';
 import 'package:ecommerce_app/services/user.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 
 class AuthService {
   static final AuthService _instance = AuthService._privateConstructor();
@@ -28,12 +29,20 @@ class AuthService {
 
   // auth change user stream
   Stream<User> get user {
-    return _auth.onAuthStateChanged.transform(StreamTransformer<FirebaseUser, User>.fromHandlers(handleData: (firebaseUser, user) async {
-      if(firebaseUser == null) return null;
-      this.userInstance = await UserService().getUser(firebaseUser.uid);
-      user.add(this.userInstance);
+//    if (kDebugMode == true) {
+//      print("Using dummy user");
+//      this.userInstance = User("M5xzvS3OrVXROwIIsQQfSVCZQ5w2");
+//      return Stream.value(this.userInstance);
+//    }
+//    else
+     {
+      _auth.onAuthStateChanged.transform(StreamTransformer<FirebaseUser, User>.fromHandlers(handleData: (firebaseUser, user) async {
+        if (firebaseUser == null) return null;
+        this.userInstance = await UserService().getUser(firebaseUser.uid);
+        user.add(this.userInstance);
 //      print("## User= " + user.toString());
-    }));
+      }));
+    }
   }
 
   // sign in Anonymously
