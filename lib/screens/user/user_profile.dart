@@ -1,5 +1,5 @@
 import 'package:ecommerce_app/screens/admin/product_screen.dart';
-import 'package:ecommerce_app/screens/authenticate/sign_in.dart';
+import 'package:ecommerce_app/screens/authenticate/auth.dart';
 import 'package:ecommerce_app/screens/user/home.dart';
 import 'package:ecommerce_app/services/auth.dart';
 import 'package:ecommerce_app/shared/colors.dart';
@@ -45,7 +45,7 @@ class _UserProfileState extends State<UserProfile> {
             FlatButton(
               onPressed: () {
 //                Navigator.of(context).pushReplacementNamed('/signin');
-                Navigator.pushReplacement(context, PageTransition(type: PageTransitionType.leftToRight, child: SignIn(Home())));
+                Navigator.pushReplacement(context, PageTransition(type: PageTransitionType.leftToRight, child: Auth(Home())));
               },
               child: Text('Sign In', style: contrastText),
             )

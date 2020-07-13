@@ -6,7 +6,7 @@ import 'package:provider/provider.dart';
 import 'package:ecommerce_app/screens/user/product_screen.dart';
 import 'package:page_transition/page_transition.dart';
 
-import 'authenticate/sign_in.dart';
+import 'authenticate/auth.dart';
 import 'package:ecommerce_app/screens/user/home.dart';
 
 class Wrapper extends StatelessWidget {

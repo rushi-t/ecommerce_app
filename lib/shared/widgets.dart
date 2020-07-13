@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 
 import 'colors.dart';
 
-Widget getHomeAppBar(){
+Widget getHomeAppBar() {
   return SliverAppBar(
     pinned: false,
     floating: false,
@@ -14,4 +14,23 @@ Widget getHomeAppBar(){
     centerTitle: true,
     title: Text('eMarket', style: logoWhiteStyle, textAlign: TextAlign.center),
   );
+}
+
+AlertDialog showProgressWithMessage(BuildContext context, String message) {
+  AlertDialog alertDialog = AlertDialog(
+    content: new Row(
+      children: [
+        CircularProgressIndicator(),
+        Container(margin: EdgeInsets.only(left: 5), child: Text(message)),
+      ],
+    ),
+  );
+  showDialog(
+    barrierDismissible: false,
+    context: context,
+    builder: (BuildContext context) {
+      return alertDialog;
+    },
+  );
+  return alertDialog;
 }

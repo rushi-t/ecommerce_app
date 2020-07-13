@@ -1,4 +1,4 @@
-import 'package:ecommerce_app/screens/authenticate/sign_in.dart';
+import 'package:ecommerce_app/screens/authenticate/auth.dart';
 import 'package:ecommerce_app/screens/authenticate/sign_up.dart';
 import 'package:ecommerce_app/screens/user/home.dart';
 import 'package:ecommerce_app/shared/buttons.dart';
@@ -30,7 +30,7 @@ class _AuthenticateState extends State<Authenticate> {
                 width: 200,
                 margin: EdgeInsets.only(bottom: 0),
                 child: FlatBtn('Sign In', (){
-                  Navigator.pushReplacement(context, PageTransition(type: PageTransitionType.rotate, duration: Duration(seconds: 1),  child: SignIn(Home())));
+                  Navigator.pushReplacement(context, PageTransition(type: PageTransitionType.rotate, duration: Duration(seconds: 1),  child: Auth(Home())));
                 }),
               ),
               Container(

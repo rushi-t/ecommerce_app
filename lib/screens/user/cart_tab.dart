@@ -1,7 +1,7 @@
 import 'package:ecommerce_app/models/cart_item.dart';
 import 'package:ecommerce_app/models/order.dart';
 import 'package:ecommerce_app/models/user.dart';
-import 'package:ecommerce_app/screens/authenticate/sign_in.dart';
+import 'package:ecommerce_app/screens/authenticate/auth.dart';
 import 'package:ecommerce_app/services/auth.dart';
 import 'package:ecommerce_app/services/cart_item.dart';
 import 'package:ecommerce_app/services/order.dart';
@@ -167,7 +167,7 @@ class _CartTabState extends State<CartTab> {
                 children: [
                   Text("You are not Signed in", style: primaryTextStyleDark),
                   FlatBtn('Sign In', () {
-                    Navigator.pushReplacement(context, PageTransition(type: PageTransitionType.leftToRight, duration: Duration(seconds: 1), child: SignIn(Home())));
+                    Navigator.push(context, PageTransition(type: PageTransitionType.leftToRight, child: Auth(Home())));
                   })
                 ],
               )),

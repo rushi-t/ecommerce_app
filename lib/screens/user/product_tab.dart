@@ -1,5 +1,5 @@
 import 'package:ecommerce_app/models/cart_item.dart';
-import 'package:ecommerce_app/screens/authenticate/sign_in.dart';
+import 'package:ecommerce_app/screens/authenticate/auth.dart';
 import 'package:ecommerce_app/services/auth.dart';
 import 'package:ecommerce_app/services/cart_item.dart';
 import 'package:ecommerce_app/shared/buttons.dart';
@@ -150,7 +150,7 @@ class ProductsListItem extends StatelessWidget {
                           ),
                           onPressed: () async{
                             if(!AuthService().isLoggedIn()) {
-                              Navigator.push(context, PageTransition(type: PageTransitionType.leftToRight, child: SignIn(null)));
+                              Navigator.push(context, PageTransition(type: PageTransitionType.leftToRight, child: Auth(null)));
                             }
                             else{
                               await CartItemService().createCartItem(CartItem(userId: AuthService().userInstance.uid, product: product, quantity: 1));

@@ -2,7 +2,7 @@ import 'package:ecommerce_app/models/user.dart';
 import 'package:ecommerce_app/screens/admin/category_screen.dart' as AdminScreen;
 import 'package:ecommerce_app/screens/admin/product_screen.dart' as AdminScreen;
 import 'package:ecommerce_app/screens/authenticate/sign_up.dart';
-import 'package:ecommerce_app/screens/authenticate/sign_in.dart';
+import 'package:ecommerce_app/screens/authenticate/auth.dart';
 import 'package:ecommerce_app/screens/tutorials/scratch.dart';
 import 'package:ecommerce_app/screens/user/cart_screen.dart';
 import 'package:ecommerce_app/screens/user/product_screen.dart' as UserScreen;
@@ -27,11 +27,11 @@ class MyApp extends StatelessWidget {
     return StreamProvider<User>.value(
       value: AuthService().user,
       child: MaterialApp(
-          initialRoute: '/home',
+          initialRoute: '/',
           routes: {
-            '/': (context) => Wrapper(),
+            '/': (context) => Home(),
             '/home': (context) => Home(),
-            '/signin': (context) => SignIn(Home()),
+            '/signin': (context) => Auth(Home()),
             '/signup': (context) => SignUp(Home()),
             '/admin/category': (context) => AdminScreen.CategoryScreen(),
             '/admin/product': (context) => AdminScreen.ProductScreen(),

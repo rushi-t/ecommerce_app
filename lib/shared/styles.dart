@@ -8,12 +8,12 @@ import './colors.dart';
 const logoStyle = TextStyle(fontFamily: 'Pacifico', fontSize: 30, color: Colors.black54, letterSpacing: 2);
 
 const logoWhiteStyle = TextStyle(fontFamily: 'Pacifico', fontSize: 21, letterSpacing: 2, color: Colors.white);
-const whiteText = TextStyle(color: Colors.white, fontFamily: 'Poppins');
-const disabledText = TextStyle(color: Colors.grey, fontFamily: 'Poppins');
-const contrastText = TextStyle(color: primaryColor, fontFamily: 'Poppins');
-const contrastTextBold = TextStyle(color: primaryColor, fontFamily: 'Poppins', fontWeight: FontWeight.w600);
+const whiteText = TextStyle(color: Colors.white,);
+const disabledText = TextStyle(color: Colors.grey, );
+const contrastText = TextStyle(color: primaryColor,);
+const contrastTextBold = TextStyle(color: primaryColor, fontWeight: FontWeight.w600);
 
-const h3 = TextStyle(color: Colors.black, fontSize: 24, fontWeight: FontWeight.w800, fontFamily: 'Poppins');
+const h3 = TextStyle(color: Colors.black, fontSize: 24, fontWeight: FontWeight.w800, );
 
 const h4 = TextStyle(color: Colors.black, fontSize: 18, fontWeight: FontWeight.w700, fontFamily: 'Poppins');
 
