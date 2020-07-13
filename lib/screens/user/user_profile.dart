@@ -69,16 +69,16 @@ class _UserProfileState extends State<UserProfile> {
                           //Text('Let\'s get started', style: taglineText),
 //                        TextInput('Username'),
 //                        TextInput('Full Name'),
-                          TextInput('Name',onTap:(()=>100) , onChanged: (val) {
+                          TextInput('Name','',onTap:(()=>100) , onChanged: (val) {
                             setState(() => name = val);
                           }),
-                          TextInput('Phone', onChanged: (val) {
+                          TextInput('Phone','', onChanged: (val) {
                             setState(() => phone = val);
                           }),
                           EmailInput('Email', onChanged: (val) {
                             setState(() => email = val);
                           }),
-                          TextInput('Address', onChanged: (val) {
+                          TextInput('Address','', onChanged: (val) {
                             setState(() => address = val);
                           }),
                         ],

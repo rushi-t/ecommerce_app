@@ -3,6 +3,8 @@ import 'package:ecommerce_app/models/feedback.dart' as fm;
 import 'package:ecommerce_app/services/auth.dart';
 import 'package:ecommerce_app/services/feedback.dart' as fb;
 import 'package:ecommerce_app/shared/constants.dart';
+import 'package:ecommerce_app/shared/widgets.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:ecommerce_app/models/category.dart';
 import 'package:ecommerce_app/models/product.dart';
@@ -12,9 +14,14 @@ import 'package:ecommerce_app/shared/colors.dart';
 import 'package:ecommerce_app/shared/fryo_icons.dart';
 import 'package:ecommerce_app/shared/styles.dart';
 import 'package:ecommerce_app/shared/inputFields.dart';
-import 'package:ecommerce_app/services/user_profile.dart';
+import 'package:ecommerce_app/services/user.dart';
+import 'package:ecommerce_app/screens/user/user_form.dart';
 
 class UserTab extends StatefulWidget {
+  ScrollController _hideButtonController;
+
+  UserTab(this._hideButtonController);
+
   //static final String path = "lib/src/pages/profile/profile8.dart";
   static final bool updateProfile = false;
 
@@ -23,7 +30,6 @@ class UserTab extends StatefulWidget {
 }
 
 class _UserTabState extends State<UserTab> {
-
   final List<String> avatars = [
     'https://firebasestorage.googleapis.com/v0/b/dl-flutter-ui-challenges.appspot.com/o/img%2F1.jpg?alt=media',
     'https://firebasestorage.googleapis.com/v0/b/dl-flutter-ui-challenges.appspot.com/o/img%2F4.jpg?alt=media',
@@ -46,75 +52,206 @@ class _UserTabState extends State<UserTab> {
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<UserData>(
-       // stream: UserProfileService(uid: "whH3upwE3lOVfGHYYzOx6T34PLt1").userProfileData,
-        stream: UserProfileService(uid:AuthService().userInstance.uid).userProfileData,
+    return StreamBuilder<User>(
+        // stream: UserProfileService(uid: "whH3upwE3lOVfGHYYzOx6T34PLt1").userProfileData,
+        stream: AuthService().user,
         builder: (context, snapshot) {
-          UserData userData;
-          print(AuthService().userInstance);
-          if(snapshot.hasData) {
+          User userData;
+//          print(AuthService().userInstance);
+          if (snapshot.hasData) {
             userData = snapshot.data;
             print("userData = " + userData.email);
           }
-      return Scaffold(
-          backgroundColor: Colors.grey.shade100,
-          extendBodyBehindAppBar: true,
-          extendBody: true,
-          appBar: AppBar(
-            backgroundColor: Colors.transparent,
-            elevation: 0,
-          ),
-          body: SingleChildScrollView(
-            child: Column(
-              children: <Widget>[
-                ProfileHeader(
-                  avatar: NetworkImage(avatars[0]),
-                  coverImage: NetworkImage(images[1]),
-                  title: userData ==null ? "" :userData.name,
-                  //subtitle: "Manager",
-                  actions: <Widget>[
+          return CustomScrollView(
+              controller: widget._hideButtonController,
+              slivers: <Widget>[
+                getHomeAppBar(),
+                SliverToBoxAdapter(
+                  child: Column(
+                    children: <Widget>[
+//                    ProfileHeader(
+//                      avatar: NetworkImage(avatars[0]),
+//                      coverImage: NetworkImage(images[1]),
+//                      title: userData == null ? "" : userData.name,
+//                      //subtitle: "Manager",
+//                      actions: <Widget>[],
+//                    ),
+//                    //const SizedBox(height: 10.0),
+                      UserInfoVersion2(userData: userData),
+                      //UserInfo(userData: userData),
 
-                  ],
-                ),
-                //const SizedBox(height: 10.0),
-                UserInfo(userData: userData),
-
-
-                //UserInfo(),
-
-
-              ],
-            ),
-          ));
-    });}
+                      //UserInfo(),
+                    ],
+                  ),
+                )
+              ]);
+        });
+  }
 }
 
+//class UserInfo extends StatelessWidget {
+//  User userData;
+//
+//  UserInfo({this.userData});
+//
+//  @override
+//  Widget build(BuildContext context) {
+//    return Container(
+//      padding: EdgeInsets.all(10),
+//      child: Column(
+//        children: <Widget>[
+//          Container(
+//            padding: const EdgeInsets.only(left: 8.0, bottom: 4.0),
+//            alignment: Alignment.topLeft,
+//            child: Text(
+//              "User Information",
+//              style: TextStyle(
+//                color: Colors.black87,
+//                fontWeight: FontWeight.w500,
+//                fontSize: 16,
+//              ),
+//              textAlign: TextAlign.left,
+//            ),
+//          ),
+//          Card(
+//            child: Container(
+//              alignment: Alignment.topLeft,
+//              padding: EdgeInsets.all(15),
+//              child: Column(
+//                children: <Widget>[
+//                  Column(
+//                    children: <Widget>[
+//                      ...ListTile.divideTiles(
+//                        color: Colors.grey,
+//                        tiles: [
+////                          ListTile(
+////                            contentPadding: EdgeInsets.symmetric(
+////                                horizontal: 12, vertical: 4),
+////                            leading: Icon(Icons.my_location),
+////                            title: Text("Location"),
+////                            subtitle: Text("Kathmandu"),
+////                            trailing:Icon(Icons.edit),
+////                          ),
+////---------------------------------------------------------
+//                          ListTile(
+//                            leading: Icon(Icons.email),
+//                            title: Text("Email"),
+//                            subtitle:
+//                                Text(userData != null ? userData.email : ""),
+//                          ),
+//
+////                          ListTile(
+////                            leading: Icon(Icons.perm_identity),
+////                            title: Text("Name"),
+////                            subtitle: Text(userData!=null ? userData.name :""),
+////                            trailing:Icon(Icons.edit),
+////
+////                          ),
+//                          ProfileListTile(
+//                              iconWidget: Icon(Icons.perm_identity),
+//                              subTitleText: this.userData == null
+//                                  ? ""
+//                                  : this.userData.name,
+//                              titleText: 'Name',
+//                              userData: this.userData),
+//
+////                          ListTile(
+////                            leading: Icon(Icons.phone),
+////                            title: Text("Phone"),
+////                            subtitle: Text(userData!=null ? userData.phone :""),
+////                            //trailing:IconBU Icon(Icons.edit),
+////
+////
+////                            trailing:Icon(Icons.edit),
+////                          ),
+//                          ProfileListTile(
+//                              iconWidget: Icon(Icons.phone),
+//                              subTitleText: this.userData == null
+//                                  ? ""
+//                                  : this.userData.phone,
+//                              titleText: 'Phone',
+//                              userData: this.userData),
+//
+//                          ProfileListTile(
+//                              iconWidget: Icon(Icons.home),
+//                              subTitleText: this.userData == null
+//                                  ? ""
+//                                  : this.userData.address,
+//                              titleText: 'Address',
+//                              userData: this.userData),
+////                          ListTile(
+////                            leading: Icon(Icons.person),
+////                            title:  TextFormField(
+////                              initialValue: 'Email',
+////                              decoration: textInputDecoration(labelText: "Product Name"),
+////                              validator: (val) => val.isEmpty ? 'Please enter Product Name' : null,
+////                              //onChanged: (val) => setState(() => ),
+////                            ),
+////                            subtitle: Text(
+////                                "This is a about me link and you can khow about me in this section."),
+////                            trailing:Icon(Icons.edit),
+////                          ),
+//                        ],
+//                      ),
+//                    ],
+//                  )
+//                ],
+//              ),
+//            ),
+//          )
+//        ],
+//      ),
+//    );
+//  }
+//}
 
-class UserInfo extends StatelessWidget {
-  UserData userData;
+class UserInfoVersion2 extends StatelessWidget {
+  User userData;
 
-  UserInfo({ this.userData });
+  UserInfoVersion2({this.userData});
+
+  Widget buildRow(String title, String text) {
+    return Container(
+      height: 50,
+      child: Row(mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+        Container(
+          width: 200,//                              margin: EdgeInsets.only(right:20.0),
+          child: Text(
+            title,
+            style: TextStyle(color: Color(0xff053e57), fontSize: 16, fontWeight: FontWeight.w500),
+          ),
+        ),
+        Expanded(
+          child: Text(
+            text,
+            style: TextStyle(color: Colors.grey[600]),
+          ),
+        )
+      ]),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.all(10),
+      padding: EdgeInsets.all(5),
       child: Column(
         children: <Widget>[
-          Container(
-            padding: const EdgeInsets.only(left: 8.0, bottom: 4.0),
-            alignment: Alignment.topLeft,
-            child: Text(
-              "User Information",
-              style: TextStyle(
-                color: Colors.black87,
-                fontWeight: FontWeight.w500,
-                fontSize: 16,
-              ),
-              textAlign: TextAlign.left,
-            ),
-
-          ),
+//          Container(
+//            padding: const EdgeInsets.only(left: 8.0, bottom: 4.0),
+//            alignment: Alignment.topLeft,
+//            child: Text(
+//              "User Information",
+//              style: TextStyle(
+//                color: Colors.black87,
+//                fontWeight: FontWeight.w500,
+//                fontSize: 16,
+//              ),
+//              textAlign: TextAlign.left,
+//            ),
+//          ),
           Card(
             child: Container(
               alignment: Alignment.topLeft,
@@ -124,7 +261,7 @@ class UserInfo extends StatelessWidget {
                   Column(
                     children: <Widget>[
                       ...ListTile.divideTiles(
-                        color: Colors.grey,
+                        color: Colors.white,
                         tiles: [
 //                          ListTile(
 //                            contentPadding: EdgeInsets.symmetric(
@@ -134,24 +271,48 @@ class UserInfo extends StatelessWidget {
 //                            subtitle: Text("Kathmandu"),
 //                            trailing:Icon(Icons.edit),
 //                          ),
-//---------------------------------------------------------
+//--------------------------------------------------------
                           ListTile(
-                            leading: Icon(Icons.email),
-                            title: Text("Email"),
-                            subtitle: Text(userData!=null ? userData.email :""),
-
+                            leading: Icon(Icons.perm_identity),
+                            title: Text(
+                              "Profile Settings",
+                              style:  TextStyle(color: Color(0xff053e57), fontSize: 16, fontWeight: FontWeight.w700),
+                              textAlign: TextAlign.left,
+                            ),
+                            // title: Text("Email"),
+                            //subtitle:Text(userData != null ? userData.email : ""),
+                            // trailing:Icon(Icons.edit),
+                            trailing: new IconButton(
+                              icon: new Icon(Icons.edit),
+                              highlightColor: Colors.black87,
+                              onPressed: () {
+                                showModalBottomSheet(
+                                    context: context,
+                                    builder: (context) {
+                                      return Container(
+                                        padding: EdgeInsets.symmetric(
+                                            vertical: 20.0, horizontal: 60.0),
+                                        child: UserForm(),
+                                      );
+                                    });
+                              },
+                            ),
                           ),
 
+                          buildRow("Name", userData!=null ? userData.name :""),
+                          buildRow("Phone", userData!=null ? userData.phone :""),
+                          buildRow("Email", userData!=null ? userData.email :"" ),
+                          buildRow("Address", userData!=null ? userData.address :""),
 
-//                          ListTile(
-//                            leading: Icon(Icons.perm_identity),
-//                            title: Text("Name"),
-//                            subtitle: Text(userData!=null ? userData.name :""),
-//                            trailing:Icon(Icons.edit),
+
+//                          ProfileListTile(
+//                              iconWidget: Icon(Icons.perm_identity),
+//                              subTitleText: this.userData == null
+//                                  ? ""
+//                                  : this.userData.name,
+//                              titleText: 'Name',
+//                              userData: this.userData),
 //
-//                          ),
-                          ProfileListTile(iconWidget: Icon(Icons.perm_identity),subTitleText: this.userData ==null ? "" : this.userData.name ,titleText: 'Name',userData:this.userData),
-
 //                          ListTile(
 //                            leading: Icon(Icons.phone),
 //                            title: Text("Phone"),
@@ -161,10 +322,21 @@ class UserInfo extends StatelessWidget {
 //
 //                            trailing:Icon(Icons.edit),
 //                          ),
-                          ProfileListTile(iconWidget: Icon(Icons.phone),subTitleText: this.userData ==null ? "" : this.userData.phone ,titleText: 'Phone',userData:this.userData),
+//                          ProfileListTile(
+//                              iconWidget: Icon(Icons.phone),
+//                              subTitleText: this.userData == null
+//                                  ? ""
+//                                  : this.userData.phone,
+//                              titleText: 'Phone',
+//                              userData: this.userData),
 
-
-                          ProfileListTile(iconWidget: Icon(Icons.home),subTitleText: this.userData ==null ? "" : this.userData.address ,titleText: 'Address',userData:this.userData),
+//                          ProfileListTile(
+//                              iconWidget: Icon(Icons.home),
+//                              subTitleText: this.userData == null
+//                                  ? ""
+//                                  : this.userData.address,
+//                              titleText: 'Address',
+//                              userData: this.userData),
 //                          ListTile(
 //                            leading: Icon(Icons.person),
 //                            title:  TextFormField(
@@ -177,6 +349,49 @@ class UserInfo extends StatelessWidget {
 //                                "This is a about me link and you can khow about me in this section."),
 //                            trailing:Icon(Icons.edit),
 //                          ),
+                        ],
+                      ),
+                    ],
+                  )
+                ],
+              ),
+            ),
+          ),
+          Card(
+            child: Container(
+              alignment: Alignment.topLeft,
+              padding: EdgeInsets.all(15),
+              child: Column(
+                children: <Widget>[
+                  Column(
+                    children: <Widget>[
+                      ...ListTile.divideTiles(
+                        color: Colors.white,
+                        tiles: [
+//                          ListTile(
+//                            contentPadding: EdgeInsets.symmetric(
+//                                horizontal: 12, vertical: 4),
+//                            leading: Icon(Icons.my_location),
+//                            title: Text("Location"),
+//                            subtitle: Text("Kathmandu"),
+//                            trailing:Icon(Icons.edit),
+//                          ),
+//--------------------------------------------------------
+                          ListTile(
+                            leading: Icon(Icons.adjust),
+                            title: Text(
+                              "Other Settings",
+                              style:  TextStyle(color: Color(0xff053e57), fontSize: 16, fontWeight: FontWeight.w700),
+                              textAlign: TextAlign.left,
+                            ),
+                            // title: Text("Email"),
+                            //subtitle:Text(userData != null ? userData.email : ""),
+                            // trailing:Icon(Icons.edit),
+                          ),
+
+                          buildRow("My Cart", ""),
+                          buildRow("My Orders", ""),
+                         (userData !=null && userData.name !=null) ? buildRow("Sign Out", "") :buildRow("Sign In", "")
 
                         ],
                       ),
@@ -185,7 +400,7 @@ class UserInfo extends StatelessWidget {
                 ],
               ),
             ),
-          )
+          ),
         ],
       ),
     );
@@ -201,11 +416,11 @@ class ProfileHeader extends StatelessWidget {
 
   const ProfileHeader(
       {Key key,
-        @required this.coverImage,
-        @required this.avatar,
-        @required this.title,
-        this.subtitle,
-        this.actions})
+      @required this.coverImage,
+      @required this.avatar,
+      @required this.title,
+      this.subtitle,
+      this.actions})
       : super(key: key);
 
   @override
@@ -257,8 +472,6 @@ class ProfileHeader extends StatelessWidget {
                   subtitle,
                   style: Theme.of(context).textTheme.subtitle,
                 ),
-
-
               ]
             ],
           ),
@@ -277,11 +490,11 @@ class Avatar extends StatelessWidget {
 
   const Avatar(
       {Key key,
-        @required this.image,
-        this.borderColor = Colors.grey,
-        this.backgroundColor,
-        this.radius = 13,
-        this.borderWidth = 5})
+      @required this.image,
+      this.borderColor = Colors.grey,
+      this.backgroundColor,
+      this.radius = 13,
+      this.borderWidth = 5})
       : super(key: key);
 
   @override
@@ -303,25 +516,21 @@ class Avatar extends StatelessWidget {
   }
 }
 
-class ProfileListTile extends StatefulWidget
-{
-   bool isUpdate;
+class ProfileListTile extends StatefulWidget {
+  bool isUpdate;
   final Widget iconWidget;
   String titleText;
   String subTitleText;
-  UserData userData;
+  User userData;
 
-
-  ProfileListTile(
-      {Key key,
-        @required this.iconWidget,
-        @required this.titleText,
-        @required this.subTitleText,
-        //this.isUpdate =false,
-         this.userData,
-
-       })
-      : super(key: key);
+  ProfileListTile({
+    Key key,
+    @required this.iconWidget,
+    @required this.titleText,
+    @required this.subTitleText,
+    //this.isUpdate =false,
+    this.userData,
+  }) : super(key: key);
 
   @override
   _ProfileListTileState createState() => _ProfileListTileState();
@@ -329,95 +538,95 @@ class ProfileListTile extends StatefulWidget
 
 class _ProfileListTileState extends State<ProfileListTile> {
   final _formKey = GlobalKey<FormState>();
-  
-  @override
-Widget build(BuildContext context) {
 
-    if( widget.isUpdate == true)
-    {
-      return ListTile(
-        //leading: Icon(Icons.person),
-        leading: widget.iconWidget,
-        title:  TextFormField(
-          initialValue: this.widget.subTitleText,
-          decoration: textInputDecoration(labelText: this.widget.titleText),
-          validator: (val) => val.isEmpty ? 'Please enter Product Name' : null,
-          onChanged: (val) => setState(() => widget.subTitleText = val ),
-        ),
+  @override
+  Widget build(BuildContext context) {
+    if (widget.isUpdate == true) {
+      return Form(
+        key: _formKey,
+        child: ListTile(
+            //leading: Icon(Icons.person),
+            leading: widget.iconWidget,
+            title: TextFormField(
+              initialValue: this.widget.subTitleText,
+              decoration: textInputDecoration(labelText: this.widget.titleText),
+              validator: (val) =>
+                  val.isEmpty ? 'Please enter Product Name' : null,
+              onChanged: (val) => setState(() => widget.subTitleText = val),
+            ),
 //      subtitle: Text(
 //          "This is a about me link and you can khow about me in this section."),
-          trailing:
-          MaterialButton(
-            color: primaryColor,
-            shape: CircleBorder(),
-            //elevation: 0,
-            child: Icon(Icons.save),
-            onPressed: () {
-              print("-------------IsUpdate=True------------------");
-              print(widget.userData.phone);
-              if(widget.userData!= null  ) {
-                UserProfileService(uid: AuthService().userInstance.uid)
-                    .updateUserProfileData(
-                    this.widget.titleText.toLowerCase() =='name' ? widget.subTitleText: widget.userData.name,
-                    this.widget.titleText.toLowerCase() =='phone' ? widget.subTitleText: widget.userData.phone,
-                    this.widget.titleText.toLowerCase() =='email' ? widget.subTitleText: widget.userData.email,
-                    this.widget.titleText.toLowerCase() =='address' ? widget.subTitleText: widget.userData.address,
-                   );
-              }
-              setState(() {
-                widget.isUpdate = false;
-              });
-
-              print(widget.isUpdate);
-            },
-          )
-
-      );
-
-    }
-    else
-      {
-        return ListTile(
-          leading: widget.iconWidget,
-          title: Text(this.widget.titleText),
-         subtitle: Text(this.widget.subTitleText),
-         //trailing:Icon(Icons.edit),
-            trailing:
-
-            MaterialButton(
+            trailing: MaterialButton(
               color: primaryColor,
               shape: CircleBorder(),
-              elevation: 0,
-              child: Icon(Icons.edit),
+              //elevation: 0,
+              child: Icon(Icons.save),
               onPressed: () {
-
-                print("-------------IsUpdate=False------------------");
-                try {
-                  // print(widget.subTitleText);
-                  setState(() {
-                    widget.isUpdate = true;
-                    //print(widget._userData.name);
-                  });
-
+                print("-------------IsUpdate=True------------------");
+                print(widget.userData.phone);
+                if (_formKey.currentState.validate()) {
                   if (widget.userData != null) {
-                    // UserProfileService(uid: "whH3upwE3lOVfGHYYzOx6T34PLt1").updateUserProfileData(widget._userData.name, widget._userData.phone, widget._userData.email, widget._userData.address);
-                    //widget.product.imgUrl = null;
-                    print("Old image deleted");
-                  } else {
-                    print('Úser data null');
-                    //  print(widget._userData);
+                    //Get User Id
+                    this.widget.titleText.toLowerCase() == 'name'
+                        ? (widget.userData.name = widget.subTitleText)
+                        : widget.userData.name;
+                    this.widget.titleText.toLowerCase() == 'phone'
+                        ? (widget.userData.phone = widget.subTitleText)
+                        : widget.userData.phone;
+                    this.widget.titleText.toLowerCase() == 'email'
+                        ? (widget.userData.email = widget.subTitleText)
+                        : widget.userData.email;
+                    this.widget.titleText.toLowerCase() == 'address'
+                        ? (widget.userData.address = widget.subTitleText)
+                        : widget.userData.address;
+
+                    UserService().updateUser(widget.userData);
+
+                    setState(() {
+                      widget.isUpdate = false;
+                    });
+
+                    print(widget.isUpdate);
                   }
-                }on Exception catch (e) {
-                  print("Error while deleting old image" + e.toString());
                 }
-                print(widget.isUpdate);
-                //Navigator.pop(context);
-
-
               },
-            )
-        );
-      }
+            )),
+      );
+    } else {
+      return ListTile(
+          leading: widget.iconWidget,
+          title: Text(this.widget.titleText),
+          subtitle: Text(this.widget.subTitleText),
+          //trailing:Icon(Icons.edit),
+          trailing: MaterialButton(
+            color: primaryColor,
+            shape: CircleBorder(),
+            elevation: 0,
+            child: Icon(Icons.edit),
+            onPressed: () {
+              print("-------------IsUpdate=False------------------");
+              try {
+                // print(widget.subTitleText);
+                setState(() {
+                  widget.isUpdate = true;
+                  //print(widget._userData.name);
+                });
 
+                if (widget.userData != null) {
+                  // UserProfileService(uid: "whH3upwE3lOVfGHYYzOx6T34PLt1").updateUserProfileData(widget._userData.name, widget._userData.phone, widget._userData.email, widget._userData.address);
+                  //widget.product.imgUrl = null;
+                  print("Old image deleted");
+                } else {
+                  print('Úser data null');
+                  //  print(widget._userData);
+                }
+              } on Exception catch (e) {
+                print("Error while deleting old image" + e.toString());
+              }
+              print(widget.isUpdate);
+              //Navigator.pop(context);
+            },
+          ));
+    }
   }
 }
