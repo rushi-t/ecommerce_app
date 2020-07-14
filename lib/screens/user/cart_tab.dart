@@ -10,8 +10,8 @@ import 'package:ecommerce_app/shared/colors.dart';
 import 'package:ecommerce_app/shared/styles.dart';
 import 'package:ecommerce_app/shared/widgets.dart';
 import 'package:ecommerce_app/widget/utility.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:ecommerce_app/screens/user/home.dart';
 
@@ -153,42 +153,84 @@ class CartTab extends StatefulWidget {
 
 class _CartTabState extends State<CartTab> {
   User user = AuthService().userInstance;
-  double cartTotal = 0;
 
   @override
   Widget build(BuildContext context) {
-    return CustomScrollView(controller: widget._hideButtonController, slivers: <Widget>[
-      getHomeAppBar(),
-      user == null
-          ? SliverFillRemaining(
-              child: Center(
-                  child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text("You are not Signed in", style: primaryTextStyleDark),
-                  FlatBtn('Sign In', () {
-                    Navigator.push(context, PageTransition(type: PageTransitionType.leftToRight, child: Auth(Home())));
-                  })
-                ],
-              )),
-            )
-          : StreamBuilder<List<CartItem>>(
-              stream: CartItemService().cartItemStream(userId: user.uid),
-              builder: (context, snapshot) {
-                return snapshot.hasData
-                    ? SliverList(
-                        delegate: SliverChildBuilderDelegate(
-                        (context, index) => CartTile(cartItem: snapshot.data[index]),
-                        childCount: snapshot.hasData ? snapshot.data.length : 0,
-                      ))
-                    : SliverFillRemaining(
-                        child: Center(
-                            child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [Text("Your cart is empty", style: primaryTextStyleDark)],
-                        )),
-                      );
-              }),
-    ]);
+    return StreamBuilder<List<CartItem>>(
+        stream: CartItemService().cartItemStream(userId: user.uid),
+        builder: (context, snapshot) {
+          double cartTotal = 0;
+          snapshot.data?.forEach((cartItem) => cartTotal += (cartItem.product.price * cartItem.quantity));
+          return Column(
+            children: [
+              Expanded(
+                child: CustomScrollView(controller: widget._hideButtonController, slivers: <Widget>[
+                  getHomeAppBar(),
+                  user == null
+                      ? SliverFillRemaining(
+                          child: Center(
+                              child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text("You are not Signed in", style: primaryTextStyleDark),
+                              FlatBtn('Sign In', () {
+                                Navigator.push(context, PageTransition(type: PageTransitionType.leftToRight, child: Auth(Home())));
+                              })
+                            ],
+                          )),
+                        )
+                      : snapshot.hasData && snapshot.data.length > 0
+                              ?  SliverList(
+                                  delegate: SliverChildBuilderDelegate(
+                                  (context, index) => CartTile(cartItem: snapshot.data[index]),
+                                  childCount: snapshot.hasData ? snapshot.data.length : 0,
+                                ))
+                              : SliverFillRemaining(
+                                  child: Center(
+                                      child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [Text("Your cart is empty", style: primaryTextStyleDark)],
+                                  )),
+                                )
+
+                ]),
+              ),
+              Container(
+                  decoration: BoxDecoration(
+                    color: Colors.grey[200],
+                    boxShadow: [
+                      BoxShadow(
+                        color: Color.fromRGBO(0, 0, 0, .2),
+                        spreadRadius: 5,
+                        blurRadius: 7,
+                        offset: Offset(0, 3), // changes position of shadow
+                      ),
+                    ],
+                  ),
+                  padding: EdgeInsets.only(left: 30, right: 30),
+                  height: 60,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Text(
+                        "Total:  ₹" + cartTotal.toString(),
+                        style: primaryTextStyleDark,
+                      ),
+                      FlatBtn("Order Now", () async {
+                        if (snapshot.hasData) {
+                          Order order = Order(userId: user.uid, items: snapshot.data, total: cartTotal);
+                          await OrderService().createOrder(order);
+                          snapshot.data.forEach((cartItem) {
+                            CartItemService().deleteCartItem(cartItem);
+                          });
+                          showSnackBar(context, "Order placed");
+                        }
+                      }),
+                    ],
+                  ))
+            ],
+          );
+        });
   }
 }

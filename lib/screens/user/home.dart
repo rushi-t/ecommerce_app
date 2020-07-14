@@ -72,7 +72,7 @@ class _HomeState extends State<Home> {
         backgroundColor: bgColor,
         body: _tabs[_selectedIndex],
         bottomNavigationBar: Container(
-          height: _isVisible ? 60 : 0.0,
+//          height: _isVisible ? 60 : 0.0,
           child: BottomNavigationBar(
             items: <BottomNavigationBarItem>[
               BottomNavigationBarItem(
