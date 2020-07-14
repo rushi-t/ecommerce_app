@@ -220,13 +220,15 @@ class UserInfoVersion2 extends StatelessWidget {
           width: 200,//                              margin: EdgeInsets.only(right:20.0),
           child: Text(
             title,
-            style: TextStyle(color: Color(0xff053e57), fontSize: 16, fontWeight: FontWeight.w500),
+            //style: TextStyle(color: Color(0xff053e57), fontSize: 16, fontWeight: FontWeight.w500),
+            style:primaryTextStyleDark,
           ),
         ),
         Expanded(
           child: Text(
             text,
-            style: TextStyle(color: Colors.grey[600]),
+            //style: TextStyle(color: Colors.grey[600]),
+            style:categoryText,
           ),
         )
       ]),
@@ -276,7 +278,8 @@ class UserInfoVersion2 extends StatelessWidget {
                             leading: Icon(Icons.perm_identity),
                             title: Text(
                               "Profile Settings",
-                              style:  TextStyle(color: Color(0xff053e57), fontSize: 16, fontWeight: FontWeight.w700),
+                              //style:  TextStyle(color: Color(0xff053e57), fontSize: 16, fontWeight: FontWeight.w700),
+                              style:h4,
                               textAlign: TextAlign.left,
                             ),
                             // title: Text("Email"),
@@ -284,7 +287,7 @@ class UserInfoVersion2 extends StatelessWidget {
                             // trailing:Icon(Icons.edit),
                             trailing: new IconButton(
                               icon: new Icon(Icons.edit),
-                              highlightColor: Colors.black87,
+                              highlightColor: Colors.grey,
                               onPressed: () {
                                 showModalBottomSheet(
                                     context: context,
@@ -381,7 +384,8 @@ class UserInfoVersion2 extends StatelessWidget {
                             leading: Icon(Icons.adjust),
                             title: Text(
                               "Other Settings",
-                              style:  TextStyle(color: Color(0xff053e57), fontSize: 16, fontWeight: FontWeight.w700),
+                              //style:  TextStyle(color: Color(0xff053e57), fontSize: 16, fontWeight: FontWeight.w700),
+                              style: h4,
                               textAlign: TextAlign.left,
                             ),
                             // title: Text("Email"),

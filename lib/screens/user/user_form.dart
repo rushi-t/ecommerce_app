@@ -159,7 +159,7 @@ class _UserFormState extends State<UserForm> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Container(
-                    child: Text("User Profile", style: h3),
+                    child: Text("Profile Settings", style: h3),
                   ),
                   tb.TextInput('Name', user.name,onChanged: (val) {
                     setState(() => userName = val);
@@ -187,7 +187,7 @@ class _UserFormState extends State<UserForm> {
                           onPressed: () async {
                             if (_formKey.currentState.validate()) {
                               showProgressWithMessage(
-                                  context, "User profile Settings");
+                                  context, "Profile Settings");
                               setState(() => loading = true);
                               user.phone = userPhone == null ? "" : userPhone;
                               user.address =
