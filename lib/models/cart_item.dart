@@ -15,7 +15,7 @@ class CartItem {
     return {
       'uid': this.uid,
       'userId': this.userId,
-      'product': this.product.toMap(),
+      'product': this.product.toJson(),
       'quantity': this.quantity,
     };
   }
@@ -23,6 +23,6 @@ class CartItem {
   CartItem.fromFireBaseSnapshot(Map snapshot)
       : uid = snapshot['uid'],
         userId = snapshot['userId'],
-        product = Product.fromFireBaseSnapshot(snapshot['product']),
+        product = Product.fromJson(snapshot['product']),
         quantity = snapshot['quantity'];
 }

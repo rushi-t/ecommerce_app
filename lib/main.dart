@@ -1,5 +1,6 @@
 import 'package:ecommerce_app/models/user.dart';
 import 'package:ecommerce_app/screens/admin/category_screen.dart' as AdminScreen;
+import 'package:ecommerce_app/screens/admin/product_form.dart';
 import 'package:ecommerce_app/screens/admin/product_screen.dart' as AdminScreen;
 import 'package:ecommerce_app/screens/authenticate/sign_up.dart';
 import 'package:ecommerce_app/screens/authenticate/auth.dart';

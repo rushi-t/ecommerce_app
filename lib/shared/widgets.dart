@@ -34,3 +34,7 @@ AlertDialog showProgressWithMessage(BuildContext context, String message) {
   );
   return alertDialog;
 }
+
+Widget showLoadingWidget(){
+  return Center(child: CircularProgressIndicator());
+}

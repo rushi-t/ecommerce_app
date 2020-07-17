@@ -4,20 +4,24 @@ import 'package:ecommerce_app/services/auth.dart';
 import 'package:ecommerce_app/services/product.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:page_transition/page_transition.dart';
 
 class ProductTile extends StatelessWidget {
   final Product product;
-  ProductTile({ this.product });
+
+  ProductTile({this.product});
 
   @override
   Widget build(BuildContext context) {
     void _showProductAddUpdatePanel() {
-      showModalBottomSheet(context: context, builder: (context) {
-        return Container(
-          padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 60.0),
-          child: ProductForm(product: product),
-        );
-      });
+      showModalBottomSheet(
+          context: context,
+          builder: (context) {
+            return Container(
+              padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 60.0),
+              child: ProductForm(product: product),
+            );
+          });
     }
 
     return Padding(
@@ -25,39 +29,40 @@ class ProductTile extends StatelessWidget {
       child: Card(
         margin: EdgeInsets.fromLTRB(20.0, 6.0, 20.0, 0.0),
         child: ListTile(
-            leading: product.imgUrl == null || product.imgUrl == ""
-                ? CircleAvatar(
-              radius: 25.0,
-              backgroundColor: Colors.brown[200],
-              backgroundImage: AssetImage('assets/coffee_icon.png'),
-            )
-                : CircleAvatar(
-              radius: 25.0,
-              backgroundColor: Colors.brown[200],
-              backgroundImage: NetworkImage(product.imgUrl),
-            ),
-            title: Text(product.name),
-            subtitle: Text(product.description),
-            trailing: PopupMenuButton<String>(
-              padding: EdgeInsets.zero,
-              onSelected: (selectedMenu) {
-                if (selectedMenu == "Edit") {
-                  _showProductAddUpdatePanel();
-                } else if (selectedMenu == "Delete") {
-                  ProductService().deleteProduct(product);
-                }
-              },
-              itemBuilder: (context) => <PopupMenuItem<String>>[
-                PopupMenuItem<String>(
-                  value: "Edit",
-                  child: Text("Edit"),
+          leading: product.imgUrl == null || product.imgUrl == ""
+              ? CircleAvatar(
+                  radius: 25.0,
+                  backgroundColor: Colors.brown[200],
+                  backgroundImage: AssetImage('assets/coffee_icon.png'),
+                )
+              : CircleAvatar(
+                  radius: 25.0,
+                  backgroundColor: Colors.brown[200],
+                  backgroundImage: NetworkImage(product.imgUrl),
                 ),
-                PopupMenuItem<String>(
-                  value: "Delete",
-                  child: Text("Delete"),
-                ),
-              ],
-            ),
+          title: Text(product.name),
+          subtitle: Text(product.description),
+          trailing: PopupMenuButton<String>(
+            padding: EdgeInsets.zero,
+            onSelected: (selectedMenu) {
+              if (selectedMenu == "Edit") {
+//                _showProductAddUpdatePanel();
+                Navigator.push(context, PageTransition(type: PageTransitionType.rightToLeft, child: ProductForm(product: product,)));
+              } else if (selectedMenu == "Delete") {
+                ProductService().deleteProduct(product);
+              }
+            },
+            itemBuilder: (context) => <PopupMenuItem<String>>[
+              PopupMenuItem<String>(
+                value: "Edit",
+                child: Text("Edit"),
+              ),
+              PopupMenuItem<String>(
+                value: "Delete",
+                child: Text("Delete"),
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -72,7 +77,6 @@ class ProductList extends StatefulWidget {
 class _ProductListState extends State<ProductList> {
   @override
   Widget build(BuildContext context) {
-
     final products = Provider.of<List<Product>>(context) ?? [];
 
     return ListView.builder(
@@ -89,14 +93,15 @@ class ProductScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     void _showProductAddUpdatePanel() {
-      showModalBottomSheet(context: context, builder: (context) {
-        return Container(
-          padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 60.0),
-          child: ProductForm(product: null),
-        );
-      });
+      showModalBottomSheet(
+          context: context,
+          builder: (context) {
+            return Container(
+              padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 60.0),
+              child: ProductForm(product: null),
+            );
+          });
     }
 
     return StreamProvider<List<Product>>.value(
@@ -118,19 +123,18 @@ class ProductScreen extends StatelessWidget {
           ],
         ),
         body: Container(
-          decoration: BoxDecoration(
-            image: DecorationImage(
-              image: AssetImage('assets/background.png'),
-              fit: BoxFit.cover,
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage('assets/background.png'),
+                fit: BoxFit.cover,
+              ),
             ),
-          ),
-          child: ProductList()
-        ),
+            child: ProductList()),
         floatingActionButton: new FloatingActionButton(
             elevation: 0.0,
             child: new Icon(Icons.add),
-            onPressed: () => _showProductAddUpdatePanel()
-        ),
+//            onPressed: () => _showProductAddUpdatePanel()
+            onPressed: () => Navigator.push(context, PageTransition(type: PageTransitionType.rightToLeft, child: ProductForm()))),
       ),
     );
   }
