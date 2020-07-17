@@ -4,6 +4,7 @@ import 'package:ecommerce_app/services/auth.dart';
 import 'package:ecommerce_app/services/feedback.dart' as fb;
 import 'package:ecommerce_app/shared/constants.dart';
 import 'package:ecommerce_app/shared/widgets.dart';
+import 'package:ecommerce_app/widget/utility.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:ecommerce_app/models/category.dart';
@@ -16,6 +17,9 @@ import 'package:ecommerce_app/shared/styles.dart';
 import 'package:ecommerce_app/shared/inputFields.dart';
 import 'package:ecommerce_app/services/user.dart';
 import 'package:ecommerce_app/screens/user/user_form.dart';
+import 'package:page_transition/page_transition.dart';
+
+import 'order_tab.dart';
 
 class UserTab extends StatefulWidget {
   ScrollController _hideButtonController;
@@ -62,13 +66,11 @@ class _UserTabState extends State<UserTab> {
             userData = snapshot.data;
             print("userData = " + userData.email);
           }
-          return CustomScrollView(
-              controller: widget._hideButtonController,
-              slivers: <Widget>[
-                getHomeAppBar(),
-                SliverToBoxAdapter(
-                  child: Column(
-                    children: <Widget>[
+          return CustomScrollView(controller: widget._hideButtonController, slivers: <Widget>[
+            getHomeAppBar(),
+            SliverToBoxAdapter(
+              child: Column(
+                children: <Widget>[
 //                    ProfileHeader(
 //                      avatar: NetworkImage(avatars[0]),
 //                      coverImage: NetworkImage(images[1]),
@@ -77,14 +79,14 @@ class _UserTabState extends State<UserTab> {
 //                      actions: <Widget>[],
 //                    ),
 //                    //const SizedBox(height: 10.0),
-                      UserInfoVersion2(userData: userData),
-                      //UserInfo(userData: userData),
+                  UserInfoVersion2(userData: userData),
+                  //UserInfo(userData: userData),
 
-                      //UserInfo(),
-                    ],
-                  ),
-                )
-              ]);
+                  //UserInfo(),
+                ],
+              ),
+            )
+          ]);
         });
   }
 }
@@ -213,25 +215,40 @@ class UserInfoVersion2 extends StatelessWidget {
   Widget buildRow(String title, String text) {
     return Container(
       height: 50,
-      child: Row(mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
+      child: Row(mainAxisAlignment: MainAxisAlignment.center, crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
         Container(
-          width: 200,//                              margin: EdgeInsets.only(right:20.0),
+          width: 200, //                              margin: EdgeInsets.only(right:20.0),
           child: Text(
             title,
             //style: TextStyle(color: Color(0xff053e57), fontSize: 16, fontWeight: FontWeight.w500),
-            style:primaryTextStyleDark,
+            style: primaryTextStyleDark,
           ),
         ),
         Expanded(
           child: Text(
             text,
             //style: TextStyle(color: Colors.grey[600]),
-            style:categoryText,
+            style: categoryText,
           ),
         )
       ]),
+    );
+  }
+
+  Widget showLink(String text, onTap) {
+    return InkWell(
+      onTap: onTap,
+      child: Container(
+        height: 50,
+        child: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          Text(
+            text,
+            style: primaryTextStyleDark,
+          )
+        ],
+      )),
     );
   }
 
@@ -279,7 +296,7 @@ class UserInfoVersion2 extends StatelessWidget {
                             title: Text(
                               "Profile Settings",
                               //style:  TextStyle(color: Color(0xff053e57), fontSize: 16, fontWeight: FontWeight.w700),
-                              style:h4,
+                              style: h4,
                               textAlign: TextAlign.left,
                             ),
                             // title: Text("Email"),
@@ -293,8 +310,7 @@ class UserInfoVersion2 extends StatelessWidget {
                                     context: context,
                                     builder: (context) {
                                       return Container(
-                                        padding: EdgeInsets.symmetric(
-                                            vertical: 20.0, horizontal: 60.0),
+                                        padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 60.0),
                                         child: UserForm(),
                                       );
                                     });
@@ -302,11 +318,10 @@ class UserInfoVersion2 extends StatelessWidget {
                             ),
                           ),
 
-                          buildRow("Name", userData!=null ? userData.name :""),
-                          buildRow("Phone", userData!=null ? userData.phone :""),
-                          buildRow("Email", userData!=null ? userData.email :"" ),
-                          buildRow("Address", userData!=null ? userData.address :""),
-
+                          buildRow("Name", userData != null ? userData.name : ""),
+                          buildRow("Phone", userData != null ? userData.phone : ""),
+                          buildRow("Email", userData != null ? userData.email : ""),
+                          buildRow("Address", userData != null ? userData.address : ""),
 
 //                          ProfileListTile(
 //                              iconWidget: Icon(Icons.perm_identity),
@@ -393,9 +408,13 @@ class UserInfoVersion2 extends StatelessWidget {
                             // trailing:Icon(Icons.edit),
                           ),
 
-                          buildRow("My Cart", ""),
-                          buildRow("My Orders", ""),
-                         (userData !=null && userData.name !=null) ? buildRow("Sign Out", "") :buildRow("Sign In", "")
+                          showLink("My Orders",  (){
+                            Navigator.push(context, PageTransition(type: PageTransitionType.rightToLeft, child: OrderTab()));
+                          }),
+                          showLink("Sign Out",  (){
+                            AuthService().signOut().then((value) => showSnackBar(context, "Signed out"));
+                          }),
+//                          showLink("Sign Out",  Navigator.push(context, PageTransition(type: PageTransitionType.rightToLeft, child: OrderTab()))),
 
                         ],
                       ),
@@ -418,14 +437,7 @@ class ProfileHeader extends StatelessWidget {
   final String subtitle;
   final List<Widget> actions;
 
-  const ProfileHeader(
-      {Key key,
-      @required this.coverImage,
-      @required this.avatar,
-      @required this.title,
-      this.subtitle,
-      this.actions})
-      : super(key: key);
+  const ProfileHeader({Key key, @required this.coverImage, @required this.avatar, @required this.title, this.subtitle, this.actions}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -492,14 +504,7 @@ class Avatar extends StatelessWidget {
   final double radius;
   final double borderWidth;
 
-  const Avatar(
-      {Key key,
-      @required this.image,
-      this.borderColor = Colors.grey,
-      this.backgroundColor,
-      this.radius = 13,
-      this.borderWidth = 5})
-      : super(key: key);
+  const Avatar({Key key, @required this.image, this.borderColor = Colors.grey, this.backgroundColor, this.radius = 13, this.borderWidth = 5}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -508,9 +513,7 @@ class Avatar extends StatelessWidget {
       backgroundColor: borderColor,
       child: CircleAvatar(
         radius: radius,
-        backgroundColor: backgroundColor != null
-            ? backgroundColor
-            : Theme.of(context).primaryColor,
+        backgroundColor: backgroundColor != null ? backgroundColor : Theme.of(context).primaryColor,
         child: CircleAvatar(
           radius: radius - borderWidth,
           backgroundImage: image,
@@ -554,8 +557,7 @@ class _ProfileListTileState extends State<ProfileListTile> {
             title: TextFormField(
               initialValue: this.widget.subTitleText,
               decoration: textInputDecoration(labelText: this.widget.titleText),
-              validator: (val) =>
-                  val.isEmpty ? 'Please enter Product Name' : null,
+              validator: (val) => val.isEmpty ? 'Please enter Product Name' : null,
               onChanged: (val) => setState(() => widget.subTitleText = val),
             ),
 //      subtitle: Text(
@@ -571,18 +573,10 @@ class _ProfileListTileState extends State<ProfileListTile> {
                 if (_formKey.currentState.validate()) {
                   if (widget.userData != null) {
                     //Get User Id
-                    this.widget.titleText.toLowerCase() == 'name'
-                        ? (widget.userData.name = widget.subTitleText)
-                        : widget.userData.name;
-                    this.widget.titleText.toLowerCase() == 'phone'
-                        ? (widget.userData.phone = widget.subTitleText)
-                        : widget.userData.phone;
-                    this.widget.titleText.toLowerCase() == 'email'
-                        ? (widget.userData.email = widget.subTitleText)
-                        : widget.userData.email;
-                    this.widget.titleText.toLowerCase() == 'address'
-                        ? (widget.userData.address = widget.subTitleText)
-                        : widget.userData.address;
+                    this.widget.titleText.toLowerCase() == 'name' ? (widget.userData.name = widget.subTitleText) : widget.userData.name;
+                    this.widget.titleText.toLowerCase() == 'phone' ? (widget.userData.phone = widget.subTitleText) : widget.userData.phone;
+                    this.widget.titleText.toLowerCase() == 'email' ? (widget.userData.email = widget.subTitleText) : widget.userData.email;
+                    this.widget.titleText.toLowerCase() == 'address' ? (widget.userData.address = widget.subTitleText) : widget.userData.address;
 
                     UserService().updateUser(widget.userData);
 

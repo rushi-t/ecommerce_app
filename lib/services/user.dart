@@ -36,4 +36,9 @@ class UserService {
     DocumentSnapshot documentSnapshot = await userCollection.document(uid).get();
     return User.fromFireBaseSnapshot(documentSnapshot.data);
   }
+
+  Stream<User> userStream(String uid) {
+   return userCollection.document(uid).snapshots().map((snapshot) => User.fromFireBaseSnapshot(snapshot.data));
+  }
+
 }

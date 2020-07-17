@@ -36,9 +36,9 @@ class _OrderTileState extends State<OrderTile> {
               child: widget.order.items.first.product.imgUrl == null
                   ? Image.asset('assets/plate.jpg')
                   : Image.network(
-                widget.order.items.first.product.imgUrl,
-                fit: BoxFit.cover,
-              ),
+                      widget.order.items.first.product.imgUrl,
+                      fit: BoxFit.cover,
+                    ),
             ),
             Expanded(
               flex: 2,
@@ -105,7 +105,7 @@ class _OrderTabState extends State<OrderTab> {
               ))
             : StreamBuilder<List<Order>>(
 //                stream: OrderService().userOrderStream("M5xzvS3OrVXROwIIsQQfSVCZQ5w2"),
-              stream: OrderService().userOrderStream(user.uid),
+                stream: OrderService().userOrderStream(user.uid),
                 builder: (context, snapshot) {
                   if (!snapshot.hasData)
                     return Center(child: CircularProgressIndicator());

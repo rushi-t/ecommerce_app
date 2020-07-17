@@ -11,7 +11,11 @@ class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   User userInstance;
 
-  AuthService._();
+  AuthService._(){
+    _auth.onAuthStateChanged.listen((firebaseUser) async{
+      this.userInstance = await UserService().getUser(firebaseUser.uid);
+    });
+  }
 
   AuthService._privateConstructor();
 
@@ -29,20 +33,15 @@ class AuthService {
 
   // auth change user stream
   Stream<User> get user {
-//    if (kDebugMode == true) {
-//      print("Using dummy user");
-//      this.userInstance = User("M5xzvS3OrVXROwIIsQQfSVCZQ5w2");
-//      return Stream.value(this.userInstance);
-//    }
-//    else
-     {
-      _auth.onAuthStateChanged.transform(StreamTransformer<FirebaseUser, User>.fromHandlers(handleData: (firebaseUser, user) async {
-        if (firebaseUser == null) return null;
-        this.userInstance = await UserService().getUser(firebaseUser.uid);
-        user.add(this.userInstance);
-//      print("## User= " + user.toString());
-      }));
+    if (kDebugMode == true && this.userInstance == null) {
+      print("Using dummy user");
+      Stream<User> userStream = UserService().userStream("M5xzvS3OrVXROwIIsQQfSVCZQ5w2");
+      userStream.listen((user) {
+        this.userInstance = user;
+      });
+      return userStream;
     }
+    return Stream.value(this.userInstance);
   }
 
   // sign in Anonymously

@@ -24,7 +24,7 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  int _selectedIndex = 2;
+  int _selectedIndex = 0;
   ScrollController _hideButtonController;
   bool _isVisible = true;
 
@@ -56,18 +56,18 @@ class _HomeState extends State<Home> {
       ProductTab(_hideButtonController),
       CartTab(_hideButtonController),
       UserTab(_hideButtonController),
-      Center(
-          child: Column(
-        children: [
-          FlatBtn('My Orders', () async {
-            Navigator.push(context, PageTransition(type: PageTransitionType.rightToLeft, child: OrderTab()));
-          }),
-          SizedBox(height: 10,),
-          FlatBtn('Logout', () async {
-            AuthService().signOut().then((value) => showSnackBar(context, "Logged out"));
-          })
-        ],
-      ))
+//      Center(
+//          child: Column(
+//        children: [
+//          FlatBtn('My Orders', () async {
+//            Navigator.push(context, PageTransition(type: PageTransitionType.rightToLeft, child: OrderTab()));
+//          }),
+//          SizedBox(height: 10,),
+//          FlatBtn('Logout', () async {
+//            AuthService().signOut().then((value) => showSnackBar(context, "Logged out"));
+//          })
+//        ],
+//      ))
     ];
 
     return Scaffold(

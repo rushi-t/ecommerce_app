@@ -36,7 +36,6 @@ class MyApp extends StatelessWidget {
             '/signup': (context) => SignUp(Home()),
             '/admin/category': (context) => AdminScreen.CategoryScreen(),
             '/admin/product': (context) => AdminScreen.ProductScreen(),
-//            '/admin/feedback': (context) => AdminFeedback(),
             '/admin/userProfile': (context) => UserProfileAdmin(),
             '/user/product': (context) => UserScreen.ProductScreen(),
             '/user/cart': (context) => CartScreen(),
