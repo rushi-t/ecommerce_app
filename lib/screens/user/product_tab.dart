@@ -28,7 +28,7 @@ class ProductTab extends StatelessWidget {
     return CustomScrollView(
         controller: _hideButtonController,
         slivers: <Widget>[
-          getHomeAppBar(),
+          getHomeAppBar("eRestro"),
           SliverToBoxAdapter(
               child: Container(
                   height: 200.0,
@@ -36,7 +36,7 @@ class ProductTab extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: <Widget>[
-                      sectionHeader('Categories', onViewMore: () {}),
+                      sectionHeader('Menu', onViewMore: () {}),
                       SizedBox(
                         height: 130,
                         child: CategoryScroller(),
@@ -44,7 +44,7 @@ class ProductTab extends StatelessWidget {
                     ],
                   ))),
 
-          SliverToBoxAdapter(child: Container(height: 50.0, child: sectionHeader('Products', onViewMore: () {}))),
+          SliverToBoxAdapter(child: Container(height: 50.0, child: sectionHeader('All Dishes', onViewMore: () {}))),
           StreamBuilder(
               stream: ProductService().productsStream,
               builder: (context, snapshot) {

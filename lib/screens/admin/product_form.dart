@@ -14,7 +14,6 @@ import 'package:flutter/services.dart';
 import 'package:image_picker_web/src/Models/Types.dart';
 
 import 'package:chips_choice/chips_choice.dart';
-import 'package:dio/dio.dart';
 
 class ProductForm extends StatefulWidget {
   Product product = Product();

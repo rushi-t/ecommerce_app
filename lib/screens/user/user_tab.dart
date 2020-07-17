@@ -67,7 +67,7 @@ class _UserTabState extends State<UserTab> {
             print("userData = " + userData.email);
           }
           return CustomScrollView(controller: widget._hideButtonController, slivers: <Widget>[
-            getHomeAppBar(),
+            getHomeAppBar("eRestro"),
             SliverToBoxAdapter(
               child: Column(
                 children: <Widget>[

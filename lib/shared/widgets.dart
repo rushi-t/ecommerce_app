@@ -4,15 +4,14 @@ import 'package:flutter/material.dart';
 
 import 'colors.dart';
 
-Widget getHomeAppBar() {
+Widget getHomeAppBar(String title) {
   return SliverAppBar(
     pinned: false,
     floating: false,
     snap: false,
     leading: new Container(),
     backgroundColor: primaryColor,
-    centerTitle: true,
-    title: Text('eMarket', style: logoWhiteStyle, textAlign: TextAlign.center),
+    title: Text(title, style: logoWhiteStyle),
   );
 }
 

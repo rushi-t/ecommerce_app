@@ -158,7 +158,7 @@ class _CartTabState extends State<CartTab> {
   @override
   Widget build(BuildContext context) {
     return CustomScrollView(controller: widget._hideButtonController, slivers: <Widget>[
-      getHomeAppBar(),
+      getHomeAppBar("eRestro"),
       user == null
           ? SliverFillRemaining(
               child: Center(

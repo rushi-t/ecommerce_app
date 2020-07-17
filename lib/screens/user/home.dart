@@ -32,22 +32,22 @@ class _HomeState extends State<Home> {
   void initState() {
     super.initState();
     _isVisible = true;
-    _hideButtonController = new ScrollController();
-    _hideButtonController.addListener(() {
-//      print("listener");
-      if (_hideButtonController.position.userScrollDirection == ScrollDirection.reverse) {
-        setState(() {
-          _isVisible = false;
-//          print("**** $_isVisible up");
-        });
-      }
-      if (_hideButtonController.position.userScrollDirection == ScrollDirection.forward) {
-        setState(() {
-          _isVisible = true;
-//          print("**** $_isVisible down");
-        });
-      }
-    });
+//    _hideButtonController = new ScrollController();
+//    _hideButtonController.addListener(() {
+////      print("listener");
+//      if (_hideButtonController.position.userScrollDirection == ScrollDirection.reverse) {
+//        setState(() {
+//          _isVisible = false;
+////          print("**** $_isVisible up");
+//        });
+//      }
+//      if (_hideButtonController.position.userScrollDirection == ScrollDirection.forward) {
+//        setState(() {
+//          _isVisible = true;
+////          print("**** $_isVisible down");
+//        });
+//      }
+//    });
   }
 
   @override
