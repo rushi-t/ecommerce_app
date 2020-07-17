@@ -24,7 +24,7 @@ const h6 = TextStyle(color: Colors.black, fontSize: 16, fontWeight: FontWeight.w
 const primaryTextStyle = TextStyle(
   color: primaryColor,
   fontSize: 16,
-  fontWeight: FontWeight.w800,
+  fontWeight: FontWeight.w200,
 );
 
 const primaryTextStyleDark = TextStyle(color: primaryColorDark, fontSize: 16, fontWeight: FontWeight.w800);

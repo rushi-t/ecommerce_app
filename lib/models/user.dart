@@ -1,10 +1,10 @@
 class User {
-  final String uid;
-  final String name;
-  final String phone;
-  final String email;
-  final String address;
-  final bool enabled;
+  String uid;
+  String name;
+  String phone;
+  String email;
+  String address;
+  bool enabled;
 
   User(String uid, {this.name, this.phone, this.email, this.address, this.enabled = true}) : this.uid = uid;
 

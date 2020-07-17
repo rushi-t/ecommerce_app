@@ -1,6 +1,7 @@
 import 'package:ecommerce_app/screens/authenticate/auth.dart';
 import 'package:ecommerce_app/screens/user/order_tab.dart';
 import 'package:ecommerce_app/screens/user/product_tab.dart';
+import 'package:ecommerce_app/screens/user/user_tab.dart';
 import 'package:ecommerce_app/services/auth.dart';
 import 'package:ecommerce_app/shared/buttons.dart';
 import 'package:ecommerce_app/shared/colors.dart';
@@ -23,7 +24,7 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  int _selectedIndex = 0;
+  int _selectedIndex = 2;
   ScrollController _hideButtonController;
   bool _isVisible = true;
 
@@ -54,6 +55,7 @@ class _HomeState extends State<Home> {
     final _tabs = [
       ProductTab(_hideButtonController),
       CartTab(_hideButtonController),
+      UserTab(_hideButtonController),
       Center(
           child: Column(
         children: [
