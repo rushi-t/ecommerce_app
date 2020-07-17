@@ -33,14 +33,14 @@ class AuthService {
 
   // auth change user stream
   Stream<User> get user {
-    if (kDebugMode == true && this.userInstance == null) {
-      print("Using dummy user");
-      Stream<User> userStream = UserService().userStream("M5xzvS3OrVXROwIIsQQfSVCZQ5w2");
-      userStream.listen((user) {
-        this.userInstance = user;
-      });
-      return userStream;
-    }
+//    if (kDebugMode == true && this.userInstance == null) {
+//      print("Using dummy user");
+//      Stream<User> userStream = UserService().userStream("M5xzvS3OrVXROwIIsQQfSVCZQ5w2");
+//      userStream.listen((user) {
+//        this.userInstance = user;
+//      });
+//      return userStream;
+//    }
     return Stream.value(this.userInstance);
   }
 
