@@ -153,47 +153,91 @@ class CartTab extends StatefulWidget {
 
 class _CartTabState extends State<CartTab> {
   User user = AuthService().userInstance;
-  double cartTotal = 0;
 
   @override
   Widget build(BuildContext context) {
-    return CustomScrollView(controller: widget._hideButtonController, slivers: <Widget>[
-      getHomeAppBar("eRestro"),
-      user == null
-          ? SliverFillRemaining(
-              child: Center(
-                  child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text("You are not Signed in", style: primaryTextStyleDark),
-                  FlatBtn('Sign In', () {
-                    Navigator.push(context, PageTransition(type: PageTransitionType.leftToRight, child: Auth(null))).then((isRefresh) {
-                      if (isRefresh)
-                        setState(() {
-                          user = AuthService().userInstance;
-                        });
-                    });
-                  })
-                ],
-              )),
-            )
-          : StreamBuilder<List<CartItem>>(
-              stream: CartItemService().cartItemStream(userId: user.uid),
-              builder: (context, snapshot) {
-                return snapshot.hasData
-                    ? SliverList(
-                        delegate: SliverChildBuilderDelegate(
+    if (user == null) {
+      return Center(
+            child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text("You are not Signed in", style: primaryTextStyleDark),
+            FlatBtn('Sign In', () {
+              Navigator.push(context, PageTransition(type: PageTransitionType.leftToRight, child: Auth(null))).then((isRefresh) {
+                if (isRefresh)
+                  setState(() {
+                    user = AuthService().userInstance;
+                  });
+              });
+            })
+          ],
+        ));
+    } else {
+      return StreamBuilder<List<CartItem>>(
+          stream: CartItemService().cartItemStream(userId: user.uid),
+          builder: (context, snapshot) {
+            double cartTotal = 0;
+            snapshot.data?.forEach((cartItem) => cartTotal += (cartItem.product.price * cartItem.quantity));
+            return Column(
+              children: [
+                Expanded(
+                  child: CustomScrollView(controller: widget._hideButtonController, slivers: <Widget>[
+                    getHomeAppBar("eRestro"),
+                    if (snapshot.hasData && snapshot.data.length > 0)
+                      SliverList(
+                          delegate: SliverChildBuilderDelegate(
                         (context, index) => CartTile(cartItem: snapshot.data[index]),
                         childCount: snapshot.hasData ? snapshot.data.length : 0,
                       ))
-                    : SliverFillRemaining(
+                    else
+                      SliverFillRemaining(
                         child: Center(
                             child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [Text("Your cart is empty", style: primaryTextStyleDark)],
                         )),
-                      );
-              }),
-    ]);
+                      )
+                  ]),
+                ),
+                if (snapshot.hasData && snapshot.data.length > 0)
+                Container(
+                    decoration: BoxDecoration(
+                      color: Colors.grey[200],
+                      boxShadow: [
+                        BoxShadow(
+                          color: Color.fromRGBO(0, 0, 0, .2),
+                          spreadRadius: 5,
+                          blurRadius: 7,
+                          offset: Offset(0, 3), // changes position of shadow
+                        ),
+                      ],
+                    ),
+                    padding: EdgeInsets.only(left: 30, right: 30),
+                    height: 60,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Text(
+                          "Total:  ₹" + cartTotal.toString(),
+                          style: primaryTextStyleDark,
+                        ),
+                        FlatBtn("Order Now", () async {
+                          if (snapshot.hasData) {
+                            Order order = Order(userId: user.uid, items: snapshot.data, total: cartTotal, status: 0);
+                            print(order.toMap());
+                            await OrderService().createOrder(order);
+                            snapshot.data.forEach((cartItem) {
+                              CartItemService().deleteCartItem(cartItem);
+                            });
+                            showSnackBar(context, "Order placed");
+                          }
+                        }),
+                      ],
+                    ))
+              ],
+            );
+          });
+    }
   }
 }

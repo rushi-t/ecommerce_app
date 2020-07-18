@@ -2,6 +2,7 @@ import 'package:ecommerce_app/models/cart_item.dart';
 import 'package:ecommerce_app/models/order.dart';
 import 'package:ecommerce_app/models/user.dart';
 import 'package:ecommerce_app/screens/authenticate/auth.dart';
+import 'package:ecommerce_app/screens/user/order_detail.dart';
 import 'package:ecommerce_app/services/auth.dart';
 import 'package:ecommerce_app/services/cart_item.dart';
 import 'package:ecommerce_app/services/order.dart';
@@ -25,52 +26,55 @@ class OrderTile extends StatefulWidget {
 class _OrderTileState extends State<OrderTile> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-        margin: EdgeInsets.all(8.0),
-        decoration: cardDecoration,
-        child: Row(
-          children: <Widget>[
-            Container(
-              width: 100,
-              height: 100,
-              child: widget.order.items.first.product.imgUrl == null
-                  ? Image.asset('assets/plate.jpg')
-                  : Image.network(
-                      widget.order.items.first.product.imgUrl,
-                      fit: BoxFit.cover,
-                    ),
-            ),
-            Expanded(
-              flex: 2,
-              child: Container(
-                padding: EdgeInsets.all(8.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisSize: MainAxisSize.min,
-                  children: <Widget>[
-                    Text(
-                      "Order ID: " + Order.generateOrderId(widget.order.dateTime),
-                      style: primaryTextStyleDark,
-                    ),
-                    SizedBox(
-                      height: 5.0,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      mainAxisSize: MainAxisSize.min,
-                      children: <Widget>[
-                        Text(
-                          "Total: ₹" + (widget.order.total).toString(),
-                          style: primaryTextStyle,
-                        ),
-                      ],
-                    ),
-                  ],
+    return InkWell(
+      onTap: (){Navigator.push(context, PageTransition(type: PageTransitionType.rightToLeft, child: OrderDetail(order: widget.order,)));},
+      child: Container(
+          margin: EdgeInsets.all(8.0),
+          decoration: cardDecoration,
+          child: Row(
+            children: <Widget>[
+              Container(
+                width: 100,
+                height: 100,
+                child: widget.order.items.first.product.imgUrl == null
+                    ? Image.asset('assets/plate.jpg')
+                    : Image.network(
+                        widget.order.items.first.product.imgUrl,
+                        fit: BoxFit.cover,
+                      ),
+              ),
+              Expanded(
+                flex: 2,
+                child: Container(
+                  padding: EdgeInsets.all(8.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      Text(
+                        "Order ID: " + Order.generateOrderId(widget.order.dateTime),
+                        style: primaryTextStyleDark,
+                      ),
+                      SizedBox(
+                        height: 5.0,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        mainAxisSize: MainAxisSize.min,
+                        children: <Widget>[
+                          Text(
+                            "Total: ₹" + (widget.order.total).toString(),
+                            style: primaryTextStyle,
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
               ),
-            ),
-          ],
-        ));
+            ],
+          )),
+    );
   }
 }
 

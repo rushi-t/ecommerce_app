@@ -36,4 +36,8 @@ class OrderService {
   Stream<List<Order>> userOrderStream(String userId){
     return orderCollection.where("userId", isEqualTo: userId).snapshots().map(_orderListFromSnapshot);
   }
+
+  Stream<Order> orderStream(String uid) {
+    return orderCollection.document(uid).snapshots().map((documentSnapshot) => Order.fromFireBaseSnapshot(documentSnapshot.data));
+  }
 }

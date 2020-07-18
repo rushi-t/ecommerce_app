@@ -34,6 +34,7 @@ class UserTab extends StatefulWidget {
 }
 
 class _UserTabState extends State<UserTab> {
+  User userData = AuthService().userInstance;
   final List<String> avatars = [
     'https://firebasestorage.googleapis.com/v0/b/dl-flutter-ui-challenges.appspot.com/o/img%2F1.jpg?alt=media',
     'https://firebasestorage.googleapis.com/v0/b/dl-flutter-ui-challenges.appspot.com/o/img%2F4.jpg?alt=media',
@@ -60,7 +61,6 @@ class _UserTabState extends State<UserTab> {
         // stream: UserProfileService(uid: "whH3upwE3lOVfGHYYzOx6T34PLt1").userProfileData,
         stream: AuthService().user,
         builder: (context, snapshot) {
-          User userData;
 //          print(AuthService().userInstance);
           if (snapshot.hasData) {
             userData = snapshot.data;
