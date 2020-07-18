@@ -1,16 +1,9 @@
-import 'package:ecommerce_app/screens/authenticate/auth.dart';
-import 'package:ecommerce_app/screens/user/order_tab.dart';
 import 'package:ecommerce_app/screens/user/product_tab.dart';
 import 'package:ecommerce_app/screens/user/user_tab.dart';
-import 'package:ecommerce_app/services/auth.dart';
-import 'package:ecommerce_app/shared/buttons.dart';
 import 'package:ecommerce_app/shared/colors.dart';
 import 'package:ecommerce_app/shared/fryo_icons.dart';
 import 'package:ecommerce_app/shared/styles.dart';
-import 'package:ecommerce_app/widget/utility.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
-import 'package:page_transition/page_transition.dart';
 
 import 'cart_tab.dart';
 

@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:ecommerce_app/models/user.dart';
-import 'package:ecommerce_app/services/database.dart';
 import 'package:ecommerce_app/services/user.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';

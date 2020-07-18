@@ -1,5 +1,3 @@
-import 'package:ecommerce_app/models/product.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:image_picker_web/image_picker_web.dart';
 import 'package:firebase/firebase.dart' as fb;
 

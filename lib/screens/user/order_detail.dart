@@ -1,19 +1,10 @@
 import 'package:ecommerce_app/models/cart_item.dart';
 import 'package:ecommerce_app/models/order.dart';
-import 'package:ecommerce_app/models/product.dart';
-import 'package:ecommerce_app/models/user.dart';
-import 'package:ecommerce_app/screens/authenticate/auth.dart';
-import 'package:ecommerce_app/services/auth.dart';
-import 'package:ecommerce_app/services/cart_item.dart';
 import 'package:ecommerce_app/services/order.dart';
-import 'package:ecommerce_app/shared/buttons.dart';
 import 'package:ecommerce_app/shared/colors.dart';
 import 'package:ecommerce_app/shared/styles.dart';
-import 'package:ecommerce_app/widget/utility.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:page_transition/page_transition.dart';
-import 'package:ecommerce_app/screens/user/home.dart';
 
 class OrderItemTile extends StatefulWidget {
   CartItem cartItem;

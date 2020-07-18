@@ -1,18 +1,11 @@
-import 'dart:html';
-
 import 'package:ecommerce_app/models/user.dart';
-import 'package:ecommerce_app/screens/authenticate/sign_up.dart';
-import 'package:ecommerce_app/screens/user/home.dart';
-import 'package:ecommerce_app/screens/user/product_screen.dart';
 import 'package:ecommerce_app/services/auth.dart';
-import 'package:ecommerce_app/shared/buttons.dart';
 import 'package:ecommerce_app/shared/colors.dart';
 import 'package:ecommerce_app/shared/inputFields.dart';
 import 'package:ecommerce_app/shared/styles.dart';
 import 'package:ecommerce_app/shared/widgets.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:flutter/material.dart';
-import 'package:ecommerce_app/shared/styles.dart';
 
 class Auth extends StatefulWidget {
   final Widget redirectWidget;
@@ -92,7 +85,7 @@ class _AuthState extends State<Auth> {
                           child: IconButton(
                             onPressed: () async {
                               if (_formKey.currentState.validate()) {
-                                AlertDialog alertDialog = showProgressWithMessage(context, "Signing In");
+                                showProgressWithMessage(context, "Signing In");
                                 User user = await _auth.signInWithEmailAndPassword(email, password);
                                 Navigator.pop(context);
                                 if (user == null) {

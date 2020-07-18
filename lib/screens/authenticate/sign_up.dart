@@ -1,6 +1,4 @@
-import 'package:ecommerce_app/screens/admin/product_screen.dart';
 import 'package:ecommerce_app/screens/authenticate/auth.dart';
-import 'package:ecommerce_app/screens/user/home.dart';
 import 'package:ecommerce_app/services/auth.dart';
 import 'package:ecommerce_app/shared/colors.dart';
 import 'package:ecommerce_app/shared/inputFields.dart';
@@ -10,7 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
 
 class SignUp extends StatefulWidget {
-  Widget redirectWidget;
+  final Widget redirectWidget;
 
   SignUp(this.redirectWidget);
 

@@ -1,6 +1,4 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ecommerce_app/models/product.dart';
-import 'package:ecommerce_app/services/product.dart';
 import 'package:uuid/uuid.dart';
 
 class CartItem {
