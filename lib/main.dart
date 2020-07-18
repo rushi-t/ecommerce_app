@@ -32,8 +32,7 @@ class MyApp extends StatelessWidget {
           routes: {
             '/': (context) => Home(),
             '/home': (context) => Home(),
-            '/signin': (context) => Auth(Home()),
-            '/signup': (context) => SignUp(Home()),
+            '/auth': (context) => Auth(Home()),
             '/admin/category': (context) => AdminScreen.CategoryScreen(),
             '/admin/product': (context) => AdminScreen.ProductScreen(),
             '/admin/userProfile': (context) => UserProfileAdmin(),

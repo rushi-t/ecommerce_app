@@ -3,7 +3,6 @@ import 'package:ecommerce_app/screens/authenticate/auth.dart';
 import 'package:ecommerce_app/screens/user/product_detail.dart';
 import 'package:ecommerce_app/services/auth.dart';
 import 'package:ecommerce_app/services/cart_item.dart';
-import 'package:ecommerce_app/shared/buttons.dart';
 import 'package:ecommerce_app/shared/widgets.dart';
 import 'package:ecommerce_app/widget/utility.dart';
 import 'package:flutter/material.dart';
@@ -16,6 +15,7 @@ import 'package:ecommerce_app/shared/fryo_icons.dart';
 import 'package:ecommerce_app/shared/styles.dart';
 import 'package:provider/provider.dart';
 import 'package:page_transition/page_transition.dart';
+import 'package:flappy_search_bar/flappy_search_bar.dart';
 
 class ProductTab extends StatelessWidget {
   ScrollController _hideButtonController;

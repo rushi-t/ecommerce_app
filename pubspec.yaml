@@ -44,6 +44,7 @@ dev_dependencies:
   email_validator: '^1.0.0'
   dio: ^3.0.9
   chips_choice: ^1.2.0
+  flappy_search_bar: 1.4.1
 
 
 # For information on the generic Dart part of this file, see the

@@ -11,7 +11,7 @@ Widget getHomeAppBar(String title) {
     snap: false,
     leading: new Container(),
     backgroundColor: primaryColor,
-    title: Text(title, style: logoWhiteStyle),
+    title: Text(title, style: logoWhiteStyle, textAlign: TextAlign.center),
   );
 }
 

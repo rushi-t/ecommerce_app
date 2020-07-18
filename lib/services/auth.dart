@@ -10,14 +10,30 @@ class AuthService {
   static final AuthService _instance = AuthService._privateConstructor();
   final FirebaseAuth _auth = FirebaseAuth.instance;
   User userInstance;
+  StreamController<User> userStreamController;
 
-  AuthService._(){
-    _auth.onAuthStateChanged.listen((firebaseUser) async{
-      this.userInstance = await UserService().getUser(firebaseUser.uid);
+  AuthService._privateConstructor() {
+    userStreamController = StreamController<User>.broadcast();
+
+    _auth.currentUser().then((firebaseUser) async {
+      if (firebaseUser != null) {
+        this.userInstance = await UserService().getUser(firebaseUser.uid);
+        userStreamController.add(this.userInstance);
+      }
+    });
+
+    _auth.onAuthStateChanged.listen((firebaseUser) async {
+      if (firebaseUser != null) {
+        print("Adding firebase user to auth");
+        this.userInstance = await UserService().getUser(firebaseUser.uid);
+        userStreamController.add(this.userInstance);
+      }
     });
   }
 
-  AuthService._privateConstructor();
+  void dispose() {
+    userStreamController.close();
+  }
 
   factory AuthService() {
     return _instance;
@@ -33,15 +49,15 @@ class AuthService {
 
   // auth change user stream
   Stream<User> get user {
-    if (kDebugMode == true && this.userInstance == null) {
-      print("Using dummy user");
-      Stream<User> userStream = UserService().userStream("M5xzvS3OrVXROwIIsQQfSVCZQ5w2");
-      userStream.listen((user) {
-        this.userInstance = user;
-      });
-      return userStream;
-    }
-    return Stream.value(this.userInstance);
+//    if (kDebugMode == true && this.userInstance == null) {
+//      print("Using dummy user");
+//      Stream<User> userStream = UserService().userStream("M5xzvS3OrVXROwIIsQQfSVCZQ5w2");
+//      userStream.listen((user) {
+//        this.userInstance = user;
+//      });
+//      return userStream;
+//    }
+    return  userStreamController.stream;
   }
 
   // sign in Anonymously

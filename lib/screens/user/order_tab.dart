@@ -99,7 +99,12 @@ class _OrderTabState extends State<OrderTab> {
                 children: [
                   Text("You are not Signed in", style: primaryTextStyleDark),
                   FlatBtn('Sign In', () {
-                    Navigator.push(context, PageTransition(type: PageTransitionType.leftToRight, child: Auth(Home())));
+                    Navigator.push(context, PageTransition(type: PageTransitionType.leftToRight, child: Auth(null))).then((isRefresh) {
+                      if (isRefresh)
+                        setState(() {
+                          user = AuthService().userInstance;
+                        });
+                    });
                   })
                 ],
               ))

@@ -28,7 +28,6 @@ class _AuthState extends State<Auth> {
   final _formKey = GlobalKey<FormState>();
   bool signInSignUpToggle = true;
   String error = '';
-  bool loading = false;
 
   // text field state
   String email = '';
@@ -93,20 +92,18 @@ class _AuthState extends State<Auth> {
                           child: IconButton(
                             onPressed: () async {
                               if (_formKey.currentState.validate()) {
-                                showProgressWithMessage(context, "Signing In");
-                                setState(() => loading = true);
+                                AlertDialog alertDialog = showProgressWithMessage(context, "Signing In");
                                 User user = await _auth.signInWithEmailAndPassword(email, password);
+                                Navigator.pop(context);
                                 if (user == null) {
-                                  Navigator.pop(context);
                                   setState(() {
-                                    loading = false;
                                     error = 'Invalid email or password';
                                   });
                                 } else {
                                   if (widget.redirectWidget != null)
                                     Navigator.pushReplacement(context, PageTransition(type: PageTransitionType.rightToLeft, child: widget.redirectWidget));
                                   else {
-                                    Navigator.pop(context);
+                                    Navigator.pop(context, true);
                                   }
                                 }
                               }
@@ -157,19 +154,18 @@ class _AuthState extends State<Auth> {
                             onPressed: () async {
                               if (_formKey.currentState.validate()) {
                                 showProgressWithMessage(context, "Registering");
-                                setState(() => loading = true);
                                 dynamic result = await _auth.registerWithEmailAndPassword(email, password);
+                                Navigator.pop(context);
                                 if (result == null) {
                                   Navigator.pop(context);
                                   setState(() {
-                                    loading = false;
                                     error = 'This email is already in use by another account';
                                   });
                                 } else {
                                   if (widget.redirectWidget != null)
                                     Navigator.pushReplacement(context, PageTransition(type: PageTransitionType.rightToLeft, child: widget.redirectWidget));
                                   else
-                                    Navigator.pop(context);
+                                    Navigator.pop(context, true);
                                 }
                               }
                             },
