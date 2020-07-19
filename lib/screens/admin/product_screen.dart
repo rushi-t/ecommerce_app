@@ -2,6 +2,7 @@ import 'package:ecommerce_app/models/product.dart';
 import 'package:ecommerce_app/screens/admin/product_form.dart';
 import 'package:ecommerce_app/services/auth.dart';
 import 'package:ecommerce_app/services/product.dart';
+import 'package:ecommerce_app/shared/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:page_transition/page_transition.dart';
@@ -110,17 +111,9 @@ class ProductScreen extends StatelessWidget {
         backgroundColor: Colors.brown[50],
         appBar: AppBar(
           title: Text('Products'),
-          backgroundColor: Colors.brown[400],
+          backgroundColor: primaryColor,
           elevation: 0.0,
-          actions: <Widget>[
-            FlatButton.icon(
-              icon: Icon(Icons.person),
-              label: Text('logout'),
-              onPressed: () async {
-                await _auth.signOut();
-              },
-            ),
-          ],
+          actions: <Widget>[],
         ),
         body: Container(
             decoration: BoxDecoration(
@@ -133,6 +126,7 @@ class ProductScreen extends StatelessWidget {
         floatingActionButton: new FloatingActionButton(
             elevation: 0.0,
             child: new Icon(Icons.add),
+            backgroundColor: primaryColor,
 //            onPressed: () => _showProductAddUpdatePanel()
             onPressed: () => Navigator.push(context, PageTransition(type: PageTransitionType.rightToLeft, child: ProductForm()))),
       ),

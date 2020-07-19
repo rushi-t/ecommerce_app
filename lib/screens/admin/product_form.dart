@@ -3,6 +3,7 @@ import 'package:ecommerce_app/models/category.dart';
 import 'package:ecommerce_app/services/category.dart';
 import 'package:ecommerce_app/services/product.dart';
 import 'package:ecommerce_app/services/storage.dart';
+import 'package:ecommerce_app/shared/buttons.dart';
 import 'package:ecommerce_app/shared/colors.dart';
 import 'package:ecommerce_app/shared/constants.dart';
 import 'package:ecommerce_app/shared/loading.dart';
@@ -41,7 +42,7 @@ class _ProductFormState extends State<ProductForm> {
     return Scaffold(
         backgroundColor: bgColor,
         appBar: AppBar(
-          title: Text('My Orders'),
+          title: Text('Add/Update Product'),
           backgroundColor: primaryColor,
           elevation: 0.0,
           actions: <Widget>[],
@@ -57,10 +58,6 @@ class _ProductFormState extends State<ProductForm> {
                     key: _formKey,
                     child: Column(
                       children: <Widget>[
-                        Text(
-                          (widget.product.uid == null ? 'Add' : 'Update') + ' Product',
-                          style: TextStyle(fontSize: 18.0),
-                        ),
                         SizedBox(height: 20.0),
                         ImagePickerWidget(
                             passedImgUrl: widget.product.imgUrl,
@@ -131,9 +128,8 @@ class _ProductFormState extends State<ProductForm> {
                           return ChipsChoice<String>.multiple(
                             value: tags,
                             options: ChipsChoiceOption.listFrom<String, String>(
-                              source: (widget.product.attributes != null && widget.product.attributes.containsKey("ingredients"))
-                                  ? widget.product.attributes["ingredients"].children.keys.toList()
-                                  : [],
+                              source:
+                                  (widget.product.attributes != null && widget.product.attributes.containsKey("ingredients")) ? widget.product.attributes["ingredients"].children.keys.toList() : [],
                               value: (i, v) => v,
                               label: (i, v) => v,
                             ),
@@ -202,44 +198,38 @@ class _ProductFormState extends State<ProductForm> {
                           },
                         ),
                         SizedBox(height: 10.0),
-                        RaisedButton(
-                            color: Colors.pink[400],
-                            child: Text(
-                              widget.product.uid == null ? 'Add' : 'Update',
-                              style: TextStyle(color: Colors.white70),
-                            ),
-                            onPressed: () async {
-                              if (_formKey.currentState.validate()) {
+                        FlatBtn("Create/Update", () async {
+                          if (_formKey.currentState.validate()) {
+                            try {
+                              if (_imageData != null && widget.product.imgUrl != null && widget.product.imgUrl != "") {
                                 try {
-                                  if (_imageData != null && widget.product.imgUrl != null && widget.product.imgUrl != "") {
-                                    try {
-                                      await StorageService().deleteImage(_imageData, "product", widget.product.uid);
-                                      widget.product.imgUrl = null;
-                                      print("Old image deleted");
-                                    } on Exception catch (e) {
-                                      print("Error while deleting old image" + e.toString());
-                                    }
-                                  }
-
-                                  if (_imageData != null) {
-                                    try {
-                                      Uri uri = await StorageService().createImage(_imageData, "product", widget.product.uid);
-                                      if (uri != null) {
-                                        widget.product.imgUrl = uri.toString();
-                                        print("new image added");
-                                      }
-                                    } on Exception catch (e) {
-                                      print("Error while creating new image" + e.toString());
-                                    }
-                                  }
-
-                                  await ProductService().updateProduct(widget.product);
-                                  Navigator.pop(context);
+                                  await StorageService().deleteImage(_imageData, "product", widget.product.uid);
+                                  widget.product.imgUrl = null;
+                                  print("Old image deleted");
                                 } on Exception catch (e) {
-                                  print("Error while uploading image" + e.toString());
+                                  print("Error while deleting old image" + e.toString());
                                 }
                               }
-                            }),
+
+                              if (_imageData != null) {
+                                try {
+                                  Uri uri = await StorageService().createImage(_imageData, "product", widget.product.uid);
+                                  if (uri != null) {
+                                    widget.product.imgUrl = uri.toString();
+                                    print("new image added");
+                                  }
+                                } on Exception catch (e) {
+                                  print("Error while creating new image" + e.toString());
+                                }
+                              }
+
+                              await ProductService().updateProduct(widget.product);
+                              Navigator.pop(context);
+                            } on Exception catch (e) {
+                              print("Error while uploading image" + e.toString());
+                            }
+                          }
+                        }),
                       ],
                     ),
                   );

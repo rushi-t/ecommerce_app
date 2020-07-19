@@ -19,4 +19,11 @@ class User {
         email = snapshot['email'],
         enabled = snapshot['enabled'] != null ? snapshot['enabled'] : false,
         address = snapshot['address'];
+
+  bool canOrder(){
+    if(!enabled || phone == null || address == null ){
+      return false;
+    }
+    return true;
+  }
 }

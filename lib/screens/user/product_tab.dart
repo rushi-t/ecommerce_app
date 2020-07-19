@@ -38,34 +38,22 @@ class ProductTab extends StatelessWidget {
                   ],
                 ))),
 
-        SliverToBoxAdapter(child: Container(height: 50.0, child: sectionHeader('All Dishes', onViewMore: () {
-          Navigator.push(
-              context,
-              PageTransition(
-                  type: PageTransitionType.rightToLeft,
-                  child: ProductList(
-                  )));
-        }))),
+        SliverToBoxAdapter(
+            child: Container(
+                height: 50.0,
+                child: sectionHeader('All Dishes', onViewMore: () {
+                  Navigator.push(context, PageTransition(type: PageTransitionType.rightToLeft, child: ProductList()));
+                }))),
         StreamBuilder(
             stream: ProductService().productsStream,
             builder: (context, snapshot) {
 //                print(MediaQuery.of(context).size.width / 3);
-              double cardWidth = MediaQuery
-                  .of(context)
-                  .orientation == Orientation.portrait ? MediaQuery
-                  .of(context)
-                  .size
-                  .width / 3 : 170;
-              int cardCount = MediaQuery
-                  .of(context)
-                  .orientation == Orientation.portrait ? 3 : MediaQuery
-                  .of(context)
-                  .size
-                  .width ~/ 170;
+              double cardWidth = MediaQuery.of(context).orientation == Orientation.portrait ? MediaQuery.of(context).size.width / 3 : 170;
+              int cardCount = MediaQuery.of(context).orientation == Orientation.portrait ? 3 : MediaQuery.of(context).size.width ~/ 170;
               return SliverGrid(
                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: cardCount, mainAxisSpacing: 0, crossAxisSpacing: 0, childAspectRatio: 0.75),
                   delegate: SliverChildBuilderDelegate(
-                        (context, index) => ProductTile(snapshot.data[index], cardWidth),
+                    (context, index) => ProductTile(snapshot.data[index], cardWidth),
                     childCount: snapshot.hasData ? snapshot.data.length : 0,
                   ));
             })
@@ -85,7 +73,6 @@ class ProductTab extends StatelessWidget {
     );
   }
 }
-
 
 class CategoryTile extends StatelessWidget {
   final Category category;
