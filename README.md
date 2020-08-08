@@ -14,4 +14,11 @@ A few resources to get you started if this is your first Flutter project:
 For help getting started with Flutter, view our
 [online documentation](https://flutter.dev/docs), which offers tutorials,
 samples, guidance on mobile development, and a full API references.
-Added by Ganesh.
+
+# Web deploy
+flutter build web
+firebase deploy
+
+# localization generation
+flutter pub run easy_localization:generate --source-dir ./assets/translations
+flutter pub run easy_localization:generate --source-dir ./assets/translations -f keys -o locale_keys.g.dart

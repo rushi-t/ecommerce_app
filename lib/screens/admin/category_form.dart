@@ -1,10 +1,16 @@
 import 'package:ecommerce_app/models/category.dart';
 import 'package:ecommerce_app/services/category.dart';
 import 'package:ecommerce_app/services/storage.dart';
+import 'package:ecommerce_app/shared/buttons.dart';
 import 'package:ecommerce_app/shared/constants.dart';
 import 'package:ecommerce_app/widget/ImagePickerWidget.dart';
+//import 'package:ecommerce_app/widget/ImagePickerWidget.dart';
+import 'package:ecommerce_app/widget/utility.dart';
 import 'package:flutter/material.dart';
-import 'package:image_picker_web/src/Models/Types.dart';
+import 'dart:typed_data';
+import 'package:file_picker/file_picker.dart';
+import 'package:file_picker_cross/file_picker_cross.dart';
+
 
 class CategoryForm extends StatefulWidget {
   Category category = Category();
@@ -17,7 +23,7 @@ class CategoryForm extends StatefulWidget {
 
 class _CategoryFormState extends State<CategoryForm> {
   final _formKey = GlobalKey<FormState>();
-  MediaInfo _imageData;
+  Uint8List _imageData;
 
   @override
   Widget build(BuildContext context) {
@@ -30,6 +36,21 @@ class _CategoryFormState extends State<CategoryForm> {
             style: TextStyle(fontSize: 18.0),
           ),
           SizedBox(height: 10.0),
+//          FlatBtn("Select Image", () async{
+//            FilePickerCross.pick().then((filePicker) => setState(() {
+////              String path = filePicker.path;
+////              int len = filePicker.toUint8List().lengthInBytes;
+////              print(path);
+//              try {
+//                _imageData = filePicker.toUint8List();
+//
+//              } catch (e) {
+//                String _fileString =
+//                    'Not a text file. Showing base64.\n\n' + filePicker.toBase64();
+//              }
+//            }));
+////            String file = await FilePicker.getFilePath();
+//          }),
           ImagePickerWidget(
               passedImgUrl: widget.category.imgUrl,
               onImageChanged: (imageData) {
@@ -56,7 +77,7 @@ class _CategoryFormState extends State<CategoryForm> {
                   try {
                     if (widget.category.imgUrl != null && widget.category.imgUrl != "") {
                       try {
-                        await StorageService().deleteImage(_imageData, "category", widget.category.uid);
+                        await StorageService().deleteImage("category", widget.category.uid);
                         widget.category.imgUrl = null;
                         print("Old image deleted");
                       } on Exception catch (e) {

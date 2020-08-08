@@ -7,6 +7,7 @@ import 'package:ecommerce_app/services/cart_item.dart';
 import 'package:ecommerce_app/services/order.dart';
 import 'package:ecommerce_app/shared/buttons.dart';
 import 'package:ecommerce_app/shared/colors.dart';
+import 'package:ecommerce_app/shared/localization.dart';
 import 'package:ecommerce_app/shared/styles.dart';
 import 'package:ecommerce_app/shared/widgets.dart';
 import 'package:ecommerce_app/widget/utility.dart';
@@ -28,7 +29,7 @@ class _CartTileState extends State<CartTile> {
   @override
   Widget build(BuildContext context) {
     return Container(
-        margin: EdgeInsets.all(8.0),
+        margin: EdgeInsets.all(5.0),
         decoration: cardDecoration,
         child: Row(
           children: <Widget>[
@@ -79,7 +80,7 @@ class _CartTileState extends State<CartTile> {
                   children: [
                     Container(
                       margin: EdgeInsets.all(6.0),
-                      decoration: BoxDecoration(borderRadius: BorderRadius.circular(100), border: Border.all(width: 2, color: primaryColorDark)),
+                      decoration: BoxDecoration(borderRadius: BorderRadius.circular(50), border: Border.all(width: 1, color: primaryColorDark)),
                       child: GestureDetector(
                           onTap: () async {
                             ++widget.cartItem.quantity;
@@ -88,6 +89,7 @@ class _CartTileState extends State<CartTile> {
                           },
                           child: Icon(
                             Icons.add,
+                            size:24,
                             color: primaryColorDark,
                           )),
                     ),
@@ -97,7 +99,7 @@ class _CartTileState extends State<CartTile> {
                     ),
                     Container(
                       margin: EdgeInsets.all(6.0),
-                      decoration: BoxDecoration(borderRadius: BorderRadius.circular(100), border: Border.all(width: 2, color: primaryColorDark)),
+                      decoration: BoxDecoration(borderRadius: BorderRadius.circular(50), border: Border.all(width: 1, color: primaryColorDark)),
                       child: GestureDetector(
                           onTap: () async {
                             if (widget.cartItem.quantity > 1) {
@@ -132,6 +134,7 @@ class _CartTileState extends State<CartTile> {
                           },
                           child: Icon(
                             Icons.remove,
+                            size:24,
                             color: primaryColorDark,
                           )),
                     )
@@ -182,7 +185,6 @@ class _CartTabState extends State<CartTab> {
               children: [
                 Expanded(
                   child: CustomScrollView(controller: widget._hideButtonController, slivers: <Widget>[
-                    getHomeAppBar("eRestro"),
                     if (snapshot.hasData && snapshot.data.length > 0)
                       SliverList(
                           delegate: SliverChildBuilderDelegate(
@@ -212,7 +214,7 @@ class _CartTabState extends State<CartTab> {
                           ),
                         ],
                       ),
-                      padding: EdgeInsets.only(left: 30, right: 30),
+                      padding: EdgeInsets.all(10),
                       height: 60,
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,

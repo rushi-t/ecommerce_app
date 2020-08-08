@@ -1,8 +1,11 @@
 import 'package:ecommerce_app/screens/user/product_tab.dart';
 import 'package:ecommerce_app/screens/user/user_tab.dart';
 import 'package:ecommerce_app/shared/colors.dart';
+import 'package:ecommerce_app/shared/constants.dart';
 import 'package:ecommerce_app/shared/fryo_icons.dart';
+import 'package:ecommerce_app/shared/localization.dart';
 import 'package:ecommerce_app/shared/styles.dart';
+import 'package:ecommerce_app/shared/widgets.dart';
 import 'package:flutter/material.dart';
 
 import 'cart_tab.dart';
@@ -64,37 +67,46 @@ class _HomeState extends State<Home> {
     ];
 
     return Scaffold(
-        backgroundColor: bgColor,
-        body: _tabs[_selectedIndex],
-        bottomNavigationBar: Container(
+          backgroundColor: bgColor,
+          body: Center(
+              child: Container(
+                  width: getScreenWidth(context),
+                  child: NestedScrollView(
+                      headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+                        return <Widget>[getHomeAppBar(Localization.of(context).translate('app_title'), onPressed: (){})];
+                      },
+                      body: _tabs[_selectedIndex]))),
+          bottomNavigationBar: Container(
 //          height: _isVisible ? 60 : 0.0,
-          child: BottomNavigationBar(
-            items: <BottomNavigationBarItem>[
-              BottomNavigationBarItem(
-                  icon: Icon(Fryo.shop),
-                  title: Text(
-                    'Store',
-                    style: tabLinkStyle,
-                  )),
-              BottomNavigationBarItem(
-                  icon: Icon(Fryo.cart),
-                  title: Text(
-                    'My Cart',
-                    style: tabLinkStyle,
-                  )),
-              BottomNavigationBarItem(
-                  icon: Icon(Fryo.user_1),
-                  title: Text(
-                    'Profile',
-                    style: tabLinkStyle,
-                  )),
-            ],
-            currentIndex: _selectedIndex,
-            type: BottomNavigationBarType.fixed,
-            fixedColor: Colors.green[600],
-            onTap: _onItemTapped,
+
+            child: BottomNavigationBar(
+              items: <BottomNavigationBarItem>[
+                BottomNavigationBarItem(
+                    icon: Icon(Fryo.shop),
+                    title: Text(
+                      'Store',
+                      style: tabLinkStyle,
+                    )),
+                BottomNavigationBarItem(
+                    icon: Icon(Fryo.cart),
+                    title: Text(
+                      'My Cart',
+                      style: tabLinkStyle,
+                    )),
+                BottomNavigationBarItem(
+                    icon: Icon(Fryo.user_1),
+                    title: Text(
+                      'Profile',
+                      style: tabLinkStyle,
+                    )),
+              ],
+              currentIndex: _selectedIndex,
+              type: BottomNavigationBarType.fixed,
+              fixedColor: Colors.green[600],
+              onTap: _onItemTapped,
+            ),
           ),
-        ));
+    );
   }
 
   void _onItemTapped(int index) {

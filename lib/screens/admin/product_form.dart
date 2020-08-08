@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:ecommerce_app/models/product.dart';
 import 'package:ecommerce_app/models/category.dart';
 import 'package:ecommerce_app/services/category.dart';
@@ -8,10 +10,10 @@ import 'package:ecommerce_app/shared/colors.dart';
 import 'package:ecommerce_app/shared/constants.dart';
 import 'package:ecommerce_app/shared/loading.dart';
 import 'package:ecommerce_app/widget/ImagePickerWidget.dart';
+import 'package:ecommerce_app/widget/utility.dart';
 import 'package:flutter/material.dart';
-import 'package:firebase/firebase.dart' as fb;
+//import 'package:firebase/firebase.dart' as fb;
 import 'package:flutter/services.dart';
-import 'package:image_picker_web/src/Models/Types.dart';
 
 import 'package:chips_choice/chips_choice.dart';
 
@@ -26,16 +28,9 @@ class ProductForm extends StatefulWidget {
 
 class _ProductFormState extends State<ProductForm> {
   final _formKey = GlobalKey<FormState>();
-  MediaInfo _imageData;
+  Uint8List _imageData;
   List<String> tags = [];
 
-  Future<Uri> uploadImageFile(var image, {String imageName}) async {
-    fb.StorageReference storageRef = fb.storage().ref();
-    fb.UploadTaskSnapshot uploadTaskSnapshot = await storageRef.put(image).future;
-
-    Uri imageUri = await uploadTaskSnapshot.ref.getDownloadURL();
-    return imageUri;
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -181,9 +176,15 @@ class _ProductFormState extends State<ProductForm> {
                           validator: (val) => val.isEmpty ? 'Please enter Product Description' : null,
                           onChanged: (val) => setState(() => widget.product.description = val),
                         ),
+                        SizedBox(height: 20.0),
+                        TextFormField(
+                          initialValue: widget.product.content,
+                          decoration: textInputDecoration(labelText: "Product weight, quantity, content...etc"),
+                          onChanged: (val) => setState(() => widget.product.content = val),
+                        ),
                         SizedBox(height: 10.0),
                         DropdownButtonFormField(
-                          value: widget.product.categoryUid,
+                          value: categoryList.any((category) => category.uid == widget.product.categoryUid)  ? widget.product.categoryUid : null ,
                           decoration: textInputDecoration(labelText: "Product Category"),
                           items: categoryList.map((category) {
                             return DropdownMenuItem(
@@ -203,7 +204,7 @@ class _ProductFormState extends State<ProductForm> {
                             try {
                               if (_imageData != null && widget.product.imgUrl != null && widget.product.imgUrl != "") {
                                 try {
-                                  await StorageService().deleteImage(_imageData, "product", widget.product.uid);
+                                  await StorageService().deleteImage("product", widget.product.uid);
                                   widget.product.imgUrl = null;
                                   print("Old image deleted");
                                 } on Exception catch (e) {

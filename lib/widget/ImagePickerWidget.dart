@@ -1,8 +1,13 @@
-import 'package:flutter/material.dart';
-import 'package:image_picker_web/image_picker_web.dart';
-import 'package:image_picker_web/src/Models/Types.dart';
+import 'dart:typed_data';
 
-typedef ImageDataCallBack = Function(MediaInfo imageData);
+import 'package:ecommerce_app/widget/utility.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:ecommerce_app/widget/utility.dart' as utility;
+import 'package:file_picker_cross/file_picker_cross.dart';
+
+
+typedef ImageDataCallBack = Function(Uint8List imageData);
 
 class ImagePickerWidget extends StatefulWidget {
   final String passedImgUrl;
@@ -15,7 +20,7 @@ class ImagePickerWidget extends StatefulWidget {
 
 class _ImagePickerWidgetState extends State<ImagePickerWidget> {
   String imgUrl;
-  MediaInfo imageData;
+  Uint8List imageData;
 
   @override
   initState() {
@@ -24,11 +29,21 @@ class _ImagePickerWidgetState extends State<ImagePickerWidget> {
   }
 
   Future getImageFromPicker() async {
-    var imageData = await ImagePickerWeb.getImageInfo;
-    if (imageData != null) {
+    // Old picker
+//    var imageData = await ImagePickerWeb.getImageInfo;
+//    if (imageData != null) {
+//      setState(() {
+////        print(imageData.data);
+//        this.imageData = imageData.data;
+//        widget.onImageChanged(this.imageData);
+//      });
+//    }
+
+    FilePickerCross filePickerCross = await FilePickerCross.pick();
+    if (filePickerCross != null) {
       setState(() {
 //        print(imageData.data);
-        this.imageData = imageData;
+        this.imageData = filePickerCross.toUint8List();
         widget.onImageChanged(this.imageData);
       });
     }
@@ -63,7 +78,7 @@ class _ImagePickerWidgetState extends State<ImagePickerWidget> {
         child: Stack(
           children: <Widget>[
             Image.memory(
-              imageData.data,
+              imageData,
               width: 100,
               height: 80,
             ),

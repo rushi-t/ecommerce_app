@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 
+const double MAX_SCREEN_WIDTH = 1200;
+const double searchBarHeight = 60;
+
 InputDecoration textInputDecoration({String labelText=""})
 {
   return InputDecoration(
@@ -14,6 +17,10 @@ InputDecoration textInputDecoration({String labelText=""})
       borderSide: BorderSide(color: Colors.pink, width: 2.0),
     ),
   );
+}
+
+double getScreenWidth(context){
+ return MediaQuery.of(context).orientation == Orientation.landscape ? MAX_SCREEN_WIDTH : MediaQuery.of(context).size.width;
 }
 //const textInputDecoration() = InputDecoration(
 //  fillColor: Colors.black12,

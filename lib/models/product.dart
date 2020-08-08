@@ -13,7 +13,7 @@ class AttributeChild{
 
   AttributeChild.fromJson(Map<String, dynamic> json)
       : name = json["name"],
-        priceOffset = json["priceOffset"],
+        priceOffset = json["priceOffset"].toDouble(),
         isSelected = json["isSelected"];
 }
 
@@ -64,12 +64,14 @@ class Product {
   String name;
   String imgUrl;
   double price;
+  String content; //can be used for product content description as well. e.g- 1 kg, 1 dozen, 6 pcs...etc
   bool enabled = true;
   String description;
   String categoryUid;
   Map<String, Attribute> attributes;
+  List<String> searchKeywords;
 
-  Product({this.name, this.imgUrl, this.price, this.enabled, this.description, this.categoryUid, this.attributes});
+  Product({this.name, this.imgUrl, this.price, this.content, this.enabled, this.description, this.categoryUid, this.attributes, this.searchKeywords});
 
   Attribute addAttribute(String attributeName, bool isMutuallyExclusive)
   {
@@ -100,10 +102,12 @@ class Product {
       'name': this.name,
       'imgUrl': this.imgUrl,
       'price': this.price,
+      'content': this.content,
       'enabled': this.enabled,
       'description': this.description,
       'categoryUid': this.categoryUid,
-      'attributes': this.toAttributeJson()
+      'attributes': this.toAttributeJson(),
+      'searchKeywords': this.searchKeywords
     };
   }
 
@@ -111,9 +115,11 @@ class Product {
       : uid = snapshot['uid'],
         name = snapshot['name'],
         imgUrl = snapshot['imgUrl'],
-        price = snapshot['price'],
+        price = snapshot['price'].toDouble(),
+        content = snapshot['content'],
         enabled = true,
         description = snapshot['description'],
         categoryUid = snapshot['categoryUid'],
-        attributes = fromAttributeJsonToAttributes(snapshot['attributes']);
+        attributes = fromAttributeJsonToAttributes(snapshot['attributes']),
+        searchKeywords = snapshot['searchKeywords'] != null ? List<String>.from(snapshot['searchKeywords']) : null;
 }

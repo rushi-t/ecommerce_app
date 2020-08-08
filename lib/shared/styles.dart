@@ -7,7 +7,7 @@ import './colors.dart';
 
 const logoStyle = TextStyle(fontFamily: 'Pacifico', fontSize: 30, color: Colors.black54, letterSpacing: 2);
 
-const logoWhiteStyle = TextStyle(fontFamily: 'Pacifico', fontSize: 21, letterSpacing: 2, color: Colors.white);
+const logoWhiteStyle = TextStyle(fontFamily: 'Pacifico', fontSize: 24, letterSpacing: 2, color: Colors.white);
 const whiteText = TextStyle(color: Colors.white,);
 const disabledText = TextStyle(color: Colors.grey, );
 const contrastText = TextStyle(color: primaryColor,);

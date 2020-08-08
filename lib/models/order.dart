@@ -35,7 +35,7 @@ class Order {
         dateTime = snapshot['dateTime'].toDate(),
         userId = snapshot['userId'],
         items = fromFireBaseSnapShotToCartList(snapshot['items']),
-        total = snapshot['total'],
+        total = snapshot['total'].toDouble(),
         status = snapshot['status'];
 
   static String generateOrderId(DateTime dateTime) {

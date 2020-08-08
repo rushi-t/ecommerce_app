@@ -11,6 +11,16 @@ FlatButton FlatBtn(String text, onPressed) {
   );
 }
 
+FlatButton FlatSecondaryBtn(String text, onPressed) {
+  return FlatButton(
+    onPressed: onPressed,
+    child: Text(text),
+    textColor: primaryColor,
+    color: white,
+    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
+  );
+}
+
 OutlineButton OutlineBtn(String text, onPressed) {
   return OutlineButton(
     onPressed: onPressed,

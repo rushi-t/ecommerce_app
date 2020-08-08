@@ -22,4 +22,10 @@ class Category {
         name = snapshot['name'] ?? '',
         imgUrl = snapshot['imgUrl'] ?? '',
         enabled = snapshot['enabled'] ?? true;
+
+  @override
+  bool operator ==(other) => this.uid == other.uid;
+
+//  @override
+//  int get hashCode => uid;
 }

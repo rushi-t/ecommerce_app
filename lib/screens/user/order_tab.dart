@@ -25,7 +25,7 @@ class _OrderTileState extends State<OrderTile> {
     return InkWell(
       onTap: (){Navigator.push(context, PageTransition(type: PageTransitionType.rightToLeft, child: OrderDetail(order: widget.order,)));},
       child: Container(
-          margin: EdgeInsets.all(8.0),
+          margin: EdgeInsets.all(5.0),
           decoration: cardDecoration,
           child: Row(
             children: <Widget>[

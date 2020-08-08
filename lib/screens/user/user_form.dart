@@ -10,9 +10,9 @@ import 'package:ecommerce_app/shared/constants.dart';
 import 'package:ecommerce_app/shared/loading.dart';
 import 'package:ecommerce_app/widget/ImagePickerWidget.dart';
 import 'package:flutter/material.dart';
-import 'package:firebase/firebase.dart' as fb;
+//import 'package:firebase/firebase.dart' as fb;
+//import 'package:firebase_storage/firebase_storage.dart' as fb;
 import 'package:flutter/services.dart';
-import 'package:image_picker_web/src/Models/Types.dart';
 import 'package:ecommerce_app/shared/buttons.dart';
 import 'package:ecommerce_app/shared/colors.dart';
 import 'package:ecommerce_app/shared/inputFields.dart' as tb;
@@ -31,20 +31,11 @@ class UserForm extends StatefulWidget {
 
 class _UserFormState extends State<UserForm> {
   final _formKey = GlobalKey<FormState>();
-  MediaInfo _imageData;
   String userName;
   String userPhone;
   String userAddress;
   String error = '';
   bool loading = false;
-
-  Future<Uri> uploadImageFile(var image, {String imageName}) async {
-    fb.StorageReference storageRef = fb.storage().ref();
-    fb.UploadTaskSnapshot uploadTaskSnapshot = await storageRef.put(image).future;
-
-    Uri imageUri = await uploadTaskSnapshot.ref.getDownloadURL();
-    return imageUri;
-  }
 
   @override
   Widget build(BuildContext context) {

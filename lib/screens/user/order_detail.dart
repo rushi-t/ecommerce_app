@@ -19,7 +19,7 @@ class _OrderItemTileState extends State<OrderItemTile> {
   @override
   Widget build(BuildContext context) {
     return Container(
-        margin: EdgeInsets.all(8.0),
+        margin: EdgeInsets.only(top:10.0),
         decoration: cardDecoration,
         child: Row(
           children: <Widget>[

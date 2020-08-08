@@ -6,9 +6,13 @@ import 'package:ecommerce_app/services/auth.dart';
 import 'package:ecommerce_app/services/cart_item.dart';
 import 'package:ecommerce_app/shared/colors.dart';
 import 'package:ecommerce_app/shared/styles.dart';
+import 'package:ecommerce_app/shared/widgets.dart';
 import 'package:ecommerce_app/widget/utility.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
+import 'package:transparent_image/transparent_image.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 class ProductTile extends StatelessWidget {
   final Product product;
@@ -43,26 +47,14 @@ class ProductTile extends StatelessWidget {
       child: Container(
         width: cardWidth,
         child: Card(
-          elevation: 4.0,
+          elevation: 6.0,
           child: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Expanded(
-                child: product.imgUrl != null && product.imgUrl != ""
-                    ? Image.network(
-                        product.imgUrl,
-                        width: cardWidth,
-                        fit: BoxFit.cover,
-                      )
-                    : Image.asset(
-                        "assets/plate.jpg",
-                        width: cardWidth,
-                        fit: BoxFit.cover,
-                      ),
-              ),
+              Expanded(child: ImageWidget(product.imgUrl, "assets/plate.jpg", width: cardWidth, boxFit: BoxFit.cover)),
               Padding(
-                padding: const EdgeInsets.only(left: 12.0, right: 12.0, top: 8.0, bottom: 8.0),
+                padding: const EdgeInsets.all(8.0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.end,
@@ -73,7 +65,14 @@ class ProductTile extends StatelessWidget {
                       style: primaryTextStyleDark,
                     ),
                     SizedBox(
-                      height: 10.0,
+                      height: 4.0,
+                    ),
+                    Text(
+                      product.content ?? "",
+                      style: TextStyle(fontSize: 10),
+                    ),
+                    SizedBox(
+                      height: 8.0,
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
