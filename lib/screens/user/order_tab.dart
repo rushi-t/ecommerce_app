@@ -42,28 +42,41 @@ class _OrderTileState extends State<OrderTile> {
               Expanded(
                 flex: 2,
                 child: Container(
-                  padding: EdgeInsets.all(8.0),
-                  child: Column(
+                  padding: EdgeInsets.all(8),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisSize: MainAxisSize.min,
-                    children: <Widget>[
-                      Text(
-                        "Order ID: " + Order.generateOrderId(widget.order.dateTime),
-                        style: primaryTextStyleDark,
-                      ),
-                      SizedBox(
-                        height: 5.0,
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        mainAxisSize: MainAxisSize.min,
-                        children: <Widget>[
-                          Text(
-                            "Total: ₹" + (widget.order.total).toString(),
-                            style: primaryTextStyle,
+                    children: [
+                      Expanded(
+                        child: Container(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisSize: MainAxisSize.min,
+                            children: <Widget>[
+                              Text(
+                                "Order ID: " + Order.generateOrderId(widget.order.dateTime),
+                                style: primaryTextStyleDark,
+                              ),
+                              SizedBox(
+                                height: 5.0,
+                              ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                mainAxisSize: MainAxisSize.min,
+                                children: <Widget>[
+                                  Text(
+                                    "Total: ₹" + (widget.order.total).toString(),
+                                    style: primaryTextStyle,
+                                  ),
+                                ],
+                              ),
+                            ],
                           ),
-                        ],
+                        ),
                       ),
+                      Text( orderStatusList[widget.order.status ?? 0],
+                        style: h6,
+                      )
                     ],
                   ),
                 ),

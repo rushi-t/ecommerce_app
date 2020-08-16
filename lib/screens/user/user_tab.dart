@@ -1,6 +1,7 @@
 import 'package:ecommerce_app/models/user.dart';
 import 'package:ecommerce_app/models/feedback.dart' as fm;
 import 'package:ecommerce_app/screens/admin/category_screen.dart';
+import 'package:ecommerce_app/screens/admin/order_list.dart';
 import 'package:ecommerce_app/screens/admin/product_screen.dart';
 import 'package:ecommerce_app/services/auth.dart';
 import 'package:ecommerce_app/services/feedback.dart' as fb;
@@ -193,6 +194,15 @@ class UserInfoVersion2 extends StatelessWidget {
                 }),
                 showLink("Manage Products", () {
                   Navigator.push(context, PageTransition(type: PageTransitionType.rightToLeft, child: ProductScreen()));
+                }),
+				     showLink("Manage Orders", () {
+                  Navigator.push(
+                      context,
+                      PageTransition(
+                          type: PageTransitionType.rightToLeft,
+                          child: OrderList(
+//                            category: null,
+                          )));
                 }),
               ],
             ),
