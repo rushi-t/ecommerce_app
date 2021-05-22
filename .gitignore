@@ -75,3 +75,4 @@
 # google services
 **/android/app/google-services.json
 
+/.firebase/

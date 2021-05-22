@@ -12,7 +12,6 @@ import 'package:page_transition/page_transition.dart';
 
 class OrderTile extends StatefulWidget {
   Order order;
-
   OrderTile({this.order});
 
   @override
