@@ -40,4 +40,15 @@ class OrderService {
   Stream<Order> orderStream(String uid) {
     return orderCollection.document(uid).snapshots().map((documentSnapshot) => Order.fromFireBaseSnapshot(documentSnapshot.data));
   }
+
+  Stream<List<Order>> filterStream({List<int> orderStatusList, DateTime fromDate,DateTime toDate}) {
+    Query query = orderCollection;
+
+    query = fromDate != null ?  query.where('dateTime', isGreaterThanOrEqualTo: fromDate): query;
+    query = toDate != null ? query.where('dateTime', isLessThanOrEqualTo: toDate): query;
+    query = orderStatusList != null  && orderStatusList.isNotEmpty ?  query.where('status', whereIn: orderStatusList): query;
+    print("Query= " + orderStatusList.toString());
+    return query.snapshots().map(_orderListFromSnapshot);
+  }
+
 }

@@ -52,7 +52,7 @@ dev_dependencies:
 #  file_picker: ^1.13.0+1
   file_picker_cross: ^3.0.2
   transparent_image: ^1.0.0
-
+  flutter_datetime_picker:
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -85,6 +85,7 @@ flutter:
   #   - family: Schyler
   #     fonts:
   #       - asset: fonts/Schyler-Regular.ttf
+
   #       - asset: fonts/Schyler-Italic.ttf
   #         style: italic
   #   - family: Trajan Pro
