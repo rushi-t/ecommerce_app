@@ -16,7 +16,6 @@ import 'package:ecommerce_app/models/product.dart';
 import 'package:ecommerce_app/services/category.dart';
 import 'package:ecommerce_app/services/product.dart';
 import 'package:ecommerce_app/shared/colors.dart';
-import 'package:ecommerce_app/shared/fryo_icons.dart';
 import 'package:ecommerce_app/shared/styles.dart';
 import 'package:ecommerce_app/shared/inputFields.dart';
 import 'package:ecommerce_app/services/user.dart';

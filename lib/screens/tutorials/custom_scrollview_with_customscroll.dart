@@ -9,10 +9,10 @@ import 'package:ecommerce_app/screens/user/product_screen.dart';
 import 'package:ecommerce_app/services/category.dart';
 import 'package:ecommerce_app/services/product.dart';
 import 'package:ecommerce_app/shared/colors.dart';
-import 'package:ecommerce_app/shared/fryo_icons.dart';
 import 'package:ecommerce_app/shared/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class CustomScrollViewTest extends StatelessWidget {
   @override
@@ -173,7 +173,7 @@ class CategoryTile extends StatelessWidget {
                 heroTag: category.name,
                 onPressed: () {},
                 backgroundColor: white,
-                child: category.imgUrl == null || category.imgUrl == "" ? Icon(Fryo.dinner, size: 35, color: Colors.black87) : Image.network(category.imgUrl),
+                child: category.imgUrl == null || category.imgUrl == "" ? Icon(FontAwesomeIcons.pizzaSlice, size: 35, color: Colors.black87) : Image.network(category.imgUrl),
               )),
           Text(category.name + ' ›', style: categoryText)
         ],
