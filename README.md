@@ -1,24 +1,20 @@
 # ecommerce_app
+Generic eCommerce app made with Flutter & Firebase 
 
-A new Flutter project.
+## About
+This is app is developed with intention to cater any online eCommerce business. Frontend is developed in Flutter & backend in Firebase.
 
-## Getting Started
+This app also supports below Admin pages:
+ - Create Product/Category
+ - View/Manage Orders
 
-This project is a starting point for a Flutter application.
 
-A few resources to get you started if this is your first Flutter project:
+## Screens
+ - Home
+ - Product Category
+ - Product Detail
+ - Cart
+ - Order List
+ - Order Detail
+ - User Profile
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API references.
-
-# Web deploy
-flutter build web
-firebase deploy
-
-# localization generation
-flutter pub run easy_localization:generate --source-dir ./assets/translations
-flutter pub run easy_localization:generate --source-dir ./assets/translations -f keys -o locale_keys.g.dart
