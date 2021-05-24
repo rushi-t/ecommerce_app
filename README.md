@@ -18,17 +18,3 @@ This app also supports below Admin pages:
  - Order Detail
  - User Profile
 
-
-# Screenshots
-<table>
-  <tr>
-    <td></td>
-     <td></td>
-     <td></td>
-  </tr>
-  <tr>
-    <td><img src="https://github.com/rushi-t/ecommerce_app/blob/dev/screenshots/Screenshot_1621695216.png?raw=true" width=270 height=480></td>
-    <td><img src="https://github.com/rushi-t/ecommerce_app/blob/dev/screenshots/Screenshot_1621695227.png?raw=true" width=270 height=480></td>
-    <td><img src="https://github.com/rushi-t/ecommerce_app/blob/dev/screenshots/Screenshot_1621695258.png?raw=true" width=270 height=480></td>
-  </tr>
- </table>
