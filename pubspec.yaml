@@ -53,6 +53,7 @@ dev_dependencies:
   file_picker_cross: ^3.0.2
   transparent_image: ^1.0.0
   flutter_datetime_picker:
+  font_awesome_flutter: ^9.0.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -107,6 +108,3 @@ flutter:
     - family: Pacifico
       fonts:
         - asset: fonts/Pacifico.ttf
-    - family: Fryo
-      fonts:
-        - asset: fonts/Fryo.ttf

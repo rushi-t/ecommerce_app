@@ -2,7 +2,7 @@ import 'package:ecommerce_app/screens/user/product_tab.dart';
 import 'package:ecommerce_app/screens/user/user_tab.dart';
 import 'package:ecommerce_app/shared/colors.dart';
 import 'package:ecommerce_app/shared/constants.dart';
-import 'package:ecommerce_app/shared/fryo_icons.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:ecommerce_app/shared/localization.dart';
 import 'package:ecommerce_app/shared/styles.dart';
 import 'package:ecommerce_app/shared/widgets.dart';
@@ -82,19 +82,19 @@ class _HomeState extends State<Home> {
             child: BottomNavigationBar(
               items: <BottomNavigationBarItem>[
                 BottomNavigationBarItem(
-                    icon: Icon(Fryo.shop),
+                    icon: Icon(FontAwesomeIcons.store),
                     title: Text(
                       'Store',
                       style: tabLinkStyle,
                     )),
                 BottomNavigationBarItem(
-                    icon: Icon(Fryo.cart),
+                    icon: Icon(FontAwesomeIcons.shoppingCart),
                     title: Text(
                       'My Cart',
                       style: tabLinkStyle,
                     )),
                 BottomNavigationBarItem(
-                    icon: Icon(Fryo.user_1),
+                    icon: Icon(FontAwesomeIcons.user),
                     title: Text(
                       'Profile',
                       style: tabLinkStyle,
